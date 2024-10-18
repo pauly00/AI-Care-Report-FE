@@ -45,8 +45,10 @@ class TopMenubar extends StatelessWidget {
                   const SizedBox(width: 2), // 이미지와 텍스트 사이 간격
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: Color(0xFFFB5457), // 텍스트 색상
+                    style: TextStyle(
+                      color: title == "안심하이"
+                          ? const Color(0xFFFB5457)
+                          : Colors.black, // "안심하이"일 때는 빨간색, 아니면 검정색
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
