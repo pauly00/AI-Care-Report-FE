@@ -21,16 +21,16 @@ class VisitCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // VisitDetail 페이지로 이동하며 정보 전달
+        // VisitDetail 페이지로 이동하며 정보 전달 (phone 값은 고정)
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => VisitDetail(
               tag: tag,
-              time: time,
               name: name,
               address: address,
               addressDetails: addressDetails,
+              phone: '010-1234-5678',
             ),
           ),
         );
