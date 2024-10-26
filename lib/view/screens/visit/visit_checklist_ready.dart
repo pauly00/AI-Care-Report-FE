@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/view/screens/visit/audio.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
@@ -67,8 +68,11 @@ class CheckListReady extends StatelessWidget {
                 ),
               ),
             ),
-            // 하단 버튼 추가
 
+            //audio 추가
+            AudioComponent(),
+
+            // 하단 버튼 추가
             BottomOneButton(
               buttonText: '시작하기',
               onButtonTap: () {
