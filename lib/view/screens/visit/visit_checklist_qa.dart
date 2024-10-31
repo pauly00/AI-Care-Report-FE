@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/view/screens/visit/audio.dart';
+import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_check1.dart';
+import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
+import 'package:safe_hi/view/widgets/visit/exit_btn.dart';
 
 class CheckListQA extends StatefulWidget {
-  const CheckListQA({super.key});
+  final List<String> questions; // 질문 리스트를 받을 필드 추가
+
+  const CheckListQA({super.key, required this.questions}); // 생성자에 questions 추가
 
   @override
   _CheckListQAState createState() => _CheckListQAState();
@@ -12,13 +18,6 @@ class CheckListQA extends StatefulWidget {
 
 class _CheckListQAState extends State<CheckListQA>
     with SingleTickerProviderStateMixin {
-  final List<String> _messages = [
-    '동네 마실이 어땠는지,',
-    '마실 다녀온 후 몸 상태는 괜찮으신지 확인.',
-    '다른 지인들과의 대화나 교류가 어땠는지',
-    '다음에 또 가보고 싶은 장소나 하고 싶은 활동이 있으신지'
-  ];
-
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<String> _displayedMessages = [];
   late AnimationController _animationController;
@@ -40,7 +39,7 @@ class _CheckListQAState extends State<CheckListQA>
   }
 
   Future<void> _addMessages() async {
-    for (var message in _messages) {
+    for (var message in widget.questions) {
       await Future.delayed(const Duration(seconds: 1));
       _displayedMessages.add(message);
       _listKey.currentState?.insertItem(_displayedMessages.length - 1);
@@ -49,33 +48,54 @@ class _CheckListQAState extends State<CheckListQA>
 
   @override
   Widget build(BuildContext context) {
+    final audioRecorder = AudioRecorder();
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            TopMenubar(
-              title: '체크리스트         ',
-              showBackButton: true,
+            Column(
+              children: [
+                TopMenubar(
+                  title: '체크리스트         ',
+                  showBackButton: true,
+                ),
+                const SizedBox(height: 70),
+                Expanded(
+                  child: AnimatedList(
+                    key: _listKey,
+                    initialItemCount: _displayedMessages.length,
+                    itemBuilder: (context, index, animation) {
+                      return _buildMessageAnimation(
+                          _displayedMessages[index], animation);
+                    },
+                  ),
+                ),
+                BottomOneButton(
+                  buttonText: '완료',
+                  onButtonTap: () async {
+                    await audioRecorder.stopRecording(); // 녹음 중지
+                    List<String> categoryTitles =
+                        await fetchCategoryTitles(); // API 호출
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CheckListCategory(titles: categoryTitles),
+                      ),
+                    );
+                    await audioRecorder.startRecording();
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 70),
-            Expanded(
-              child: AnimatedList(
-                key: _listKey,
-                initialItemCount: _displayedMessages.length,
-                itemBuilder: (context, index, animation) {
-                  return _buildMessageAnimation(
-                      _displayedMessages[index], animation);
-                },
-              ),
-            ),
-            BottomOneButton(
-              buttonText: '완료',
-              onButtonTap: () {
+            ExitButton(
+              onPressed: () {
+                audioRecorder.stopRecording(); // 녹음 중지
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Check1(),
+                    builder: (context) => Check1(), // 카테고리 제목 전달
                   ),
                 );
               },
@@ -110,7 +130,10 @@ class _CheckListQAState extends State<CheckListQA>
           child: Text(
             message,
             style: const TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

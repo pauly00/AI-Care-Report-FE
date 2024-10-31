@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_qa.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 import 'package:safe_hi/view/widgets/visit/checklist_category_card.dart'; // CategoryCard import
 
 class CheckListCategory extends StatefulWidget {
-  const CheckListCategory({super.key});
+  final List<String> titles; // 카테고리 제목을 받을 필드 추가
+
+  const CheckListCategory({super.key, required this.titles}); // 생성자에 titles 추가
 
   @override
   _CheckListCategoryState createState() => _CheckListCategoryState();
 }
 
 class _CheckListCategoryState extends State<CheckListCategory> {
-  int selectedIndex = -1; // 선택된 카드를 추적하기 위한 인덱스
+  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +24,11 @@ class _CheckListCategoryState extends State<CheckListCategory> {
       body: SafeArea(
         child: Column(
           children: [
-            // TopMenubar 추가
             TopMenubar(
               title: '체크리스트         ',
               showBackButton: true,
             ),
             const SizedBox(height: 70),
-
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -38,68 +39,54 @@ class _CheckListCategoryState extends State<CheckListCategory> {
                       child: GridView.count(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        crossAxisCount: 2, // 열의 개수
-                        childAspectRatio: 140 / 150, // 너비/높이 비율
-                        children: [
-                          CategoryCard(
-                            title: '동네 마실 예정',
-                            isSelected: selectedIndex == 0, // 첫 번째 카드 선택 여부
+                        crossAxisCount: 2,
+                        childAspectRatio: 140 / 150,
+                        children: List.generate(widget.titles.length, (index) {
+                          return CategoryCard(
+                            title: widget.titles[index], // 카테고리 제목 사용
+                            isSelected: selectedIndex == index,
                             onTap: () {
                               setState(() {
-                                selectedIndex = 0; // 첫 번째 카드 선택
+                                selectedIndex = index;
                               });
                             },
-                          ),
-                          CategoryCard(
-                            title: '무릎 통증으로 10.05(금) 병원 방문예정',
-                            isSelected: selectedIndex == 1, // 두 번째 카드 선택 여부
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = 1; // 두 번째 카드 선택
-                              });
-                            },
-                          ),
-                          CategoryCard(
-                            title: 'TV 프로그램 6시 내고향을 즐겨봄',
-                            isSelected: selectedIndex == 2, // 세 번째 카드 선택 여부
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = 2; // 세 번째 카드 선택
-                              });
-                            },
-                          ),
-                          CategoryCard(
-                            title: '김장에 관련된 이야기, 감장 예정 있으신지',
-                            isSelected: selectedIndex == 3, // 네 번째 카드 선택 여부
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = 3; // 네 번째 카드 선택
-                              });
-                            },
-                          ),
-                        ],
+                          );
+                        }),
                       ),
                     ),
-                    const SizedBox(height: 32), // 아래 여백 추가
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),
             ),
-            // 하단 버튼 추가
             BottomOneButton(
               buttonText: '다음',
-              onButtonTap: () {
-                if (selectedIndex != -1) {
-                  // 선택된 카드가 있을 때만 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CheckListQA(),
-                    ),
-                  );
-                }
+              onButtonTap: () async {
+                debugPrint('Selected Index: $selectedIndex');
+                // if (selectedIndex != -1) {
+                final questions = await fetchQuestions(selectedIndex);
+                //   // 선택된 인덱스가 유효할 때만 업로드 및 다음 페이지로 이동
+                //   uploadCategoryIndex(selectedIndex).then((_) {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const CheckListQA(questions: questions),
+                //       ),
+                //     );
+                //   }).catchError((error) {
+                //     // 에러 처리
+                //     debugPrint('Error uploading category: $error');
+                //   });
+                // }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CheckListQA(questions: questions),
+                  ),
+                );
               },
-              isEnabled: selectedIndex != -1, // 선택된 카드가 있을 때만 활성화
+              isEnabled: selectedIndex != -1,
             ),
           ],
         ),
