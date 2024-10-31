@@ -1,5 +1,7 @@
+// CheckListReady.dart
 import 'package:flutter/material.dart';
 import 'package:safe_hi/view/screens/visit/audio.dart';
+import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
@@ -9,19 +11,18 @@ class CheckListReady extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final audioRecorder = AudioRecorder();
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: Column(
           children: [
-            // TopMenubar 추가
             TopMenubar(
               title: '체크리스트        ',
               showBackButton: true,
             ),
             const SizedBox(height: 70),
             Expanded(
-              // Expanded로 스크롤 가능한 영역을 설정
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +41,6 @@ class CheckListReady extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-
                     Center(
                       child: Text(
                         '시작에 앞서\n녹음을 진행하겠습니다.',
@@ -53,37 +53,35 @@ class CheckListReady extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 50),
-
                     Center(
                       child: Image.asset(
                         'assets/images/checklist.png',
-                        width: 230, // 원하는 너비로 조정 가능
-                        height: 230, // 원하는 높이로 조정 가능
+                        width: 230,
+                        height: 230,
                       ),
                     ),
                     const SizedBox(height: 50),
-
-                    const SizedBox(height: 32), // 아래 여백
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),
             ),
-
-            //audio 추가
-            AudioComponent(),
-
-            // 하단 버튼 추가
             BottomOneButton(
               buttonText: '시작하기',
-              onButtonTap: () {
+              onButtonTap: () async {
+                audioRecorder.startRecording();
+                List<String> categoryTitles =
+                    await fetchCategoryTitles(); // API 호출
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CheckListCategory(),
+                    builder: (context) =>
+                        CheckListCategory(titles: categoryTitles),
                   ),
                 );
               },
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
