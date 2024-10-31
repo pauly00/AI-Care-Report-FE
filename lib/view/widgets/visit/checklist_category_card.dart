@@ -83,16 +83,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: selectedIndex != -1
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CheckListQA(),
-                        ),
-                      );
-                    }
-                  : null,
+              onPressed: selectedIndex != -1 ? () {} : null,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFFFB5457),
