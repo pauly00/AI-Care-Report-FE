@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_comment.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
@@ -105,16 +106,24 @@ class _Check2State extends State<Check2> {
             // 하단 버튼 추가
             BottomOneButton(
               buttonText: '다음',
-              onButtonTap: () {
+              onButtonTap: () async {
+                // fetchConversationSummary API 호출하여 데이터 가져오기
+                var conversationSummary =
+                    await fetchConversationSummary(context);
+
+                // 데이터를 VisitComment 페이지로 전달
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const VisitComment(),
+                    builder: (context) => VisitComment(
+                      summaryData:
+                          conversationSummary, // VisitComment에서 사용할 데이터 전달
+                    ),
                   ),
                 );
               },
               isEnabled: _isAllChecked(), // 버튼 활성화 여부 설정
-            ),
+            )
           ],
         ),
       ),
@@ -209,7 +218,7 @@ class _Check2State extends State<Check2> {
           value: selectedCondition == index,
           activeColor: const Color(0xFFFB5457),
           onChanged: (bool? value) {
-            onChanged(value! ? index : null); // 선택된 체크박스 업데이트
+            onChanged(value! ? index : null);
           },
         ),
         Text(

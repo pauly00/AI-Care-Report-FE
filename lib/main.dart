@@ -1,6 +1,6 @@
-// main.dart
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/provider/scenarioId_provider.dart';
 import 'package:safe_hi/view/screens/home/home_page.dart';
 
 void main() => runApp(const MyApp());
@@ -10,9 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: const HomePage(), // HomePage로 변경
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ScenarioIdProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(useMaterial3: true),
+        home: const HomePage(),
+      ),
     );
   }
 }

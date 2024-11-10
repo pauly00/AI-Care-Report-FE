@@ -25,7 +25,7 @@ class _CheckListCategoryState extends State<CheckListCategory> {
         child: Column(
           children: [
             TopMenubar(
-              title: '체크리스트         ',
+              title: '대화 가이드라인      ',
               showBackButton: true,
             ),
             const SizedBox(height: 70),
@@ -63,28 +63,29 @@ class _CheckListCategoryState extends State<CheckListCategory> {
               buttonText: '다음',
               onButtonTap: () async {
                 debugPrint('Selected Index: $selectedIndex');
-                // if (selectedIndex != -1) {
-                final questions = await fetchQuestions(selectedIndex);
-                //   // 선택된 인덱스가 유효할 때만 업로드 및 다음 페이지로 이동
-                //   uploadCategoryIndex(selectedIndex).then((_) {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => const CheckListQA(questions: questions),
-                //       ),
-                //     );
-                //   }).catchError((error) {
-                //     // 에러 처리
-                //     debugPrint('Error uploading category: $error');
-                //   });
-                // }
+                if (selectedIndex != -1) {
+                  final questions =
+                      await fetchQuestions(context, selectedIndex + 1);
+                  //   // 선택된 인덱스가 유효할 때만 업로드 및 다음 페이지로 이동
+                  uploadCategoryIndex(selectedIndex).then((_) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CheckListQA(questions: questions),
+                      ),
+                    );
+                  }).catchError((error) {
+                    // 에러 처리
+                    debugPrint('Error uploading category: $error');
+                  });
+                }
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckListQA(questions: questions),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => CheckListQA(questions: questions),
+                //   ),
+                // );
               },
               isEnabled: selectedIndex != -1,
             ),

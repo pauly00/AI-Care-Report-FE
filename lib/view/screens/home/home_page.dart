@@ -13,25 +13,36 @@ class HomePage extends StatelessWidget {
     // 방문 정보 리스트 정의
     final visits = [
       {
+        'id': 1,
         'tag': '고위험군',
-        'time': '12:00 AM',
-        'name': '김민수',
+        'time': '10:00 AM',
+        'name': '이유진',
         'address': '대전 서구 대덕대로 150',
         'addressDetails': '경성큰마을아파트 102동 103호',
       },
       {
+        'id': 2,
         'tag': '고위험군',
-        'time': '1:00 PM',
-        'name': '이영희',
+        'time': '11:00 AM',
+        'name': '김연우',
         'address': '대전 유성구 테크노 3로 23',
         'addressDetails': '테크노 파크 501호',
       },
       {
+        'id': 3,
         'tag': '고위험군',
-        'time': '3:00 PM',
-        'name': '박철수',
+        'time': '1:00 PM',
+        'name': '오민석',
         'address': '대전 중구 계룡로 15',
         'addressDetails': '대전 아파트 202호',
+      },
+      {
+        'id': 4,
+        'tag': '고위험군',
+        'time': '3:00 PM',
+        'name': '한민우',
+        'address': '대전 서구 둔산로 123',
+        'addressDetails': '푸른숲아파트 102동 1202호',
       },
     ];
 
@@ -146,11 +157,12 @@ class HomePage extends StatelessWidget {
                 // VisitCard 목록 생성
                 for (var visit in visits)
                   VisitCard(
-                    tag: visit['tag']!, // 필수 매개변수 전달
-                    time: visit['time']!,
-                    name: visit['name']!,
-                    address: visit['address']!,
-                    addressDetails: visit['addressDetails']!,
+                    id: visit['id']! as int,
+                    tag: visit['tag']! as String, // 필수 매개변수 전달
+                    time: visit['time']! as String,
+                    name: visit['name']! as String,
+                    address: visit['address']! as String,
+                    addressDetails: visit['addressDetails']! as String,
                   ),
               ],
             ),

@@ -18,7 +18,7 @@ class CheckListReady extends StatelessWidget {
         child: Column(
           children: [
             TopMenubar(
-              title: '체크리스트        ',
+              title: '대화 가이드라인      ',
               showBackButton: true,
             ),
             const SizedBox(height: 70),
@@ -43,7 +43,7 @@ class CheckListReady extends StatelessWidget {
                     const SizedBox(height: 10),
                     Center(
                       child: Text(
-                        '시작에 앞서\n녹음을 진행하겠습니다.',
+                        '지금부터 안심하이가 함께 하겠습니다.',
                         style: const TextStyle(
                           color: Color(0xFFB3A5A5),
                           fontSize: 18,
@@ -71,7 +71,7 @@ class CheckListReady extends StatelessWidget {
               onButtonTap: () async {
                 audioRecorder.startRecording();
                 List<String> categoryTitles =
-                    await fetchCategoryTitles(); // API 호출
+                    await fetchCategoryTitles(context); // API 호출
                 Navigator.push(
                   context,
                   MaterialPageRoute(

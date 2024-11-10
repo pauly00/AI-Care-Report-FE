@@ -8,9 +8,9 @@ class NavigationService {
   // 페이지 목록 정의
   final List<Widget> pages = [
     HomePage(),
-    VisitListPage(),
-    PreviousRecordsPage(),
-    MyPage(),
+    //VisitListPage(),
+    //PreviousRecordsPage(),
+    //MyPage(),
   ];
 
   // 선택된 페이지로 이동하는 메소드

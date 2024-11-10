@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/provider/scenarioId_provider.dart';
 import 'package:safe_hi/view/screens/visit/visit_detail_page.dart'; // VisitDetail 페이지 임포트
 
 class VisitCard extends StatelessWidget {
+  final int id; // 시나리오 id
   final String tag; // 고위험군 태그
   final String time; // 시간
   final String name; // 이름
@@ -10,6 +13,7 @@ class VisitCard extends StatelessWidget {
 
   const VisitCard({
     super.key,
+    required this.id,
     required this.tag,
     required this.time,
     required this.name,
@@ -21,7 +25,8 @@ class VisitCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // VisitDetail 페이지로 이동하며 정보 전달 (phone 값은 고정)
+        Provider.of<ScenarioIdProvider>(context, listen: false)
+            .setSelectedIndex(id);
         Navigator.push(
           context,
           MaterialPageRoute(
