@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_welfare_recommend.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 
 class VisitComment extends StatelessWidget {
-  const VisitComment({super.key});
+  final List<Map<String, dynamic>> summaryData; // 대화 요약 데이터 받아오기
+
+  const VisitComment({super.key, required this.summaryData});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +21,16 @@ class VisitComment extends StatelessWidget {
               title: '상담코멘트         ',
               showBackButton: true,
             ),
-            const SizedBox(height: 20),
+
+            // 하나의 큰 박스 안에 날짜와 내용 포함
             Expanded(
-              // Expanded로 스크롤 가능한 영역을 설정
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 요약 섹션
+                      // 요약 제목
                       Text(
                         '요약',
                         style: const TextStyle(
@@ -37,7 +40,8 @@ class VisitComment extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      // 요약 내용 박스
+
+                      // 하나의 큰 박스 안에 모든 title과 content 반복
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -52,14 +56,75 @@ class VisitComment extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Text(
-                          '할머니께서는 최근 날씨가 갑자기 쌀쌀해져 무릎이 시리다고 하셨습니다. 온찜질을 제안드렸고, 찜질팩을 다음 방문 때 가져오기로 했습니다. 최근에는 박 여사님과 공원과 시장에 다녀오셨고, 고구마를 사서 구워 드셨으나 혼자 하는 게 재미없다고 하셨습니다. 다음번 고구마 구울 때 같이 하기로 했습니다. 또한, 내 고향 친구라는 TV 프로그램을 즐겨보고 계시며, 옛날 이야기와 시골 풍경이 마음을 편안하게 해준다고 하셨습니다. 예전 고구마를 함께 구워 먹던 추억을 그리워하셨습니다.', // 요약 내용
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
+                        child: Stack(
+                          children: [
+                            // 날짜 박스
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFB3A5A5),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  '2024.11.13', // 날짜 수정 가능
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // 요약 제목과 내용 반복
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                for (var summary in summaryData) ...[
+                                  // 제목
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xFFFB5457)),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      summary['title'],
+                                      style: const TextStyle(
+                                        color: Color(0xFFFB5457),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+
+                                  // 내용
+                                  for (var content in summary['content']) ...[
+                                    Text(
+                                      content,
+                                      style: const TextStyle(
+                                        color: Color(0xFFB3A5A5),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 3),
+                                  ],
+                                  const SizedBox(height: 10),
+                                ],
+                              ],
+                            ),
+                          ],
                         ),
                       ),
+
                       const SizedBox(height: 20),
 
                       // 상담 코멘트 작성 제목
@@ -103,14 +168,17 @@ class VisitComment extends StatelessWidget {
                 ),
               ),
             ),
+
             // 하단 버튼 추가
             BottomOneButton(
               buttonText: '완료',
-              onButtonTap: () {
+              onButtonTap: () async {
+                final welfareData = await fetchWelfarePolicies(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const WelfareRecommend(),
+                    builder: (context) =>
+                        WelfareRecommend(welfareData: welfareData),
                   ),
                 );
               },

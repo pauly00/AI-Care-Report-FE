@@ -57,7 +57,7 @@ class _CheckListQAState extends State<CheckListQA>
             Column(
               children: [
                 TopMenubar(
-                  title: '체크리스트         ',
+                  title: '대화 가이드라인      ',
                   showBackButton: true,
                 ),
                 const SizedBox(height: 70),
@@ -76,7 +76,7 @@ class _CheckListQAState extends State<CheckListQA>
                   onButtonTap: () async {
                     await audioRecorder.stopRecording(); // 녹음 중지
                     List<String> categoryTitles =
-                        await fetchCategoryTitles(); // API 호출
+                        await fetchCategoryTitles(context); // API 호출
                     Navigator.push(
                       context,
                       MaterialPageRoute(
