@@ -25,7 +25,7 @@ class _CheckListCategoryState extends State<CheckListCategory> {
         child: Column(
           children: [
             TopMenubar(
-              title: '대화 가이드라인      ',
+              title: '대화 가이드라인',
               showBackButton: true,
             ),
             const SizedBox(height: 70),

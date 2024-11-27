@@ -31,7 +31,7 @@ class _Check1State extends State<Check1> {
           children: [
             // TopMenubar 추가
             TopMenubar(
-              title: '현장체크         ',
+              title: '현장체크',
               showBackButton: true,
             ),
             const SizedBox(height: 10),

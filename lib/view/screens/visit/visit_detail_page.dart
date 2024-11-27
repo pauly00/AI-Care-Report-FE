@@ -31,7 +31,7 @@ class VisitDetail extends StatelessWidget {
             children: [
               // TopMenubar 추가
               TopMenubar(
-                title: '상세 보기         ',
+                title: '상세 보기',
                 showBackButton: true,
               ),
               const SizedBox(height: 16),

@@ -17,7 +17,7 @@ class WelfareRecommend extends StatelessWidget {
         child: Column(
           children: [
             TopMenubar(
-              title: 'AI 복지정책       ',
+              title: 'AI 복지정책',
               showBackButton: true,
             ),
             Expanded(

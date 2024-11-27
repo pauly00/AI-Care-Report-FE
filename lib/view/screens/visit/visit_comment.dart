@@ -18,7 +18,7 @@ class VisitComment extends StatelessWidget {
           children: [
             // TopMenubar 추가
             TopMenubar(
-              title: '상담코멘트         ',
+              title: '상담코멘트',
               showBackButton: true,
             ),
 
