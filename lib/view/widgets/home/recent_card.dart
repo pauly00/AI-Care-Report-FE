@@ -15,7 +15,7 @@ class RecentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 160,
+      width: MediaQuery.of(context).size.width * 0.4,
       height: 75,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
