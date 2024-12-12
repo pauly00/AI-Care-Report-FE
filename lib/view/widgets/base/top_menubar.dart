@@ -25,13 +25,16 @@ class TopMenubar extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
+          // This Expanded will make sure the title and image are centered horizontally
           Expanded(
             child: Align(
               alignment:
                   title == "안심하이" ? Alignment.centerLeft : Alignment.center,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center, // 텍스트와 이미지 중앙 정렬
+                mainAxisAlignment: title == "안심하이"
+                    ? MainAxisAlignment.start // Left align for "안심하이"
+                    : MainAxisAlignment.center, // Center for other titles
                 children: [
                   Transform.translate(
                     offset: const Offset(0, 3), // Y축으로 3픽셀 아래로 이동
@@ -57,6 +60,7 @@ class TopMenubar extends StatelessWidget {
               ),
             ),
           ),
+          if (title != "안심하이" && showBackButton) const SizedBox(width: 48),
         ],
       ),
     );
