@@ -23,6 +23,16 @@ class VisitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // tag 값에 따라 색상 지정
+    Color tagColor;
+    if (tag == "고위험군") {
+      tagColor = const Color(0xFFFB5457); // 고위험군 색상
+    } else if (tag == "중위험군") {
+      tagColor = const Color(0xFFFB8654); // 중위험군 색상
+    } else {
+      tagColor = const Color(0xFFFBC254); // 저위험군 색상
+    }
+
     return GestureDetector(
       onTap: () {
         Provider.of<ScenarioIdProvider>(context, listen: false)
@@ -66,7 +76,7 @@ class VisitCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFB5457),
+                    color: tagColor, // tagColor 적용
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
