@@ -28,7 +28,34 @@ class _CheckListCategoryState extends State<CheckListCategory> {
               title: '대화 가이드라인',
               showBackButton: true,
             ),
-            const SizedBox(height: 70),
+            const SizedBox(height: 10),
+            // 안내 문구 추가
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text(
+                    '카드 중 하나를 선택하여',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff433A3A),
+                    ),
+                  ),
+                  Text(
+                    '맞춤형 대화 가이드라인을 확인해보세요.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff433A3A),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -66,7 +93,6 @@ class _CheckListCategoryState extends State<CheckListCategory> {
                 if (selectedIndex != -1) {
                   final questions =
                       await fetchQuestions(context, selectedIndex + 1);
-                  //   // 선택된 인덱스가 유효할 때만 업로드 및 다음 페이지로 이동
                   uploadCategoryIndex(selectedIndex).then((_) {
                     Navigator.push(
                       context,
@@ -75,17 +101,9 @@ class _CheckListCategoryState extends State<CheckListCategory> {
                       ),
                     );
                   }).catchError((error) {
-                    // 에러 처리
                     debugPrint('Error uploading category: $error');
                   });
                 }
-
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => CheckListQA(questions: questions),
-                //   ),
-                // );
               },
               isEnabled: selectedIndex != -1,
             ),
