@@ -70,7 +70,7 @@ class VisitListPage extends StatelessWidget {
             body: Column(
               children: [
                 TopMenubar(
-                  title: '12월 현황',
+                  title: '방문 리스트',
                   showBackButton: false,
                 ),
                 Flexible(
@@ -88,7 +88,7 @@ class VisitListPage extends StatelessWidget {
                     dateStyle: TextStyle(
                       color: Color(0xFF433A3A),
                     ),
-                    height: 100,
+                    height: 120,
                     showMonth: true,
                     minDate: DateTime.now().add(
                       Duration(days: -365),
@@ -102,15 +102,34 @@ class VisitListPage extends StatelessWidget {
                     onDateLongPressed: (DateTime datetime) {
                       // 날짜 길게 클릭 시 동작
                     },
-                    onWeekChanged: () {
-                      // 주 변경 시 동작
-                    },
+                    onWeekChanged: () {},
                     dayOfWeek: ['월', '화', '수', '목', '금', '토', '일'], // 한글 요일 설정
+                    month: const [
+                      '1월',
+                      '2월',
+                      '3월',
+                      '4월',
+                      '5월',
+                      '6월',
+                      '7월',
+                      '8월',
+                      '9월',
+                      '10월',
+                      '11월',
+                      '12월',
+                    ],
                     monthViewBuilder: (DateTime time) => Align(
                       alignment: FractionalOffset.center,
                       child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                      ),
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          child: Text(
+                            DateFormat.yMMMM().format(time),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFF433A3A),
+                                fontWeight: FontWeight.w600),
+                          )),
                     ),
                     decorations: [
                       DecorationItem(
