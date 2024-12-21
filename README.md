@@ -30,7 +30,7 @@ SafeHi 프로젝트를 로컬 환경에서 실행하기 위한 가이드입니�
     flutter pub get
 
 3. **안드로이드 에뮬레이터 실행**
-- VS Code에서: 화면 왼쪽 하단의 장치 선택 메뉴에서 에뮬레이터 선택 후 실행
+   - VS Code에서: 화면 왼쪽 하단의 장치 선택 메뉴에서 에뮬레이터 선택 후 실행
 
 4. **프로젝트 실행**
-- VS Code에서 main.dart 파일을 열고 F5 키를 눌러 실행. (Start Debugging)
+   - VS Code에서 main.dart 파일을 열고 F5 키를 눌러 실행. (Start Debugging)
