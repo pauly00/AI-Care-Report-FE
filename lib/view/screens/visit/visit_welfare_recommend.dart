@@ -4,76 +4,103 @@ import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class WelfareRecommend extends StatelessWidget {
-  final Map<String, dynamic> welfareData; // VisitComment에서 전달받은 데이터
+class WelfareRecommend extends StatefulWidget {
+  final Map<String, dynamic> welfareData;
 
   const WelfareRecommend({super.key, required this.welfareData});
+
+  @override
+  State<WelfareRecommend> createState() => _WelfareRecommendState();
+}
+
+class _WelfareRecommendState extends State<WelfareRecommend> {
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  // 비동기 함수로 로딩 상태 관리
+  Future<void> _loadData() async {
+    // 데이터 로드 및 로직 추가 가능
+    await Future.delayed(const Duration(seconds: 2));
+    if (widget.welfareData.isNotEmpty) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
-        child: Column(
-          children: [
-            TopMenubar(
-              title: 'AI 복지정책',
-              showBackButton: true,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Text(
-                          'AI 추천 복지 서비스',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-
-                      Text(
-                        '대상자에게 아래 복지 서비스를 추천드립니다.',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-
-                      // 추천 복지 정책 리스트
-                      ..._buildPolicyWidgets(welfareData['policy'] ?? []),
-                    ],
-                  ),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB5457)),
                 ),
-              ),
-            ),
-            BottomOneButton(
-              buttonText: '완료',
-              onButtonTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
+              )
+            : Column(
+                children: [
+                  TopMenubar(
+                    title: 'AI 복지정책',
+                    showBackButton: true,
                   ),
-                );
-              },
-            ),
-          ],
-        ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text(
+                                'AI 추천 복지 서비스',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              '대상자에게 아래 복지 서비스를 추천드립니다.',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            ..._buildPolicyWidgets(
+                                widget.welfareData['policy'] ?? []),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  BottomOneButton(
+                    buttonText: '완료',
+                    onButtonTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
       ),
     );
   }
 
-  // 전달받은 정책 리스트를 표시할 위젯 생성 함수
   List<Widget> _buildPolicyWidgets(List<dynamic> policies) {
     return policies.map((policy) {
       return Padding(
@@ -88,7 +115,6 @@ class WelfareRecommend extends StatelessWidget {
     }).toList();
   }
 
-  // 복지 정보를 담은 박스 위젯
   Widget _buildWelfareBox({
     required String policyName,
     required String shortDescription,
@@ -129,7 +155,6 @@ class WelfareRecommend extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-
           Text(
             '세부정보',
             style: const TextStyle(
@@ -139,7 +164,6 @@ class WelfareRecommend extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-
           Text(
             '- 신청을 위해선 아래의 것들이 필요합니다.',
             style: const TextStyle(
@@ -148,8 +172,6 @@ class WelfareRecommend extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-
-          // 필요한 서류 리스트
           for (var condition in detailedConditions)
             Text(
               ' > $condition',
@@ -158,10 +180,7 @@ class WelfareRecommend extends StatelessWidget {
                 fontSize: 13,
               ),
             ),
-
           const SizedBox(height: 10),
-
-          // "상세 정보 확인" 버튼
           Center(
             child: InkWell(
               onTap: () => _launchURL(link),
@@ -188,7 +207,6 @@ class WelfareRecommend extends StatelessWidget {
     );
   }
 
-  // 링크로 이동하는 함수
   void _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);

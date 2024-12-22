@@ -21,6 +21,7 @@ class _CheckListQAState extends State<CheckListQA>
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<String> _displayedMessages = [];
   late AnimationController _animationController;
+  bool _isLoading = true; // 로딩 상태 변수
 
   @override
   void initState() {
@@ -39,10 +40,17 @@ class _CheckListQAState extends State<CheckListQA>
   }
 
   Future<void> _addMessages() async {
-    for (var message in widget.questions) {
+    for (var i = 0; i < widget.questions.length; i++) {
       await Future.delayed(const Duration(seconds: 1));
-      _displayedMessages.add(message);
+      _displayedMessages.add(widget.questions[i]);
       _listKey.currentState?.insertItem(_displayedMessages.length - 1);
+
+      // 첫 번째 메시지가 추가된 후 로딩 상태 변경
+      if (i == 0) {
+        setState(() {
+          _isLoading = false; // 로딩 상태를 false로 업데이트
+        });
+      }
     }
   }
 
@@ -62,21 +70,32 @@ class _CheckListQAState extends State<CheckListQA>
                 ),
                 const SizedBox(height: 70),
                 Expanded(
-                  child: AnimatedList(
-                    key: _listKey,
-                    initialItemCount: _displayedMessages.length,
-                    itemBuilder: (context, index, animation) {
-                      return _buildMessageAnimation(
-                          _displayedMessages[index], animation);
-                    },
+                  child: Stack(
+                    children: [
+                      AnimatedList(
+                        key: _listKey,
+                        initialItemCount: _displayedMessages.length,
+                        itemBuilder: (context, index, animation) {
+                          return _buildMessageAnimation(
+                              _displayedMessages[index], animation);
+                        },
+                      ),
+                      if (_isLoading)
+                        Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.pinkAccent),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 BottomOneButton(
                   buttonText: '완료',
                   onButtonTap: () async {
-                    await audioRecorder.stopRecording(); // 녹음 중지
+                    await audioRecorder.stopRecording();
                     List<String> categoryTitles =
-                        await fetchCategoryTitles(context); // API 호출
+                        await fetchCategoryTitles(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -91,11 +110,11 @@ class _CheckListQAState extends State<CheckListQA>
             ),
             ExitButton(
               onPressed: () {
-                audioRecorder.stopRecording(); // 녹음 중지
+                audioRecorder.stopRecording();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Check1(), // 카테고리 제목 전달
+                    builder: (context) => Check1(),
                   ),
                 );
               },
