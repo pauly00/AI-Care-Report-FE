@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:safe_hi/provider/scenarioId_provider.dart';
 
 // 베이스 URL 정의
-const String baseUrl = 'http://101.79.9.58:3000';
+const String baseUrl = 'http://211.188.55.88:3000';
 
 // 서버에서 카테고리 정보를 가져오는 메서드
 Future<List<String>> fetchCategoryTitles(BuildContext context) async {
@@ -118,7 +118,7 @@ Future<List<Map<String, dynamic>>> fetchConversationSummary(
 
   // URL에 scenarioId를 사용하여 요청 생성
   final url =
-      Uri.parse('http://101.79.9.58:3000/db/conversation-summary/$scenarioId');
+      Uri.parse('http://211.188.55.88:3000/db/conversation-summary/$scenarioId');
 
   try {
     final response = await http.get(url);
@@ -176,7 +176,7 @@ Future<Map<String, dynamic>> fetchWelfarePolicies(BuildContext context) async {
 
   // URL에 scenarioId를 사용하여 요청 생성
   final response = await http.get(
-      Uri.parse('http://101.79.9.58:3000/db/welfare-policies/$scenarioId'));
+      Uri.parse('http://211.188.55.88:3000/db/welfare-policies/$scenarioId'));
 
   if (response.statusCode == 200) {
     // 서버에서 정상적으로 데이터를 받았을 경우
