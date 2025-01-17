@@ -114,7 +114,7 @@ class AudioRecorder {
   Future<void> sendToServerWav() async {
     debugPrint("서버 보내는 함수 실행 !!");
 
-    final Uri uri = Uri.parse('http://101.79.9.58:3000/upload');
+    final Uri uri = Uri.parse('http://211.188.55.88:3000/upload');
 
     if (audioPath.isEmpty) {
       debugPrint('No audio file to send.');
