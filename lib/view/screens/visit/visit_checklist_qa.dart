@@ -3,6 +3,7 @@ import 'package:safe_hi/view/screens/visit/audio.dart';
 import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_check1.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
+import 'package:safe_hi/view/screens/visit/visit_checklist_ready.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 import 'package:safe_hi/view/widgets/visit/exit_btn.dart';
@@ -93,9 +94,12 @@ class _CheckListQAState extends State<CheckListQA>
                 BottomOneButton(
                   buttonText: '완료',
                   onButtonTap: () async {
-                    await audioRecorder.stopRecording();
+                    audioRecorder.stopRecording();
+                    // 카테고리 제목을 가져옵니다.
                     List<String> categoryTitles =
                         await fetchCategoryTitles(context);
+
+                    // 화면 이동
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -103,6 +107,7 @@ class _CheckListQAState extends State<CheckListQA>
                             CheckListCategory(titles: categoryTitles),
                       ),
                     );
+
                     await audioRecorder.startRecording();
                   },
                 ),

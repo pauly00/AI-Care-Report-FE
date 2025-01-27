@@ -108,7 +108,7 @@ class _CheckListCategoryState extends State<CheckListCategory> {
                 ],
                 if (!isLoading) ...[
                   // isLoading이 false일 때만 버튼을 표시
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 78),
                   BottomOneButton(
                     buttonText: '다음',
                     onButtonTap: () async {
@@ -116,17 +116,15 @@ class _CheckListCategoryState extends State<CheckListCategory> {
                       if (selectedIndex != -1) {
                         final questions =
                             await fetchQuestions(context, selectedIndex + 1);
-                        uploadCategoryIndex(selectedIndex).then((_) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CheckListQA(questions: questions),
-                            ),
-                          );
-                        }).catchError((error) {
-                          debugPrint('Error uploading category: $error');
-                        });
+
+                        // 질문을 가져온 후, 해당 화면으로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CheckListQA(questions: questions),
+                          ),
+                        );
                       }
                     },
                     isEnabled: selectedIndex != -1,
