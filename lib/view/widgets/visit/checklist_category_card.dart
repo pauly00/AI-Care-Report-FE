@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_hi/view/screens/visit/visit_checklist_qa.dart';
 
 class CategoryCard extends StatelessWidget {
   final String title;

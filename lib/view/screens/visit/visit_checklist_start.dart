@@ -73,7 +73,6 @@ class CheckList extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 32), // 아래 여백 추가
               Center(
                 child: BottomOneButton(
                   buttonText: '체크리스트 시작하기',

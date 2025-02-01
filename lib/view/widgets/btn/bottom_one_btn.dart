@@ -15,7 +15,6 @@ class BottomOneButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
       color: const Color(0xFFFFF6F6), // 배경색
       padding: const EdgeInsets.symmetric(vertical: 16), // 위아래 패딩
       child: SizedBox(

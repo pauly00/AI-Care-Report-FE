@@ -202,26 +202,26 @@ class VisitDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 80), // 여유 공간 추가하여 버튼을 하단으로 이동
+              SizedBox(height: 160),
+              BottomTwoButton(
+                buttonText1: '방문일자수정',
+                buttonText2: '상담시작',
+                onButtonTap1: () {
+                  // '방문일자수정' 버튼 클릭 시 처리할 로직
+                },
+                onButtonTap2: () {
+                  // '상담시작' 버튼 클릭 시 CheckList 페이지로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CheckList(), // CheckList 페이지로 이동
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomTwoButton(
-        buttonText1: '방문일자수정',
-        buttonText2: '상담시작',
-        onButtonTap1: () {
-          // '방문일자수정' 버튼 클릭 시 처리할 로직
-        },
-        onButtonTap2: () {
-          // '상담시작' 버튼 클릭 시 CheckList 페이지로 이동
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CheckList(), // CheckList 페이지로 이동
-            ),
-          );
-        },
       ),
     );
   }

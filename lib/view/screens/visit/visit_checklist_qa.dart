@@ -3,10 +3,10 @@ import 'package:safe_hi/view/screens/visit/audio.dart';
 import 'package:safe_hi/view/screens/visit/service/http_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_check1.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
-import 'package:safe_hi/view/screens/visit/visit_checklist_ready.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 import 'package:safe_hi/view/widgets/visit/exit_btn.dart';
+import 'package:safe_hi/view/widgets/visit/chat.dart';
 
 class CheckListQA extends StatefulWidget {
   final List<String> questions; // 질문 리스트를 받을 필드 추가
@@ -23,6 +23,7 @@ class _CheckListQAState extends State<CheckListQA>
   final List<String> _displayedMessages = [];
   late AnimationController _animationController;
   bool _isLoading = true; // 로딩 상태 변수
+  List<Map<String, dynamic>> chatData = [];
 
   @override
   void initState() {
@@ -32,6 +33,7 @@ class _CheckListQAState extends State<CheckListQA>
       duration: const Duration(milliseconds: 1000),
     );
     _addMessages();
+    _fetchData();
   }
 
   @override
@@ -55,6 +57,13 @@ class _CheckListQAState extends State<CheckListQA>
     }
   }
 
+  Future<void> _fetchData() async {
+    final fetchedChatData = await fetchChatData(context); // 더미 데이터 불러오기
+    setState(() {
+      chatData = fetchedChatData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final audioRecorder = AudioRecorder();
@@ -71,6 +80,7 @@ class _CheckListQAState extends State<CheckListQA>
                 ),
                 const SizedBox(height: 70),
                 Expanded(
+                  flex: 3,
                   child: Stack(
                     children: [
                       AnimatedList(
@@ -91,26 +101,38 @@ class _CheckListQAState extends State<CheckListQA>
                     ],
                   ),
                 ),
-                BottomOneButton(
-                  buttonText: '완료',
-                  onButtonTap: () async {
-                    audioRecorder.stopRecording();
-                    // 카테고리 제목을 가져옵니다.
-                    List<String> categoryTitles =
-                        await fetchCategoryTitles(context);
+                if (!_isLoading)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0), // Padding for button
+                    child: BottomOneButton(
+                      buttonText: '완료',
+                      onButtonTap: () async {
+                        audioRecorder.stopRecording();
+                        // 카테고리 제목을 가져옵니다.
+                        List<String> categoryTitles =
+                            await fetchCategoryTitles(context);
 
-                    // 화면 이동
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            CheckListCategory(titles: categoryTitles),
-                      ),
-                    );
+                        // 화면 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CheckListCategory(titles: categoryTitles),
+                          ),
+                        );
 
-                    await audioRecorder.startRecording();
-                  },
-                ),
+                        await audioRecorder.startRecording();
+                      },
+                    ),
+                  ),
+                // ChatUI 부분
+                if (chatData.isNotEmpty)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: ChatUI(chatData: chatData),
+                    ),
+                  ),
               ],
             ),
             ExitButton(

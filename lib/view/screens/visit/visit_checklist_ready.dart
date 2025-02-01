@@ -60,28 +60,28 @@ class CheckListReady extends StatelessWidget {
                         height: 230,
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 100),
+                    Center(
+                      child: BottomOneButton(
+                        buttonText: '시작하기',
+                        onButtonTap: () async {
+                          audioRecorder.startRecording();
+                          List<String> categoryTitles =
+                              await fetchCategoryTitles(context); // API 호출
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CheckListCategory(titles: categoryTitles),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            BottomOneButton(
-              buttonText: '시작하기',
-              onButtonTap: () async {
-                audioRecorder.startRecording();
-                List<String> categoryTitles =
-                    await fetchCategoryTitles(context); // API 호출
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        CheckListCategory(titles: categoryTitles),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

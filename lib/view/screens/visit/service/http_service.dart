@@ -1,8 +1,8 @@
-import 'dart:convert';
+//import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:safe_hi/provider/scenarioId_provider.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:provider/provider.dart';
+// import 'package:safe_hi/provider/scenarioId_provider.dart';
 
 // 베이스 URL 정의
 const String baseUrl = 'http://211.188.55.88:3000';
@@ -208,4 +208,21 @@ Future<Map<String, dynamic>> fetchWelfarePolicies(BuildContext context) async {
       }
     ]
   };
+}
+
+//채팅 ui 테스트
+Future<List<Map<String, dynamic>>> fetchChatData(BuildContext context) async {
+  // 더미 채팅 데이터 반환
+  return [
+    {"speaker": 1, "text": "안녕하세요. 무엇을 도와드릴까요?"},
+    {"speaker": 2, "text": "안녕하세요. 복지 정책에 대해 알고 싶어요."},
+    {"speaker": 1, "text": "원하시는 복지 정책의 종류나 지역이 있나요?"},
+    {"speaker": 2, "text": "서울 지역에서 제공되는 정책을 알고 싶습니다."},
+    {"speaker": 1, "text": "확인해보겠습니다. 잠시만 기다려주세요."},
+    {
+      "speaker": 1,
+      "text": "서울 지역에서 제공되는 복지 정책으로는 '노인 의료비 지원'과 '에너지 바우처'가 있습니다."
+    },
+    {"speaker": 2, "text": "좋은 정보 감사합니다!"},
+  ];
 }
