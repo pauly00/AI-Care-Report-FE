@@ -214,15 +214,25 @@ Future<Map<String, dynamic>> fetchWelfarePolicies(BuildContext context) async {
 Future<List<Map<String, dynamic>>> fetchChatData(BuildContext context) async {
   // 더미 채팅 데이터 반환
   return [
-    {"speaker": 1, "text": "안녕하세요. 무엇을 도와드릴까요?"},
-    {"speaker": 2, "text": "안녕하세요. 복지 정책에 대해 알고 싶어요."},
-    {"speaker": 1, "text": "원하시는 복지 정책의 종류나 지역이 있나요?"},
-    {"speaker": 2, "text": "서울 지역에서 제공되는 정책을 알고 싶습니다."},
-    {"speaker": 1, "text": "확인해보겠습니다. 잠시만 기다려주세요."},
+    {"speaker": 2, "text": "안녕하세요. 무엇을 도와드릴까요?"},
+    {"speaker": 1, "text": "안녕하세요. 복지 정책에 대해 알고 싶어요."},
+    {"speaker": 2, "text": "원하시는 복지 정책의 종류나 지역이 있나요?"},
+    {"speaker": 1, "text": "서울 지역에서 제공되는 정책을 알고 싶습니다."},
+    {"speaker": 2, "text": "확인해보겠습니다. 잠시만 기다려주세요."},
     {
-      "speaker": 1,
+      "speaker": 2,
       "text": "서울 지역에서 제공되는 복지 정책으로는 '노인 의료비 지원'과 '에너지 바우처'가 있습니다."
     },
-    {"speaker": 2, "text": "좋은 정보 감사합니다!"},
+    {"speaker": 1, "text": "좋은 정보 감사합니다!"},
+    {
+      "speaker": 2,
+      "text": "서울 지역에서 제공되는 복지 정책으로는 '노인 의료비 지원'과 '에너지 바우처'가 있습니다."
+    },
+    {"speaker": 1, "text": "좋은 정보 감사합니다!"},
+    {
+      "speaker": 2,
+      "text": "서울 지역에서 제공되는 복지 정책으로는 '노인 의료비 지원'과 '에너지 바우처'가 있습니다."
+    },
+    {"speaker": 1, "text": "좋은 정보 감사합니다!"},
   ];
 }

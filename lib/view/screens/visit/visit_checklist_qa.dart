@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:safe_hi/view/screens/visit/audio.dart';
+import 'package:safe_hi/view/screens/visit/service/audio_ws.dart';
 import 'package:safe_hi/view/screens/visit/service/http_service.dart';
+import 'package:safe_hi/view/screens/visit/service/websocket_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_check1.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 import 'package:safe_hi/view/widgets/visit/exit_btn.dart';
-import 'package:safe_hi/view/widgets/visit/chat.dart';
 
 class CheckListQA extends StatefulWidget {
-  final List<String> questions; // 질문 리스트를 받을 필드 추가
+  final List<String> questions;
 
-  const CheckListQA({super.key, required this.questions}); // 생성자에 questions 추가
+  const CheckListQA({super.key, required this.questions});
 
   @override
   _CheckListQAState createState() => _CheckListQAState();
@@ -24,6 +24,7 @@ class _CheckListQAState extends State<CheckListQA>
   late AnimationController _animationController;
   bool _isLoading = true; // 로딩 상태 변수
   List<Map<String, dynamic>> chatData = [];
+  //final audioService = AudioWebSocketRecorder();
 
   @override
   void initState() {
@@ -66,7 +67,7 @@ class _CheckListQAState extends State<CheckListQA>
 
   @override
   Widget build(BuildContext context) {
-    final audioRecorder = AudioRecorder();
+    // final audioRecorder = AudioRecorder();
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -103,12 +104,12 @@ class _CheckListQAState extends State<CheckListQA>
                 ),
                 if (!_isLoading)
                   Padding(
-                    padding: const EdgeInsets.all(16.0), // Padding for button
+                    padding: const EdgeInsets.all(16.0),
                     child: BottomOneButton(
                       buttonText: '완료',
                       onButtonTap: () async {
-                        audioRecorder.stopRecording();
-                        // 카테고리 제목을 가져옵니다.
+                        // audioRecorder.stopRecording();
+
                         List<String> categoryTitles =
                             await fetchCategoryTitles(context);
 
@@ -121,23 +122,20 @@ class _CheckListQAState extends State<CheckListQA>
                           ),
                         );
 
-                        await audioRecorder.startRecording();
+                        //await audioRecorder.startRecording();
                       },
-                    ),
-                  ),
-                // ChatUI 부분
-                if (chatData.isNotEmpty)
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: ChatUI(chatData: chatData),
                     ),
                   ),
               ],
             ),
             ExitButton(
-              onPressed: () {
-                audioRecorder.stopRecording();
+              onPressed: () async {
+                // audioRecorder.stopRecording();
+
+                // 녹음 종료
+                //await audioService.stopRecording();
+                //WebSocketService().disconnect();
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(

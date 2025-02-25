@@ -1,17 +1,34 @@
-// CheckListReady.dart
 import 'package:flutter/material.dart';
-import 'package:safe_hi/view/screens/visit/audio.dart';
+import 'package:safe_hi/view/screens/visit/service/audio_ws.dart';
 import 'package:safe_hi/view/screens/visit/service/http_service.dart';
+import 'package:safe_hi/view/screens/visit/service/websocket_service.dart';
 import 'package:safe_hi/view/screens/visit/visit_checklist_category.dart';
+import 'package:safe_hi/view/screens/visit/visit_process.dart';
 import 'package:safe_hi/view/widgets/base/top_menubar.dart';
 import 'package:safe_hi/view/widgets/btn/bottom_one_btn.dart';
 
-class CheckListReady extends StatelessWidget {
+class CheckListReady extends StatefulWidget {
   const CheckListReady({super.key});
 
   @override
+  State<CheckListReady> createState() => _CheckListReadyState();
+}
+
+class _CheckListReadyState extends State<CheckListReady> {
+  @override
+  void initState() {
+    super.initState();
+    // WebSocket 연결
+    WebSocketService().connect('ws://서버주소:포트');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final audioRecorder = AudioRecorder();
+    //final audioRecorder = AudioRecorder();
+    //final wsService = WebSocketService();
+    //final audioService = AudioWebSocketRecorder();
+    int selectedIndex = -1;
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -65,14 +82,21 @@ class CheckListReady extends StatelessWidget {
                       child: BottomOneButton(
                         buttonText: '시작하기',
                         onButtonTap: () async {
-                          audioRecorder.startRecording();
-                          List<String> categoryTitles =
-                              await fetchCategoryTitles(context); // API 호출
+                          // audioRecorder.startRecording();
+                          // 현재 페이지 초기화시 websocket 연결했기에 중복 호출 불필요
+                          // await wsService().connect('ws://서버주소:포트');
+
+                          // 오디오 녹음 + 실시간 전송 시작
+                          //await audioService.startRecording();
+
+                          final questions =
+                              await fetchQuestions(context, selectedIndex + 1);
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CheckListCategory(titles: categoryTitles),
+                                  VisitProcess(questions: questions),
                             ),
                           );
                         },
