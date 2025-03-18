@@ -24,7 +24,7 @@ class _CheckListQAState extends State<CheckListQA>
   late AnimationController _animationController;
   bool _isLoading = true; // 로딩 상태 변수
   List<Map<String, dynamic>> chatData = [];
-  //final audioService = AudioWebSocketRecorder();
+  final audioService = AudioWebSocketRecorder();
 
   @override
   void initState() {

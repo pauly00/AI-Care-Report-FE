@@ -18,7 +18,7 @@ class VisitProcess extends StatefulWidget {
 
 class _VisitProcessState extends State<VisitProcess> {
   List<Map<String, dynamic>> chatData = [];
-  //final audioService = AudioWebSocketRecorder();
+  final audioService = AudioWebSocketRecorder();
 
   @override
   void initState() {
@@ -68,8 +68,8 @@ class _VisitProcessState extends State<VisitProcess> {
             // Exit 버튼
             ExitButton(
               onPressed: () async {
-                //await audioService.stopRecording();
-                //WebSocketService().disconnect();
+                await audioService.stopRecording();
+                WebSocketService().disconnect();
                 Navigator.push(
                   context,
                   MaterialPageRoute(

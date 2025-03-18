@@ -17,8 +17,7 @@ class WebSocketService {
   Future<void> connect(String url) async {
     if (_channel == null) {
       try {
-        // 예: ws:// or wss:// 로 시작하는 WebSocket URL
-        _channel = IOWebSocketChannel.connect(Uri.parse(url));
+        _channel = IOWebSocketChannel.connect('ws://211.188.55.88:8085');
         debugPrint('[WebSocket] 연결 성공!');
 
         // 서버로부터 오는 메시지를 수신할 수도 있음

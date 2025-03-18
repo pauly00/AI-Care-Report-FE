@@ -19,14 +19,14 @@ class _CheckListReadyState extends State<CheckListReady> {
   void initState() {
     super.initState();
     // WebSocket 연결
-    WebSocketService().connect('ws://서버주소:포트');
+    WebSocketService().connect('ws://211.188.55.88:8085');
   }
 
   @override
   Widget build(BuildContext context) {
     //final audioRecorder = AudioRecorder();
-    //final wsService = WebSocketService();
-    //final audioService = AudioWebSocketRecorder();
+    final wsService = WebSocketService();
+    final audioService = AudioWebSocketRecorder();
     int selectedIndex = -1;
 
     return Scaffold(
@@ -87,7 +87,7 @@ class _CheckListReadyState extends State<CheckListReady> {
                           // await wsService().connect('ws://서버주소:포트');
 
                           // 오디오 녹음 + 실시간 전송 시작
-                          //await audioService.startRecording();
+                          await audioService.startRecording();
 
                           final questions =
                               await fetchQuestions(context, selectedIndex + 1);
