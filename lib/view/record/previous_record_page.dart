@@ -89,7 +89,6 @@ class PreviousRecordsPage extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: const BottomMenubar(),
       ),
     );
   }

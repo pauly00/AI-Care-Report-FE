@@ -344,7 +344,6 @@ class MyPage extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: const BottomMenubar(),
       ),
     );
   }

@@ -160,7 +160,6 @@ class VisitListPage extends StatelessWidget {
                 ),
               ],
             ),
-            bottomNavigationBar: const BottomMenubar(),
           ),
         );
       },

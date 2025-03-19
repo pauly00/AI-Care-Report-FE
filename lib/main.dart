@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/main_screen.dart';
 import 'package:safe_hi/provider/nav/bottom_nav_provider.dart';
 import 'package:safe_hi/view/home/home_page.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
-      home: const HomePage(),
+      home: const MainScreen(),
     );
   }
 }
