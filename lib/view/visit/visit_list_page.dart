@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
-import 'package:safe_hi/widget/bottom_menubar/bottom_menubar.dart';
 import 'package:safe_hi/widget/card/visit_list_card.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';

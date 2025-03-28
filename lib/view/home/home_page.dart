@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safe_hi/view/home/widget/recent_card.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
-import 'package:safe_hi/widget/bottom_menubar/bottom_menubar.dart';
 import 'package:safe_hi/widget/card/visit_list_card.dart';
 
 class HomePage extends StatelessWidget {
@@ -67,7 +66,7 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.grey.withValues(alpha: 0.5),
                         spreadRadius: 2,
                         blurRadius: 4,
                         offset: const Offset(0, 0),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DefaultAppBar extends StatelessWidget {
   final String title;
 
-  const DefaultAppBar({Key? key, required this.title}) : super(key: key);
+  const DefaultAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +28,9 @@ class DefaultAppBar extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      color:
-                          title == "안심하이"
-                              ? const Color(0xFFFB5457)
-                              : Colors.black,
+                      color: title == "안심하이"
+                          ? const Color(0xFFFB5457)
+                          : Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
-import 'package:safe_hi/widget/bottom_menubar/bottom_menubar.dart';
 
 class MyPage extends StatelessWidget {
   const MyPage({super.key});

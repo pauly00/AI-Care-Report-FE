@@ -94,16 +94,19 @@ class _VisitCommentBodyState extends State<_VisitCommentBody> {
                     onButtonTap: () async {
                       // 복지 정책 가져오기
                       final welfareList = await vm.fetchWelfarePolicies();
-                      // welfareList is List<WelfarePolicy>
+                      if (!mounted) return;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!mounted) return;
 
-                      // 다음 화면 이동
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              WelfareRecommend(welfareData: welfareList),
-                        ),
-                      );
+                        // 다음 화면 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                WelfareRecommend(welfareData: welfareList),
+                          ),
+                        );
+                      });
                     },
                   ),
                 ],
@@ -120,7 +123,7 @@ class _VisitCommentBodyState extends State<_VisitCommentBody> {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFDD8DA).withOpacity(0.5),
+            color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
             spreadRadius: 2,
             blurRadius: 4,
             offset: const Offset(0, 2),

@@ -75,19 +75,16 @@ class _CheckListReadyState extends State<CheckListReady> {
                       child: BottomOneButton(
                         buttonText: '시작하기',
                         onButtonTap: () async {
-                          // audioRecorder.startRecording();
-                          // 현재 페이지 초기화시 websocket 연결했기에 중복 호출 불필요
-                          // await wsService().connect('ws://서버주소:포트');
-
-                          // 오디오 녹음 + 실시간 전송 시작
                           await audioService.startRecording();
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VisitProcess(),
-                            ),
-                          );
+                          if (!mounted) return;
+                          // 현재 프레임 종료 후 Navigator 호출
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (!mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => VisitProcess()),
+                            );
+                          });
                         },
                       ),
                     ),

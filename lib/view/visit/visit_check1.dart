@@ -7,10 +7,10 @@ class Check1 extends StatefulWidget {
   const Check1({super.key});
 
   @override
-  _Check1State createState() => _Check1State();
+  Check1State createState() => Check1State();
 }
 
-class _Check1State extends State<Check1> {
+class Check1State extends State<Check1> {
   final List<String> checklistItems = [
     '우편함이나 집 앞에 전단지, 홍보물, 신문, 우편물이 쌓여있다.',
     '현관, 현관 주변, 문고리 등에 먼지가 쌓여있다.',

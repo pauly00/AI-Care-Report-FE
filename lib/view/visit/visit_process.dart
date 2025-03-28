@@ -6,13 +6,13 @@ import 'package:safe_hi/view/visit/widget/exit_btn.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 
 class VisitProcess extends StatefulWidget {
-  const VisitProcess({Key? key}) : super(key: key);
+  const VisitProcess({super.key});
 
   @override
-  _VisitProcessState createState() => _VisitProcessState();
+  VisitProcessState createState() => VisitProcessState();
 }
 
-class _VisitProcessState extends State<VisitProcess>
+class VisitProcessState extends State<VisitProcess>
     with SingleTickerProviderStateMixin {
   final audioService = AudioWebSocketRecorder();
   late AnimationController _pulseController;
@@ -94,10 +94,14 @@ class _VisitProcessState extends State<VisitProcess>
               onPressed: () async {
                 await audioService.stopRecording();
                 WebSocketService().disconnect();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Check1()),
-                );
+                if (!mounted) return;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!mounted) return;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Check1()),
+                  );
+                });
               },
             ),
           ],

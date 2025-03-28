@@ -18,9 +18,15 @@ class Check2 extends StatelessWidget {
   }
 }
 
-class _Check2Body extends StatelessWidget {
-  const _Check2Body({Key? key}) : super(key: key);
+// StatefulWidget으로 변환
+class _Check2Body extends StatefulWidget {
+  const _Check2Body();
 
+  @override
+  State<_Check2Body> createState() => _Check2BodyState();
+}
+
+class _Check2BodyState extends State<_Check2Body> {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<VisitCheck2ViewModel>();
@@ -44,7 +50,6 @@ class _Check2Body extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -56,8 +61,6 @@ class _Check2Body extends StatelessWidget {
                       return _buildChecklistItem(context, vm, index, item);
                     }),
                     const SizedBox(height: 10),
-
-                    // 식사 기능
                     _buildConditionSection(
                       context,
                       vm,
@@ -66,8 +69,6 @@ class _Check2Body extends StatelessWidget {
                       (val) => vm.setMealCondition(val),
                     ),
                     const SizedBox(height: 10),
-
-                    // 인지 기능
                     _buildConditionSection(
                       context,
                       vm,
@@ -76,8 +77,6 @@ class _Check2Body extends StatelessWidget {
                       (val) => vm.setCognitiveCondition(val),
                     ),
                     const SizedBox(height: 10),
-
-                    // 의사 기능
                     _buildConditionSection(
                       context,
                       vm,
@@ -89,20 +88,22 @@ class _Check2Body extends StatelessWidget {
                 ),
               ),
             ),
-
-            // 하단 버튼
             BottomOneButton(
               buttonText: '다음',
               isEnabled: vm.isAllChecked,
               onButtonTap: () async {
                 final summaryData = await vm.onNextButtonTap();
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => VisitComment(summaryData: summaryData),
-                  ),
-                );
+                if (!mounted) return;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => VisitComment(summaryData: summaryData),
+                      ),
+                    );
+                  }
+                });
               },
             ),
           ],
@@ -168,7 +169,7 @@ class _Check2Body extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFFDD8DA).withOpacity(0.5),
+              color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
               spreadRadius: 2,
               blurRadius: 4,
               offset: const Offset(0, 2),

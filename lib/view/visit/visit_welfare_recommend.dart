@@ -8,8 +8,7 @@ import 'package:safe_hi/view/home/home_page.dart';
 class WelfareRecommend extends StatefulWidget {
   final List<WelfarePolicy> welfareData;
 
-  const WelfareRecommend({Key? key, required this.welfareData})
-      : super(key: key);
+  const WelfareRecommend({super.key, required this.welfareData});
 
   @override
   State<WelfareRecommend> createState() => _WelfareRecommendState();
@@ -196,8 +195,9 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
 
   /// URL 링크 열기
   void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
     }

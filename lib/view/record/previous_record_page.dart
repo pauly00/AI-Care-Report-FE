@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
 import 'package:safe_hi/widget/card/visit_record_card.dart';
 import 'package:safe_hi/widget/search/search_bar.dart';
-import 'package:safe_hi/widget/bottom_menubar/bottom_menubar.dart';
 
 class PreviousRecordsPage extends StatelessWidget {
   const PreviousRecordsPage({super.key});
