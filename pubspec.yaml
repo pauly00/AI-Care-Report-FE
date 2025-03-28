@@ -73,6 +73,7 @@ flutter:
     - assets/images/splash.png
     - assets/images/splashlogo.png
     - assets/images/logoicon.png
+    - assets/images/logo.png
     - assets/images/pie.png
     - assets/images/3d.png
     - assets/images/checklist.png

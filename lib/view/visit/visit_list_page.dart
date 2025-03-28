@@ -19,7 +19,6 @@ class VisitListPage extends StatelessWidget {
     final visits = [
       {
         'id': 1,
-        'tag': '고위험군',
         'time': '10:00 AM',
         'name': '이유진',
         'address': '대전 서구 대덕대로 150',
@@ -27,7 +26,6 @@ class VisitListPage extends StatelessWidget {
       },
       {
         'id': 2,
-        'tag': '저위험군',
         'time': '11:00 AM',
         'name': '김연우',
         'address': '대전 유성구 테크노 3로 23',
@@ -35,7 +33,6 @@ class VisitListPage extends StatelessWidget {
       },
       {
         'id': 3,
-        'tag': '고위험군',
         'time': '1:00 PM',
         'name': '오민석',
         'address': '대전 중구 계룡로 15',
@@ -43,7 +40,6 @@ class VisitListPage extends StatelessWidget {
       },
       {
         'id': 4,
-        'tag': '고위험군',
         'time': '3:00 PM',
         'name': '한민우',
         'address': '대전 서구 둔산로 123',
@@ -147,7 +143,6 @@ class VisitListPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 32.0),
                         child: VisitCard(
                           id: visit['id']! as int,
-                          tag: visit['tag']! as String,
                           time: visit['time']! as String,
                           name: visit['name']! as String,
                           address: visit['address']! as String,

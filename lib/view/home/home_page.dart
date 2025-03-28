@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safe_hi/view/home/widget/recent_card.dart';
+import 'package:safe_hi/view/home/widget/recent_card2.dart';
+import 'package:safe_hi/view/report/report_list_page.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
 import 'package:safe_hi/widget/card/visit_list_card.dart';
 
@@ -11,7 +12,6 @@ class HomePage extends StatelessWidget {
     final visits = [
       {
         'id': 1,
-        'tag': '고위험군',
         'time': '10:00 AM',
         'name': '이유진',
         'address': '대전 서구 대덕대로 150',
@@ -19,7 +19,6 @@ class HomePage extends StatelessWidget {
       },
       {
         'id': 2,
-        'tag': '고위험군',
         'time': '11:00 AM',
         'name': '김연우',
         'address': '대전 유성구 테크노 3로 23',
@@ -27,7 +26,6 @@ class HomePage extends StatelessWidget {
       },
       {
         'id': 3,
-        'tag': '고위험군',
         'time': '1:00 PM',
         'name': '오민석',
         'address': '대전 중구 계룡로 15',
@@ -35,7 +33,6 @@ class HomePage extends StatelessWidget {
       },
       {
         'id': 4,
-        'tag': '고위험군',
         'time': '3:00 PM',
         'name': '한민우',
         'address': '대전 서구 둔산로 123',
@@ -78,10 +75,10 @@ class HomePage extends StatelessWidget {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              '오늘 방문할 가구는 총 5곳 입니다.',
-                              style: TextStyle(
+                              '오늘 방문할 가구는 총 ${visits.length}곳 입니다.',
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -98,15 +95,12 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // 파이차트
                       SizedBox(
-                        width: 55,
-                        height: 55,
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/pie.png',
-                            fit: BoxFit.cover,
-                          ),
+                        width: 50,
+                        height: 50,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ],
@@ -117,12 +111,29 @@ class HomePage extends StatelessWidget {
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      RecentCard(title: "코멘트", count: 5, subtitle: "최근 코멘트"),
-                      RecentCard(
+                    children: [
+                      // 첫 번째 RecentCard2를 InkWell로 감싸서 페이지 이동
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReportListPage(),
+                            ),
+                          );
+                        },
+                        child: const RecentCard2(
+                          title: "리포트 관리",
+                          count: 2,
+                          subtitle: "미작성된 리포트 리스트",
+                          iconEmoji: "📋",
+                        ),
+                      ),
+                      const RecentCard2(
                         title: "일정 관리",
                         count: 3,
                         subtitle: "방문 일자 미정 리스트",
+                        iconEmoji: "⏰",
                       ),
                     ],
                   ),
@@ -137,9 +148,9 @@ class HomePage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      '5개',
-                      style: TextStyle(
+                    Text(
+                      '${visits.length}개',
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFFFB5457),
@@ -152,7 +163,6 @@ class HomePage extends StatelessWidget {
                 for (var visit in visits)
                   VisitCard(
                     id: visit['id']! as int,
-                    tag: visit['tag']! as String, // 필수 매개변수 전달
                     time: visit['time']! as String,
                     name: visit['name']! as String,
                     address: visit['address']! as String,
