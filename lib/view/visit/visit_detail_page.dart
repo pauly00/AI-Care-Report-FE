@@ -3,6 +3,7 @@ import 'package:safe_hi/view/visit/visit_checklist_start.dart';
 import 'package:safe_hi/view/visit/widget/drop_box.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VisitDetail extends StatelessWidget {
   final String tag; // 고위험군 태그
@@ -19,6 +20,19 @@ class VisitDetail extends StatelessWidget {
     required this.phone,
     required this.addressDetails,
   });
+// 전화걸기 함수
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(launchUri);
+    } else {
+      // 전화걸기 실패 시 처리할 로직 추가 (예: 에러 메시지 표시)
+      debugPrint('전화 연결을 할 수 없습니다.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,15 +146,37 @@ class VisitDetail extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            '전화번호', // 제목
+                            '전화번호',
                             style: TextStyle(
                               fontSize: 16,
                               color: Color(0xFFB3A5A5),
                             ),
                           ),
                           Text(
-                            phone, // 내용
+                            phone,
                             style: const TextStyle(fontSize: 16),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _makePhoneCall(phone);
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(
+                                  Icons.phone,
+                                  color: Colors.redAccent,
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  '전화걸기',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
