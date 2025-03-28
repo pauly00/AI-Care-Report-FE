@@ -23,7 +23,6 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
     _loadData();
   }
 
-  // 비동기 함수로 로딩 상태 관리
   Future<void> _loadData() async {
     await Future.delayed(const Duration(seconds: 2));
     if (widget.welfareData.isNotEmpty) {
@@ -39,11 +38,25 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Color(0xFFFB5457),
-                  ),
+            ? Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFFFB5457),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      '잠시만 기다려주세요.\n어르신께 필요한 정보를 찾고 있습니다!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               )
             : Column(
@@ -56,21 +69,27 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Center(
-                            child: Text(
-                              'AI 추천 복지 서비스',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            '어르신께 도움이 될 수 있는 복지 서비스를 찾아봤어요. 필요한 지원 편하게 보실 수 있게 안내해드릴게요',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'AI 추천 복지 서비스',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  '어르신께 맞는 복지 서비스를 찾아봤어요.',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -105,7 +124,7 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
     }).toList();
   }
 
-  /// 하나의 WelfarePolicy 객체로 박스를 만든다
+  /// 하나의 WelfarePolicy 객체로 박스를 만든다.
   Widget _buildWelfareBox(WelfarePolicy policy) {
     return Container(
       padding: const EdgeInsets.all(15),
@@ -168,14 +187,14 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 5,
-                  horizontal: 100,
+                  horizontal: 110,
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFB5457),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text(
-                  "상세 정보 확인",
+                  "자세히 보기",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 13,

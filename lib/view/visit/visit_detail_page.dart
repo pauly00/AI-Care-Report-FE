@@ -6,7 +6,6 @@ import 'package:safe_hi/widget/button/bottom_two_btn.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class VisitDetail extends StatelessWidget {
-  final String tag; // 고위험군 태그
   final String name; // 이름
   final String address; // 주소
   final String addressDetails; // 상세 주소
@@ -14,7 +13,6 @@ class VisitDetail extends StatelessWidget {
 
   const VisitDetail({
     super.key,
-    required this.tag,
     required this.name,
     required this.address,
     required this.phone,
@@ -58,23 +56,6 @@ class VisitDetail extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.redAccent,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        tag,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 9,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

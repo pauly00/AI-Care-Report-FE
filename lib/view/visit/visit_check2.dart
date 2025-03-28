@@ -80,38 +80,28 @@ class _Check2BodyState extends State<_Check2Body> {
             const SizedBox(height: 20),
 
             Expanded(
-              // Expanded로 스크롤 가능한 영역을 설정
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 체크리스트 항목 생성
                     ...checklistItems.asMap().entries.map((entry) {
                       int index = entry.key;
                       String item = entry.value;
                       return _buildChecklistItem(index, item);
                     }),
                     const SizedBox(height: 10),
-
-                    // 상태 변화 체크박스 - 식사 기능
                     _buildConditionSection('식사 기능', (value) {
                       setState(() {
                         selectedMealCondition = value;
                       });
                     }, selectedMealCondition),
-
                     const SizedBox(height: 10),
-
-                    // 상태 변화 체크박스 - 인지 기능
                     _buildConditionSection('인지 기능', (value) {
                       setState(() {
                         selectedCognitiveCondition = value;
                       });
                     }, selectedCognitiveCondition),
-
                     const SizedBox(height: 10),
-
-                    // 상태 변화 체크박스 - 의사 기능
                     _buildConditionSection('의사 기능', (value) {
                       setState(() {
                         selectedCommunicationCondition = value;

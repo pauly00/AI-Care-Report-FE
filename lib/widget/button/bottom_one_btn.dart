@@ -18,7 +18,6 @@ class BottomOneButton extends StatelessWidget {
       color: const Color(0xFFFFF6F6), // 배경색
       padding: const EdgeInsets.symmetric(vertical: 16), // 위아래 패딩
       child: SizedBox(
-        width: 350,
         child: ElevatedButton(
           onPressed:
               isEnabled ? onButtonTap : null, // isEnabled에 따라 콜백 호출 여부 결정
