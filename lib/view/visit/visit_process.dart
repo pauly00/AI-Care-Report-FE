@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:safe_hi/service/audio_service.dart';
 import 'package:safe_hi/service/websocket_service.dart';
 import 'package:safe_hi/view/visit/visit_check1.dart';
-import 'package:safe_hi/view/visit/widget/exit_btn.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
+import 'package:safe_hi/widget/button/bottom_two_btn.dart';
 
 class VisitProcess extends StatefulWidget {
   const VisitProcess({super.key});
@@ -14,33 +14,23 @@ class VisitProcess extends StatefulWidget {
 
 class VisitProcessState extends State<VisitProcess>
     with SingleTickerProviderStateMixin {
-  final audioService = AudioWebSocketRecorder();
-  late AnimationController _pulseController;
+  //final audioService = AudioWebSocketRecorder();
+  late AnimationController _rotateController;
 
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(
+    _rotateController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
-      lowerBound: 0.8,
-      upperBound: 1.2,
+      duration: const Duration(seconds: 2),
     );
-
-    // 무한 반복 애니메이션
-    _pulseController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _pulseController.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _pulseController.forward();
-      }
-    });
-    _pulseController.forward();
+    // 회전 애니메이션 무한 반복
+    _rotateController.repeat();
   }
 
   @override
   void dispose() {
-    _pulseController.dispose();
+    _rotateController.dispose();
     super.dispose();
   }
 
@@ -49,50 +39,49 @@ class VisitProcessState extends State<VisitProcess>
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            // 상단 부분
-            Column(
-              children: [
-                const DefaultBackAppBar(title: '대화 가이드라인'),
-                const SizedBox(height: 70),
-                // 녹음중 표시 애니메이션
-                Expanded(
-                  flex: 3,
-                  child: Center(
-                    child: AnimatedBuilder(
-                      animation: _pulseController,
-                      builder: (context, child) {
-                        final scale = _pulseController.value;
-                        return Transform.scale(
-                          scale: scale,
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Text(
-                              '녹음이 진행중입니다...',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+            const DefaultBackAppBar(title: '실시간 대화'),
+            // 녹음 진행중 표시 애니메이션 (회전 애니메이션)
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RotationTransition(
+                      turns: _rotateController,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Icon(
+                          Icons.fiber_manual_record,
+                          color: Colors.red,
+                          size: 40,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      '녹음이 진행중입니다...',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-
-            // Exit 버튼
-            ExitButton(
-              onPressed: () async {
-                await audioService.stopRecording();
+            BottomTwoButton(
+              buttonText1: '이전 대화',
+              buttonText2: '     상담 종료     ',
+              onButtonTap1: () {},
+              onButtonTap2: () async {
+                //await audioService.stopRecording();
                 WebSocketService().disconnect();
                 if (!mounted) return;
                 WidgetsBinding.instance.addPostFrameCallback((_) {

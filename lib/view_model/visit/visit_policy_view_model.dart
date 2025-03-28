@@ -3,20 +3,9 @@ import 'package:safe_hi/repository/welfare_repository.dart';
 import 'package:safe_hi/service/welfare_service.dart';
 import 'package:safe_hi/model/welfare_policy_model.dart';
 
-class VisitCommentViewModel extends ChangeNotifier {
-  bool isLoading = true;
-  final List<Map<String, dynamic>> summaryData;
-
-  VisitCommentViewModel({required this.summaryData});
-
-  /// 화면 초기화 로직
-  Future<void> initData() async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (summaryData.isNotEmpty) {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
+class VisitPolicyViewModel extends ChangeNotifier {
+  // isLoading이 꼭 필요하다면 사용, 아니면 제거 가능
+  bool isLoading = false;
 
   Future<List<WelfarePolicy>> fetchWelfarePolicies() async {
     final repo = WelfareRepository(WelfareService());

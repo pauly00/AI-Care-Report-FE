@@ -1,20 +1,19 @@
-// lib/view/visit/visit_comment.dart
 import 'package:flutter/material.dart';
-import 'package:safe_hi/view/visit/visit_welfare_recommend.dart';
 import 'package:provider/provider.dart';
-
-import 'package:safe_hi/view_model/visit/visit_comment_viewmodel.dart';
+import 'package:safe_hi/view_model/visit/visit_summary_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
+import 'package:safe_hi/model/summary_model.dart'; // SummarySection 정의된 파일
 
 class VisitComment extends StatelessWidget {
-  final List<Map<String, dynamic>> summaryData;
+  final List<SummarySection> summaryData;
 
   const VisitComment({super.key, required this.summaryData});
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<VisitCommentViewModel>(
-      create: (_) => VisitCommentViewModel(summaryData: summaryData),
+    return ChangeNotifierProvider<SummaryViewModel>(
+      create: (_) => SummaryViewModel(initialSummary: summaryData),
       child: const _VisitCommentBody(),
     );
   }
@@ -31,15 +30,14 @@ class _VisitCommentBodyState extends State<_VisitCommentBody> {
   @override
   void initState() {
     super.initState();
-    // ViewModel 초기화
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<VisitCommentViewModel>().initData();
+      context.read<SummaryViewModel>().fetchSummary();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<VisitCommentViewModel>();
+    final vm = context.watch<SummaryViewModel>();
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
@@ -91,23 +89,7 @@ class _VisitCommentBodyState extends State<_VisitCommentBody> {
                   ),
                   BottomOneButton(
                     buttonText: '완료',
-                    onButtonTap: () async {
-                      // 복지 정책 가져오기
-                      final welfareList = await vm.fetchWelfarePolicies();
-                      if (!mounted) return;
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (!mounted) return;
-
-                        // 다음 화면 이동
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                WelfareRecommend(welfareData: welfareList),
-                          ),
-                        );
-                      });
-                    },
+                    onButtonTap: () async {},
                   ),
                 ],
               ),
@@ -115,7 +97,7 @@ class _VisitCommentBodyState extends State<_VisitCommentBody> {
     );
   }
 
-  Widget _buildSummaryContainer(List<Map<String, dynamic>> summaryData) {
+  Widget _buildSummaryContainer(List<SummarySection> summaryData) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -132,38 +114,43 @@ class _VisitCommentBodyState extends State<_VisitCommentBody> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (var summary in summaryData) ...[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFFB5457)),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                summary['title'],
-                style: const TextStyle(
-                  color: Color(0xFFFB5457),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+        children: summaryData.map((summary) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFFFB5457)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  summary.title,
+                  style: const TextStyle(
+                    color: Color(0xFFFB5457),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 5),
-            for (var content in summary['content']) ...[
-              Text(
-                content,
-                style: const TextStyle(
-                  color: Color(0xFFB3A5A5),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 5),
+              ...summary.content.map(
+                (content) => Padding(
+                  padding: const EdgeInsets.only(bottom: 3),
+                  child: Text(
+                    content,
+                    style: const TextStyle(
+                      color: Color(0xFFB3A5A5),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: 10),
             ],
-            const SizedBox(height: 10),
-          ],
-        ],
+          );
+        }).toList(),
       ),
     );
   }

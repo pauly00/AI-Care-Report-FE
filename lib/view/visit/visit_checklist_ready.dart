@@ -17,13 +17,12 @@ class _CheckListReadyState extends State<CheckListReady> {
   void initState() {
     super.initState();
     // WebSocket 연결
-    WebSocketService().connect('ws://211.188.55.88:8085');
+    //WebSocketService().connect('ws://211.188.55.88:8085');
   }
 
   @override
   Widget build(BuildContext context) {
-    //final audioRecorder = AudioRecorder();
-    final audioService = AudioWebSocketRecorder();
+    //final audioService = AudioWebSocketRecorder();
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
@@ -75,7 +74,7 @@ class _CheckListReadyState extends State<CheckListReady> {
                       child: BottomOneButton(
                         buttonText: '시작하기',
                         onButtonTap: () async {
-                          await audioService.startRecording();
+                          //await audioService.startRecording();
                           if (!mounted) return;
                           // 현재 프레임 종료 후 Navigator 호출
                           WidgetsBinding.instance.addPostFrameCallback((_) {

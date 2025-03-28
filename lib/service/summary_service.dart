@@ -1,11 +1,11 @@
 const String baseUrl = 'http://211.188.55.88:3000';
 
-class ConversationService {
+class SummaryService {
   /// 대화 요약 호출
   /// 나중에 실제 서버로 요청 시:
   /// 1) Uri.parse('$baseUrl/...')
   /// 2) await http.get(...)
-  Future<dynamic> fetchConversationSummaryData() async {
+  Future<dynamic> fetchSummaryData() async {
     // final response = await http.get(Uri.parse('$baseUrl/conversation-summary'));
     // if (response.statusCode == 200) {
     //   final decoded = json.decode(response.body);

@@ -1,9 +1,9 @@
 /// 대화 요약의 한 섹션(title, content 배열)
-class ConversationSummarySection {
+class SummarySection {
   final String title;
   final List<String> content;
 
-  ConversationSummarySection({required this.title, required this.content});
+  SummarySection({required this.title, required this.content});
 
   // 추후 JSON -> Model 파싱을 위한 팩토리 메서드
   // /// 실제 서버 JSON 예시:

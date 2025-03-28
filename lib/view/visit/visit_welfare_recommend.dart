@@ -25,7 +25,6 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
 
   // 비동기 함수로 로딩 상태 관리
   Future<void> _loadData() async {
-    // 데이터 로드 및 로직 추가 가능
     await Future.delayed(const Duration(seconds: 2));
     if (widget.welfareData.isNotEmpty) {
       setState(() {
@@ -68,15 +67,13 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
                           ),
                           const SizedBox(height: 10),
                           const Text(
-                            '대상자에게 아래 복지 서비스를 추천드립니다.',
+                            '어르신께 도움이 될 수 있는 복지 서비스를 찾아봤어요. 필요한 지원 편하게 보실 수 있게 안내해드릴게요',
                             style: TextStyle(
                               color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
+                              fontSize: 16,
                             ),
                           ),
                           const SizedBox(height: 10),
-                          // widget.welfareData는 List<WelfarePolicy>
                           ..._buildPolicyWidgets(widget.welfareData),
                         ],
                       ),
