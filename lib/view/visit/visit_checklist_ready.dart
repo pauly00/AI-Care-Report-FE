@@ -70,22 +70,20 @@ class _CheckListReadyState extends State<CheckListReady> {
                       ),
                     ),
                     const SizedBox(height: 100),
-                    Center(
-                      child: BottomOneButton(
-                        buttonText: '시작하기',
-                        onButtonTap: () async {
-                          //await audioService.startRecording();
+                    BottomOneButton(
+                      buttonText: '시작하기',
+                      onButtonTap: () async {
+                        //await audioService.startRecording();
+                        if (!mounted) return;
+                        // 현재 프레임 종료 후 Navigator 호출
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
                           if (!mounted) return;
-                          // 현재 프레임 종료 후 Navigator 호출
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            if (!mounted) return;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => VisitProcess()),
-                            );
-                          });
-                        },
-                      ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => VisitProcess()),
+                          );
+                        });
+                      },
                     ),
                   ],
                 ),

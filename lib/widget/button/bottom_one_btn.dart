@@ -12,29 +12,29 @@ class BottomOneButton extends StatelessWidget {
     this.isEnabled = true, // 기본값을 true로 설정
   });
 
+  // BottomOneButton 위젯 수정
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFFFFF6F6), // 배경색
-      padding: const EdgeInsets.symmetric(vertical: 16), // 위아래 패딩
+      color: const Color(0xFFFFF6F6),
+      padding:
+          const EdgeInsets.symmetric(vertical: 16, horizontal: 16), // 좌우 패딩 추가
       child: SizedBox(
+        width: double.infinity, // 전체 너비 사용
         child: ElevatedButton(
-          onPressed:
-              isEnabled ? onButtonTap : null, // isEnabled에 따라 콜백 호출 여부 결정
+          onPressed: isEnabled ? onButtonTap : null,
           style: ElevatedButton.styleFrom(
-            backgroundColor:
-                isEnabled ? const Color(0xFFFB5457) : Colors.grey, // 배경 색상
-            padding:
-                const EdgeInsets.symmetric(horizontal: 0, vertical: 20), // 패딩
+            backgroundColor: isEnabled ? const Color(0xFFFB5457) : Colors.grey,
+            padding: const EdgeInsets.symmetric(vertical: 20),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10), // 모서리 반경 설정
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: Text(
             buttonText,
             style: const TextStyle(
-              color: Colors.white, // 텍스트 색상
-              fontSize: 17, // 폰트 크기 설정
+              color: Colors.white,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),

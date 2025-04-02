@@ -70,16 +70,14 @@ class CheckList extends StatelessWidget {
                   ),
                 ),
               ),
-              Center(
-                child: BottomOneButton(
-                  buttonText: '체크리스트 시작하기',
-                  onButtonTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CheckListReady()),
-                    );
-                  },
-                ),
+              BottomOneButton(
+                buttonText: '체크리스트 시작하기',
+                onButtonTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CheckListReady()),
+                  );
+                },
               ),
             ],
           ),
