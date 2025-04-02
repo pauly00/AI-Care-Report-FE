@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/provider/nav/bottom_nav_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:safe_hi/model/welfare_policy_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
-import 'package:safe_hi/view/home/home_page.dart';
+import 'package:safe_hi/main_screen.dart';
 
 class WelfareRecommend extends StatefulWidget {
   final List<WelfarePolicy> welfareData;
@@ -99,16 +101,20 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
                     ),
                   ),
                   BottomOneButton(
-                    buttonText: '완료',
-                    onButtonTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
-                    },
-                  ),
+                      buttonText: '완료',
+                      onButtonTap: () {
+                        // BottomNavProvider의 인덱스 설정
+                        Provider.of<BottomNavProvider>(context, listen: false)
+                            .setIndex(0);
+
+                        // MainScreen으로 이동하면서 기존 스택 제거
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
+                          (route) => false,
+                        );
+                      }),
                 ],
               ),
       ),
