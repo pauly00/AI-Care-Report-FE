@@ -100,24 +100,26 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
                       ),
                     ),
                   ),
-                  BottomOneButton(
-                      buttonText: '완료',
-                      onButtonTap: () {
-                        // BottomNavProvider의 인덱스 설정
-                        Provider.of<BottomNavProvider>(context, listen: false)
-                            .setIndex(0);
-
-                        // MainScreen으로 이동하면서 기존 스택 제거
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainScreen()),
-                          (route) => false,
-                        );
-                      }),
                 ],
               ),
       ),
+      bottomNavigationBar: isLoading
+          ? null // 로딩 중이면 아예 안 보여줌
+          : Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: BottomOneButton(
+                buttonText: '완료',
+                onButtonTap: () {
+                  Provider.of<BottomNavProvider>(context, listen: false)
+                      .setIndex(0);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MainScreen()),
+                    (route) => false,
+                  );
+                },
+              ),
+            ),
     );
   }
 

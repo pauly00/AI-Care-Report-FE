@@ -9,10 +9,10 @@ class Report1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFFFF6F6),
-        body: Column(
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF6F6),
+      body: SafeArea(
+        child: Column(
           children: [
             DefaultBackAppBar(title: '돌봄 리포트'),
             Expanded(
@@ -30,17 +30,17 @@ class Report1 extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: BottomOneButton(
-            buttonText: '다음',
-            onButtonTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Report2()),
-              );
-            },
-          ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: BottomOneButton(
+          buttonText: '다음',
+          onButtonTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Report2()),
+            );
+          },
         ),
       ),
     );

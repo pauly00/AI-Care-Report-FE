@@ -17,8 +17,7 @@ class BottomOneButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFFFFF6F6),
-      padding:
-          const EdgeInsets.symmetric(vertical: 16, horizontal: 16), // 좌우 패딩 추가
+      padding: const EdgeInsets.symmetric(vertical: 16), // 좌우 패딩 추가
       child: SizedBox(
         width: double.infinity, // 전체 너비 사용
         child: ElevatedButton(

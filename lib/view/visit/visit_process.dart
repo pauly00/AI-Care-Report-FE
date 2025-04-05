@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:safe_hi/service/audio_service.dart';
 import 'package:safe_hi/service/websocket_service.dart';
 import 'package:safe_hi/view/visit/visit_check1.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
@@ -14,7 +13,7 @@ class VisitProcess extends StatefulWidget {
 
 class VisitProcessState extends State<VisitProcess>
     with SingleTickerProviderStateMixin {
-  //final audioService = AudioWebSocketRecorder();
+  // final audioService = AudioWebSocketRecorder();
   late AnimationController _rotateController;
 
   @override
@@ -24,8 +23,7 @@ class VisitProcessState extends State<VisitProcess>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-    // 회전 애니메이션 무한 반복
-    _rotateController.repeat();
+    _rotateController.repeat(); // 무한 회전
   }
 
   @override
@@ -42,7 +40,6 @@ class VisitProcessState extends State<VisitProcess>
         child: Column(
           children: [
             const DefaultBackAppBar(title: '실시간 대화'),
-            // 녹음 진행중 표시 애니메이션 (회전 애니메이션)
             Expanded(
               child: Center(
                 child: Column(
@@ -53,7 +50,7 @@ class VisitProcessState extends State<VisitProcess>
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.red.withValues(alpha: 0.2),
+                          color: Colors.red.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: const Icon(
@@ -76,24 +73,29 @@ class VisitProcessState extends State<VisitProcess>
                 ),
               ),
             ),
-            BottomTwoButton(
-              buttonText1: '이전 대화',
-              buttonText2: '     상담 종료     ',
-              onButtonTap1: () {},
-              onButtonTap2: () async {
-                //await audioService.stopRecording();
-                WebSocketService().disconnect();
-                if (!mounted) return;
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (!mounted) return;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Check1()),
-                  );
-                });
-              },
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: BottomTwoButton(
+          buttonText1: '이전 대화',
+          buttonText2: '상담 종료',
+          onButtonTap1: () {
+            // 이전 대화 보기 로직 작성 가능
+          },
+          onButtonTap2: () async {
+            // await audioService.stopRecording();
+            WebSocketService().disconnect();
+            if (!mounted) return;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Check1()),
+              );
+            });
+          },
         ),
       ),
     );

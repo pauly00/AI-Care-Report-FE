@@ -9,10 +9,10 @@ class Report2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFFFF6F6),
-        body: Column(
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF6F6),
+      body: SafeArea(
+        child: Column(
           children: [
             DefaultBackAppBar(title: '돌봄 리포트'),
             SingleChildScrollView(
@@ -28,7 +28,10 @@ class Report2 extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: BottomTwoButton(
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32.0),
+        child: BottomTwoButton(
           buttonText1: '이전',
           buttonText2: '             다음             ',
           onButtonTap1: () {

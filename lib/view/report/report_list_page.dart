@@ -10,75 +10,94 @@ class ReportListPage extends StatelessWidget {
     final visits = [
       {
         'id': 1,
-        'time': '10:00 AM',
         'name': '이유진',
         'address': '대전 서구 대덕대로 150',
-        'addressDetails': '경성큰마을아파트 102동 103호',
+        'visitDateTime': DateTime(2025, 4, 3, 10, 0),
       },
       {
         'id': 2,
-        'time': '11:00 AM',
         'name': '김연우',
         'address': '대전 유성구 테크노 3로 23',
-        'addressDetails': '테크노 파크 501호',
+        'visitDateTime': DateTime(2025, 4, 2, 11, 0),
       },
       {
         'id': 3,
-        'time': '1:00 PM',
         'name': '오민석',
         'address': '대전 중구 계룡로 15',
-        'addressDetails': '대전 아파트 202호',
+        'visitDateTime': DateTime(2025, 4, 1, 13, 0),
       },
       {
         'id': 4,
-        'time': '3:00 PM',
         'name': '한민우',
         'address': '대전 서구 둔산로 123',
-        'addressDetails': '푸른숲아파트 102동 1202호',
+        'visitDateTime': DateTime(2025, 3, 31, 15, 0),
       },
       {
         'id': 5,
-        'tag': '고위험군',
-        'time': '3:00 PM',
         'name': '이정선',
         'address': '대전 동구 둔산로 455',
-        'addressDetails': '푸른숲아파트 102동 1202호',
+        'visitDateTime': DateTime(2025, 3, 30, 15, 0),
       },
       {
         'id': 6,
-        'time': '3:00 PM',
         'name': '남예준',
         'address': '대전 서구 둔산로 123',
-        'addressDetails': '푸른숲아파트 102동 1202호',
+        'visitDateTime': DateTime(2025, 3, 29, 15, 0),
       },
       {
         'id': 7,
-        'time': '3:00 PM',
         'name': '이준학',
         'address': '대전 서구 둔산로 123',
-        'addressDetails': '푸른숲아파트 102동 1202호',
+        'visitDateTime': DateTime(2025, 3, 28, 15, 0),
       },
     ];
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFFFF6F6),
-        body: Column(
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF6F6),
+      body: SafeArea(
+        child: Column(
           children: [
-            DefaultBackAppBar(title: '돌봄 리포트'),
-            Flexible(
-              flex: 1,
+            const DefaultBackAppBar(title: '돌봄 리포트'),
+            Expanded(
               child: ListView.builder(
-                itemCount: visits.length,
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                itemCount: visits.length + 1, // 설명 1줄 추가
                 itemBuilder: (context, index) {
-                  final visit = visits[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: ReportListCard(
-                      id: visit['id']! as int,
-                      name: visit['name']! as String,
-                      address: visit['address']! as String,
-                    ),
+                  if (index == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            '📝 아직 제출되지 않은 리포트 목록입니다.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            '방문을 완료하셨다면, 리포트를 꼭 작성해주세요!',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFFB3A5A5),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                      ),
+                    );
+                  }
+
+                  final visit = visits[index - 1];
+                  final visitDateTime = visit['visitDateTime'] as DateTime;
+
+                  return ReportListCard(
+                    id: visit['id'] as int,
+                    name: visit['name'] as String,
+                    address: visit['address'] as String,
+                    visitDateTime: visitDateTime,
                   );
                 },
               ),

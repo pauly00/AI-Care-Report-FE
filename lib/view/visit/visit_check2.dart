@@ -59,7 +59,6 @@ class _Check2BodyState extends State<_Check2Body> {
       body: SafeArea(
         child: Column(
           children: [
-            // TopMenubar 추가
             DefaultBackAppBar(
               title: '현장체크',
             ),
@@ -111,29 +110,31 @@ class _Check2BodyState extends State<_Check2Body> {
                 ),
               ),
             ),
-            // 하단 버튼 추가
-            BottomOneButton(
-              buttonText: '다음',
-              onButtonTap: () async {
-                // 복지 정책 가져오기
-                final welfareList = await vmPolicy.fetchWelfarePolicies();
-                if (!mounted) return;
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (!mounted) return;
-
-                  // 다음 화면 이동
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          WelfareRecommend(welfareData: welfareList),
-                    ),
-                  );
-                });
-              },
-              isEnabled: _isAllChecked(), // 버튼 활성화 여부 설정
-            )
           ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: BottomOneButton(
+          buttonText: '다음',
+          onButtonTap: () async {
+            // 복지 정책 가져오기
+            final welfareList = await vmPolicy.fetchWelfarePolicies();
+            if (!mounted) return;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+
+              // 다음 화면 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      WelfareRecommend(welfareData: welfareList),
+                ),
+              );
+            });
+          },
+          isEnabled: _isAllChecked(), // 버튼 활성화 여부 설정
         ),
       ),
     );

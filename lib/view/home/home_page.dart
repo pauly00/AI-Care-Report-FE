@@ -125,7 +125,7 @@ class HomePage extends StatelessWidget {
                         child: const RecentCard2(
                           title: "리포트 관리",
                           count: 2,
-                          subtitle: "미작성된 리포트 리스트",
+                          subtitle: "미제출된 리포트 리스트",
                           iconEmoji: "📋",
                         ),
                       ),
