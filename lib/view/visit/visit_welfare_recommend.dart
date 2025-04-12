@@ -6,6 +6,7 @@ import 'package:safe_hi/model/welfare_policy_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
 import 'package:safe_hi/main_screen.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class WelfareRecommend extends StatefulWidget {
   final List<WelfarePolicy> welfareData;
@@ -36,6 +37,8 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -43,18 +46,18 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
             ? Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    CircularProgressIndicator(
+                  children: [
+                    const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xFFFB5457),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: responsive.itemSpacing),
                     Text(
                       '잠시만 기다려주세요.\n어르신께 필요한 정보를 찾고 있습니다!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: responsive.fontBase,
                         color: Colors.black,
                       ),
                     ),
@@ -66,11 +69,13 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
                   const DefaultBackAppBar(title: 'AI 복지정책'),
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: responsive.paddingHorizontal,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Center(
+                          Center(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -78,24 +83,27 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
                                   'AI 추천 복지 서비스',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 24,
+                                    fontSize: responsive.fontXL,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: responsive.itemSpacing),
                                 Text(
                                   '어르신께 맞는 복지 서비스를 찾아봤어요.',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: responsive.fontBase,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          ..._buildPolicyWidgets(widget.welfareData),
+                          SizedBox(height: responsive.itemSpacing),
+                          ..._buildPolicyWidgets(
+                            widget.welfareData,
+                            responsive,
+                          ),
                         ],
                       ),
                     ),
@@ -104,9 +112,11 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
               ),
       ),
       bottomNavigationBar: isLoading
-          ? null // 로딩 중이면 아예 안 보여줌
+          ? null
           : Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: EdgeInsets.symmetric(
+                vertical: responsive.paddingHorizontal,
+              ),
               child: BottomOneButton(
                 buttonText: '완료',
                 onButtonTap: () {
@@ -123,25 +133,25 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
     );
   }
 
-  List<Widget> _buildPolicyWidgets(List<WelfarePolicy> policyList) {
+  List<Widget> _buildPolicyWidgets(
+      List<WelfarePolicy> policyList, Responsive responsive) {
     return policyList.map((policy) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
-        child: _buildWelfareBox(policy),
+        padding: EdgeInsets.only(bottom: responsive.itemSpacing),
+        child: _buildWelfareBox(policy, responsive),
       );
     }).toList();
   }
 
-  /// 하나의 WelfarePolicy 객체로 박스를 만든다.
-  Widget _buildWelfareBox(WelfarePolicy policy) {
+  Widget _buildWelfareBox(WelfarePolicy policy, Responsive responsive) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: EdgeInsets.all(responsive.sectionSpacing),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
+            color: const Color(0xFFFDD8DA).withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -151,61 +161,66 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 정책명
           Text(
             policy.policyName,
-            style: const TextStyle(
-              color: Color(0xFFFB5457),
-              fontSize: 15,
+            style: TextStyle(
+              color: const Color(0xFFFB5457),
+              fontSize: responsive.fontBase,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 5),
-          // 요약 설명
+          SizedBox(height: responsive.itemSpacing / 2),
           Text(
             policy.shortDescription,
-            style: const TextStyle(color: Colors.black, fontSize: 13),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: responsive.fontSmall,
+            ),
           ),
-          const SizedBox(height: 10),
-          const Text(
+          SizedBox(height: responsive.itemSpacing),
+          Text(
             '세부정보',
             style: TextStyle(
               color: Colors.black,
-              fontSize: 13,
+              fontSize: responsive.fontSmall,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 5),
-          const Text(
+          SizedBox(height: responsive.itemSpacing / 2),
+          Text(
             '- 신청을 위해선 아래의 것들이 필요합니다.',
-            style: TextStyle(color: Colors.black, fontSize: 11),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: responsive.fontSmall,
+            ),
           ),
-          const SizedBox(height: 5),
-          // detailedConditions
+          SizedBox(height: responsive.itemSpacing / 2),
           for (var condition in policy.detailedConditions)
             Text(
               ' > $condition',
-              style: const TextStyle(color: Colors.black, fontSize: 13),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: responsive.fontSmall,
+              ),
             ),
-          const SizedBox(height: 10),
-          // 링크 버튼
+          SizedBox(height: responsive.itemSpacing),
           Center(
             child: InkWell(
               onTap: () => _launchURL(policy.link),
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 5,
-                  horizontal: 110,
+                padding: EdgeInsets.symmetric(
+                  vertical: responsive.isTablet ? 10 : 5,
+                  horizontal: responsive.isTablet ? 220 : 110,
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFB5457),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
+                child: Text(
                   "자세히 보기",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 13,
+                    fontSize: responsive.fontSmall,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -217,7 +232,6 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
     );
   }
 
-  /// URL 링크 열기
   void _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {

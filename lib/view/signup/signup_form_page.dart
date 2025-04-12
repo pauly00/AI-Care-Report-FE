@@ -1,11 +1,18 @@
+// 전체 SignupFormPage에 Responsive 클래스 반영
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:safe_hi/main_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/model/user_register_model.dart';
+import 'package:safe_hi/util/responsive.dart';
+import 'package:safe_hi/view_model/signup_view_model.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
+import 'package:safe_hi/view/login/login_page.dart';
 
 class SignupFormPage extends StatefulWidget {
-  const SignupFormPage({super.key});
+  final int role;
+
+  const SignupFormPage({super.key, required this.role});
 
   @override
   State<SignupFormPage> createState() => _SignupFormPageState();
@@ -55,7 +62,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
     } else if (value.length < 8) {
       return '비밀번호는 8자리 이상이어야 합니다';
     } else if (!regExp.hasMatch(value)) {
-      return '특수문자, 문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.';
+      return '특수문자, 문자, 숫자 포함 \n8자 이상 15자 이내로 입력하세요.';
     } else {
       return null;
     }
@@ -63,72 +70,108 @@ class _SignupFormPageState extends State<SignupFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
     final passwordMatch =
         _passwordController.text == _confirmPasswordController.text;
     final passwordError = _validatePassword(_passwordController.text);
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              DefaultBackAppBar(title: '회원 가입'),
-              const SizedBox(height: 16),
-              _buildEmailField(),
-              if (_isEmailChecked && _validateEmail(_emailController.text))
-                _helperText('사용 가능한 이메일입니다.'),
-              if (_isEmailChecked && !_validateEmail(_emailController.text))
-                _helperText('올바른 이메일 형식이 아닙니다.', isError: true),
-              _buildPasswordField(
-                  '비밀번호', _passwordController, _isObscurePassword, () {
-                setState(() => _isObscurePassword = !_isObscurePassword);
-              }),
-              if (passwordError != null)
-                _helperText(passwordError, isError: true),
-              _buildPasswordField(
-                  '비밀번호 확인', _confirmPasswordController, _isObscureConfirm, () {
-                setState(() => _isObscureConfirm = !_isObscureConfirm);
-              }),
-              if (_passwordController.text.isNotEmpty &&
-                  _confirmPasswordController.text.isNotEmpty)
-                _helperText(
-                  passwordMatch ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.',
-                  isError: !passwordMatch,
+      body: SafeArea(
+        child: Column(
+          children: [
+            DefaultBackAppBar(title: '회원 가입'),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: responsive.paddingHorizontal),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: responsive.sectionSpacing),
+                      _buildEmailField(),
+                      if (_isEmailChecked &&
+                          _validateEmail(_emailController.text))
+                        _helperText('사용 가능한 이메일입니다.'),
+                      if (_isEmailChecked &&
+                          !_validateEmail(_emailController.text))
+                        _helperText('올바른 이메일 형식이 아닙니다.', isError: true),
+                      _buildPasswordField(
+                          '비밀번호', _passwordController, _isObscurePassword, () {
+                        setState(
+                            () => _isObscurePassword = !_isObscurePassword);
+                      }),
+                      if (passwordError != null)
+                        _helperText(passwordError, isError: true),
+                      _buildPasswordField('비밀번호 확인', _confirmPasswordController,
+                          _isObscureConfirm, () {
+                        setState(() => _isObscureConfirm = !_isObscureConfirm);
+                      }),
+                      if (_passwordController.text.isNotEmpty &&
+                          _confirmPasswordController.text.isNotEmpty)
+                        _helperText(
+                          passwordMatch ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.',
+                          isError: !passwordMatch,
+                        ),
+                      _buildTextField(label: '이름', controller: _nameController),
+                      _buildTextField(
+                        label: '전화번호',
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        hintText: '예시) 010-1234-5678',
+                      ),
+                      if (_phoneController.text.isNotEmpty &&
+                          !_validatePhoneNumber(_phoneController.text))
+                        _helperText('전화번호 형식이 올바르지 않습니다.', isError: true),
+                      _buildBirthField(),
+                      SizedBox(height: responsive.itemSpacing),
+                      _buildGenderSelection(),
+                      SizedBox(height: responsive.sectionSpacing),
+                    ],
+                  ),
                 ),
-              _buildTextField(label: '이름', controller: _nameController),
-              _buildTextField(
-                label: '전화번호',
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                hintText: '예시) 010-1234-5678',
               ),
-              if (_phoneController.text.isNotEmpty &&
-                  !_validatePhoneNumber(_phoneController.text))
-                _helperText('전화번호 형식이 올바르지 않습니다.', isError: true),
-              _buildBirthField(),
-              const SizedBox(height: 16),
-              _buildGenderSelection(),
-              const SizedBox(height: 24),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: BottomOneButton(
-          buttonText: '다음',
-          isEnabled: _isFormValid,
-          onButtonTap: () {
-            if (_isFormValid) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const MainScreen()),
-              );
-            }
-          },
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
         ),
+        child: BottomOneButton(
+            buttonText: '가입하기',
+            isEnabled: _isFormValid,
+            onButtonTap: () async {
+              if (_isFormValid) {
+                final genderValue = _gender == '남' ? 1 : 0;
+
+                final user = UserRegisterModel(
+                  name: _nameController.text.trim(),
+                  phoneNumber: _phoneController.text.trim(),
+                  email: _emailController.text.trim(),
+                  birthdate: _birthController.text.trim(),
+                  gender: genderValue,
+                  permission: widget.role,
+                  password: _passwordController.text.trim(),
+                );
+
+                final viewModel =
+                    Provider.of<SignupViewModel>(context, listen: false);
+                final result = await viewModel.signup(user);
+                final success = result['success'] as bool;
+                final msg = result['msg'] as String;
+
+                if (success) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                  );
+                } else {
+                  showErrorDialog(context, msg);
+                }
+              }
+            }),
       ),
     );
   }
@@ -182,6 +225,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
     Widget? suffixIcon,
     String? hintText,
   }) {
+    final responsive = Responsive(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -192,6 +236,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
           obscureText: obscure,
           keyboardType: keyboardType,
           onChanged: (_) => setState(() {}),
+          style: TextStyle(fontSize: responsive.fontBase),
           decoration: InputDecoration(
             hintText: hintText,
             fillColor: const Color(0xFFF9F6F6),
@@ -207,12 +252,13 @@ class _SignupFormPageState extends State<SignupFormPage> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: responsive.itemSpacing),
       ],
     );
   }
 
   Widget _buildBirthField() {
+    final responsive = Responsive(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -221,6 +267,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
         TextField(
           controller: _birthController,
           readOnly: true,
+          style: TextStyle(fontSize: responsive.fontBase),
           decoration: InputDecoration(
             hintText: 'YYYY-MM-DD',
             fillColor: const Color(0xFFF9F6F6),
@@ -251,7 +298,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
             }
           },
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: responsive.itemSpacing),
       ],
     );
   }
@@ -261,6 +308,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
   }
 
   Widget _buildGenderSelection() {
+    final responsive = Responsive(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -269,7 +317,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
         Row(
           children: [
             _buildRadioButton('남'),
-            const SizedBox(width: 12),
+            SizedBox(width: responsive.itemSpacing),
             _buildRadioButton('여'),
           ],
         ),
@@ -292,9 +340,11 @@ class _SignupFormPageState extends State<SignupFormPage> {
   }
 
   Widget _buildLabelText(String label) {
+    final responsive = Responsive(context);
     return Text.rich(
       TextSpan(
         text: label,
+        style: TextStyle(fontSize: responsive.fontM),
         children: const [
           TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
         ],
@@ -303,13 +353,14 @@ class _SignupFormPageState extends State<SignupFormPage> {
   }
 
   Widget _helperText(String message, {bool isError = false}) {
+    final responsive = Responsive(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: responsive.itemSpacing),
       child: Row(
         children: [
           Icon(
             isError ? Icons.close : Icons.check,
-            size: 16,
+            size: responsive.fontSmall,
             color: isError ? Colors.red : Colors.green,
           ),
           const SizedBox(width: 4),
@@ -317,11 +368,53 @@ class _SignupFormPageState extends State<SignupFormPage> {
             message,
             style: TextStyle(
               color: isError ? Colors.red : Colors.green,
-              fontSize: 13,
+              fontSize: responsive.fontSmall,
             ),
           ),
         ],
       ),
     );
   }
+}
+
+void showErrorDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: const Color(0xFFFFF6F6),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.warning_amber_rounded,
+                color: Colors.redAccent, size: 48),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFB5457),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text('확인', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

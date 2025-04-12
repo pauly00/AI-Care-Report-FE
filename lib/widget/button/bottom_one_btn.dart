@@ -1,39 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class BottomOneButton extends StatelessWidget {
   final String buttonText;
-  final VoidCallback onButtonTap; // 버튼 클릭 시 호출할 콜백
-  final bool isEnabled; // 버튼 활성화 여부
+  final VoidCallback onButtonTap;
+  final bool isEnabled;
 
   const BottomOneButton({
     super.key,
     required this.buttonText,
     required this.onButtonTap,
-    this.isEnabled = true, // 기본값을 true로 설정
+    this.isEnabled = true,
   });
 
-  // BottomOneButton 위젯 수정
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Container(
       color: const Color(0xFFFFF6F6),
-      padding: const EdgeInsets.symmetric(vertical: 16), // 좌우 패딩 추가
+      padding: EdgeInsets.symmetric(
+        vertical: responsive.itemSpacing,
+        horizontal: responsive.paddingHorizontal,
+      ),
       child: SizedBox(
-        width: double.infinity, // 전체 너비 사용
+        width: double.infinity,
         child: ElevatedButton(
           onPressed: isEnabled ? onButtonTap : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: isEnabled ? const Color(0xFFFB5457) : Colors.grey,
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(
+              vertical: responsive.isTablet ? 22 : 16,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: Text(
             buttonText,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 17,
+              fontSize: responsive.fontBase,
               fontWeight: FontWeight.bold,
             ),
           ),

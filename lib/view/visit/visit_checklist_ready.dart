@@ -3,6 +3,7 @@ import 'package:safe_hi/service/audio_service.dart';
 import 'package:safe_hi/view/visit/visit_process.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class CheckListReady extends StatefulWidget {
   const CheckListReady({super.key});
@@ -20,54 +21,61 @@ class _CheckListReadyState extends State<CheckListReady> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
     // final audioService = AudioWebSocketRecorder();
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              DefaultBackAppBar(title: '대화 가이드라인'),
-              SizedBox(height: 70),
-              Center(
-                child: Text(
-                  '체크할 준비가 되었나요?',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+        child: Column(
+          children: [
+            const DefaultBackAppBar(title: '대화 가이드라인'),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: responsive.paddingHorizontal,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // 가운데 정렬을 위해
+                    children: [
+                      Text(
+                        '체크할 준비가 되었나요?',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: responsive.fontXL,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: responsive.itemSpacing),
+                      Text(
+                        '지금부터 안심하이가 함께 하겠습니다.',
+                        style: TextStyle(
+                          color: const Color(0xFFB3A5A5),
+                          fontSize: responsive.fontBase,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: responsive.sectionSpacing * 3),
+                      Image.asset(
+                        'assets/images/checklist.png',
+                        width: responsive.isTablet ? 300 : 230,
+                        height: responsive.isTablet ? 300 : 230,
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              Center(
-                child: Text(
-                  '지금부터 안심하이가 함께 하겠습니다.',
-                  style: TextStyle(
-                    color: Color(0xFFB3A5A5),
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(height: 50),
-              Center(
-                child: Image(
-                  image: AssetImage('assets/images/checklist.png'),
-                  width: 230,
-                  height: 230,
-                ),
-              ),
-              SizedBox(height: 100),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
+        ),
         child: BottomOneButton(
           buttonText: '시작하기',
           onButtonTap: () async {

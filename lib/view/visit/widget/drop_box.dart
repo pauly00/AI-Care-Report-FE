@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class DropdownCard extends StatefulWidget {
   final String title; // 드롭박스 제목
@@ -15,8 +16,9 @@ class _DropdownCardState extends State<DropdownCard> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -34,10 +36,14 @@ class _DropdownCardState extends State<DropdownCard> {
           ListTile(
             title: Text(
               widget.title, // 제목 표시
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: responsive.fontBase,
+                color: Color(0xFFB3A5A5),
+              ),
             ),
             trailing: Icon(
-              isExpanded ? Icons.expand_less : Icons.expand_more, // 아이콘 변경
+              isExpanded ? Icons.expand_less : Icons.expand_more,
+              size: responsive.fontXL,
             ),
             onTap: () {
               setState(() {

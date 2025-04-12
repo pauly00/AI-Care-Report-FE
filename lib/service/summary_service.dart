@@ -7,7 +7,7 @@ class SummaryService {
   /// 2) await http.get(...)
   Future<dynamic> fetchSummaryData() async {
     // final response = await http.get(Uri.parse('$baseUrl/conversation-summary'));
-    // if (response.statusCode == 200) {
+    // if (response.statusCode == 200 || response.statusCode == 201) {
     //   final decoded = json.decode(response.body);
     //   return decoded;
     // } else {

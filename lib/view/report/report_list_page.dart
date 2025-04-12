@@ -78,7 +78,7 @@ class ReportListPage extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            '방문을 완료하셨다면, 리포트를 꼭 작성해주세요!',
+                            '방문을 완료하셨다면, 리포트를 꼭 제출해주세요!',
                             style: TextStyle(
                               fontSize: 14,
                               color: Color(0xFFB3A5A5),

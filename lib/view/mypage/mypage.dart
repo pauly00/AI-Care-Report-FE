@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/view_model/user_view_model.dart';
+import 'package:safe_hi/view/login/login_page.dart';
+
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
 
 class MyPage extends StatelessWidget {
@@ -314,23 +318,29 @@ class MyPage extends StatelessWidget {
                           width: 30, // Adjust the space between the items
                         ),
                         GestureDetector(
-                          onTap: () {
-                            // Implement log out functionality here
+                          onTap: () async {
+                            // 로그아웃 로직 실행
+                            final userVM = Provider.of<UserViewModel>(context,
+                                listen: false);
+                            await userVM.logout();
+
+                            // 로그인 화면으로 이동
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const LoginPage()),
+                              (route) => false, // 이전 모든 화면 제거
+                            );
                           },
                           child: Row(
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                size: 25,
-                                color: Color(0xFFB3A5A5),
-                              ),
+                            children: const [
+                              Icon(Icons.logout,
+                                  size: 25, color: Color(0xFFB3A5A5)),
                               SizedBox(width: 10),
                               Text(
                                 '로그아웃',
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color(0xFFB3A5A5),
-                                ),
+                                    fontSize: 15, color: Color(0xFFB3A5A5)),
                               ),
                             ],
                           ),

@@ -1,69 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/util/responsive.dart';
 import 'package:safe_hi/view/home/widget/recent_card2.dart';
 import 'package:safe_hi/view/report/report_list_page.dart';
+import 'package:safe_hi/view_model/user_view_model.dart';
+import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
 import 'package:safe_hi/widget/card/visit_list_card.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VisitViewModel>().fetchTodayVisits();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final visits = [
-      {
-        'id': 1,
-        'time': '10:00 AM',
-        'name': '이유진',
-        'address': '대전 서구 대덕대로 150',
-        'addressDetails': '경성큰마을아파트 102동 103호',
-      },
-      {
-        'id': 2,
-        'time': '11:00 AM',
-        'name': '김연우',
-        'address': '대전 유성구 테크노 3로 23',
-        'addressDetails': '테크노 파크 501호',
-      },
-      {
-        'id': 3,
-        'time': '1:00 PM',
-        'name': '오민석',
-        'address': '대전 중구 계룡로 15',
-        'addressDetails': '대전 아파트 202호',
-      },
-      {
-        'id': 4,
-        'time': '3:00 PM',
-        'name': '한민우',
-        'address': '대전 서구 둔산로 123',
-        'addressDetails': '푸른숲아파트 102동 1202호',
-      },
-    ];
+    final responsive = Responsive(context);
+    final visitVM = context.watch<VisitViewModel>();
+    final visits = visitVM.visits;
+    final userVM = context.watch<UserViewModel>();
+    final username = userVM.user?.name ?? 'OOO';
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFFFF6F6),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            padding:
+                EdgeInsets.symmetric(horizontal: responsive.paddingHorizontal),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DefaultAppBar(title: '안심하이'),
-                const Text(
-                  '김민수 케어 매니저님, 반갑습니다 👋🏻',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                const DefaultAppBar(title: '안심하이'),
+                Text(
+                  '$username 동행 매니저님, 반갑습니다 👋🏻',
+                  style: TextStyle(
+                    fontSize: responsive.fontBase,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 14),
-                // 네모 박스
+                SizedBox(height: responsive.sectionSpacing),
                 Container(
-                  padding: const EdgeInsets.all(17),
+                  padding: EdgeInsets.all(responsive.isTablet ? 24 : 17),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFB5457),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withValues(alpha: 0.5),
+                        color: Colors.grey.withOpacity(0.4),
                         spreadRadius: 2,
                         blurRadius: 4,
                         offset: const Offset(0, 0),
@@ -77,18 +72,20 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '오늘 방문할 가구는 총 ${visits.length}곳 입니다.',
-                              style: const TextStyle(
-                                fontSize: 16,
+                              visitVM.isLoading
+                                  ? '로딩중...'
+                                  : '오늘 방문할 가구는 총 ${visits.length}곳 입니다.',
+                              style: TextStyle(
+                                fontSize: responsive.fontBase,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             Text(
                               '오늘도 파이팅입니다.',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: responsive.fontSmall,
                                 color: Colors.white,
                               ),
                             ),
@@ -96,8 +93,8 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: 50,
-                        height: 50,
+                        width: responsive.imageSize,
+                        height: responsive.imageSize,
                         child: Image.asset(
                           'assets/images/logo.png',
                           fit: BoxFit.cover,
@@ -106,19 +103,17 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 14),
-                // RecentCard 목록
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 첫 번째 RecentCard2를 InkWell로 감싸서 페이지 이동
-                      InkWell(
+                SizedBox(height: responsive.sectionSpacing),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: InkWell(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReportListPage(),
+                              builder: (_) => const ReportListPage(),
                             ),
                           );
                         },
@@ -129,45 +124,49 @@ class HomePage extends StatelessWidget {
                           iconEmoji: "📋",
                         ),
                       ),
-                      const RecentCard2(
+                    ),
+                    SizedBox(width: responsive.cardSpacing),
+                    const Expanded(
+                      child: RecentCard2(
                         title: "일정 관리",
                         count: 3,
                         subtitle: "방문 일자 미정 리스트",
                         iconEmoji: "⏰",
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: responsive.sectionSpacing),
                 Row(
                   children: [
-                    const Text(
+                    Text(
                       '📆 오늘의 방문 일정 ',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: responsive.fontLarge,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       '${visits.length}개',
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style: TextStyle(
+                        fontSize: responsive.fontLarge,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFFFB5457),
+                        color: const Color(0xFFFB5457),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
-                // VisitCard 목록 생성
-                for (var visit in visits)
-                  VisitCard(
-                    id: visit['id']! as int,
-                    time: visit['time']! as String,
-                    name: visit['name']! as String,
-                    address: visit['address']! as String,
-                    addressDetails: visit['addressDetails']! as String,
-                  ),
+                SizedBox(height: responsive.itemSpacing),
+                if (visitVM.isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  ...visits.map((v) => VisitCard(
+                        id: v.id,
+                        time: v.time,
+                        name: v.name,
+                        address: v.address,
+                        addressDetails: v.addressDetails,
+                      )),
               ],
             ),
           ),

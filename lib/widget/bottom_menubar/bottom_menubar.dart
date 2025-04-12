@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_hi/provider/nav/bottom_nav_provider.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class BottomMenubar extends StatelessWidget {
   const BottomMenubar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Provider에서 탭 상태를 가져옴
     final navProvider = context.watch<BottomNavProvider>();
     final currentIndex = navProvider.currentIndex;
+    final responsive = Responsive(context);
 
     return BottomNavigationBar(
       currentIndex: currentIndex,
@@ -20,6 +21,9 @@ class BottomMenubar extends StatelessWidget {
       selectedItemColor: const Color(0xFFFB5457),
       unselectedItemColor: const Color(0xFFB3A5A5),
       type: BottomNavigationBarType.fixed,
+      selectedFontSize: responsive.fontBase,
+      unselectedFontSize: responsive.fontSmall,
+      iconSize: responsive.iconSize,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: '홈'),
         BottomNavigationBarItem(

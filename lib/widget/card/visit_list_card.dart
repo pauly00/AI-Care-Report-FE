@@ -1,6 +1,7 @@
 // lib/widget/card/visit_list_card.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_hi/util/responsive.dart';
 import 'package:safe_hi/view/visit/visit_detail_page.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
 
@@ -22,23 +23,25 @@ class VisitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return GestureDetector(
       onTap: () {
-        final viewModel = context.read<VisitViewModel>(); // ✅ 기존 ViewModel 가져오기
+        final viewModel = context.read<VisitViewModel>();
 
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => VisitDetailPage(
               visitId: id,
-              viewModel: viewModel, // ✅ 전달
+              viewModel: viewModel,
             ),
           ),
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(15),
-        margin: const EdgeInsets.only(bottom: 14),
+        padding: EdgeInsets.all(responsive.itemSpacing),
+        margin: EdgeInsets.only(bottom: responsive.sectionSpacing),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -60,13 +63,15 @@ class VisitCard extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: responsive.fontBase,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   time,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: responsive.fontBase - 1,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -76,11 +81,17 @@ class VisitCard extends StatelessWidget {
             // 주소
             Text(
               address,
-              style: const TextStyle(fontSize: 14, color: Color(0xFFB3A5A5)),
+              style: TextStyle(
+                fontSize: responsive.fontSmall,
+                color: const Color(0xFFB3A5A5),
+              ),
             ),
             Text(
               addressDetails,
-              style: const TextStyle(fontSize: 14, color: Color(0xFFB3A5A5)),
+              style: TextStyle(
+                fontSize: responsive.fontSmall,
+                color: const Color(0xFFB3A5A5),
+              ),
             ),
           ],
         ),

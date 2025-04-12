@@ -3,6 +3,7 @@ import 'package:safe_hi/view/visit/visit_welfare_recommend.dart';
 import 'package:safe_hi/view_model/visit/visit_policy_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 import 'package:provider/provider.dart';
 
 class Check2 extends StatelessWidget {
@@ -35,15 +36,12 @@ class _Check2BodyState extends State<_Check2Body> {
     '집 주변에 파리, 구더기 등 벌레가 보이고 악취가 난다.',
   ];
 
-  // 체크박스 상태를 저장할 리스트
   List<bool> isChecked = List.generate(3, (_) => false);
 
-  // 상태 변화 체크박스 변수
-  int? selectedMealCondition; // 식사 기능 상태
-  int? selectedCognitiveCondition; // 인지 기능 상태
-  int? selectedCommunicationCondition; // 의사 기능 상태
+  int? selectedMealCondition;
+  int? selectedCognitiveCondition;
+  int? selectedCommunicationCondition;
 
-  // 모든 체크가 완료되었는지 확인하는 메소드
   bool _isAllChecked() {
     return selectedMealCondition != null &&
         selectedCognitiveCondition != null &&
@@ -53,60 +51,61 @@ class _Check2BodyState extends State<_Check2Body> {
   @override
   Widget build(BuildContext context) {
     final vmPolicy = context.watch<VisitPolicyViewModel>();
+    final responsive = Responsive(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: Column(
           children: [
-            DefaultBackAppBar(
-              title: '현장체크',
-            ),
-            const SizedBox(height: 10),
-
-            // 제목 추가
+            DefaultBackAppBar(title: '현장체크'),
+            SizedBox(height: responsive.itemSpacing),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(
+                  horizontal: responsive.paddingHorizontal),
               child: Text(
                 '상태 변화 관리',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.black,
-                  fontSize: 24,
+                  fontSize: responsive.fontXL,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-
+            SizedBox(height: responsive.sectionSpacing),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...checklistItems.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      String item = entry.value;
-                      return _buildChecklistItem(index, item);
-                    }),
-                    const SizedBox(height: 10),
-                    _buildConditionSection('식사 기능', (value) {
-                      setState(() {
-                        selectedMealCondition = value;
-                      });
-                    }, selectedMealCondition),
-                    const SizedBox(height: 10),
-                    _buildConditionSection('인지 기능', (value) {
-                      setState(() {
-                        selectedCognitiveCondition = value;
-                      });
-                    }, selectedCognitiveCondition),
-                    const SizedBox(height: 10),
-                    _buildConditionSection('의사 기능', (value) {
-                      setState(() {
-                        selectedCommunicationCondition = value;
-                      });
-                    }, selectedCommunicationCondition),
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: responsive.paddingHorizontal),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...checklistItems.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        String item = entry.value;
+                        return _buildChecklistItem(index, item, responsive);
+                      }),
+                      SizedBox(height: responsive.itemSpacing),
+                      _buildConditionSection('식사 기능', (value) {
+                        setState(() {
+                          selectedMealCondition = value;
+                        });
+                      }, selectedMealCondition, responsive),
+                      SizedBox(height: responsive.itemSpacing),
+                      _buildConditionSection('인지 기능', (value) {
+                        setState(() {
+                          selectedCognitiveCondition = value;
+                        });
+                      }, selectedCognitiveCondition, responsive),
+                      SizedBox(height: responsive.itemSpacing),
+                      _buildConditionSection('의사 기능', (value) {
+                        setState(() {
+                          selectedCommunicationCondition = value;
+                        });
+                      }, selectedCommunicationCondition, responsive),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -114,17 +113,16 @@ class _Check2BodyState extends State<_Check2Body> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
+        ),
         child: BottomOneButton(
           buttonText: '다음',
           onButtonTap: () async {
-            // 복지 정책 가져오기
             final welfareList = await vmPolicy.fetchWelfarePolicies();
             if (!mounted) return;
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) return;
-
-              // 다음 화면 이동
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -134,43 +132,42 @@ class _Check2BodyState extends State<_Check2Body> {
               );
             });
           },
-          isEnabled: _isAllChecked(), // 버튼 활성화 여부 설정
+          isEnabled: _isAllChecked(),
         ),
       ),
     );
   }
 
-  Widget _buildChecklistItem(int index, String item) {
+  Widget _buildChecklistItem(int index, String item, Responsive responsive) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-          vertical: 8.0, horizontal: 16.0), // 항목 간 간격
+      margin: EdgeInsets.symmetric(vertical: responsive.itemSpacing / 1.5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
+            color: const Color(0xFFFDD8DA).withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 4,
-            offset: const Offset(0, 2), // 약간 아래로 그림자 이동
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: ListTile(
         leading: Checkbox(
-          value: isChecked[index], // 체크박스 상태
-          activeColor: const Color(0xFFFB5457), // 체크 시 색상
+          value: isChecked[index],
+          activeColor: const Color(0xFFFB5457),
           onChanged: (bool? value) {
             setState(() {
-              isChecked[index] = value!; // 상태 업데이트
+              isChecked[index] = value!;
             });
           },
         ),
         title: Text(
           item,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.black,
-            fontSize: 16, // 텍스트 크기
+            fontSize: responsive.fontBase,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -179,50 +176,66 @@ class _Check2BodyState extends State<_Check2Body> {
   }
 
   Widget _buildConditionSection(
-      String title, Function(int?) onChanged, int? selectedCondition) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(0, 2), // 약간 아래로 그림자 이동
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+    String title,
+    Function(int?) onChanged,
+    int? selectedCondition,
+    Responsive responsive,
+  ) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: responsive.checkSpacing,
+        horizontal: responsive.checkSpacing,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFDD8DA).withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Wrap(
+              spacing: responsive.itemSpacing,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: responsive.fontM,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(width: 16), // 텍스트와 체크박스 간 간격
-                _buildConditionCheckbox('양호', 0, onChanged, selectedCondition),
-                _buildConditionCheckbox('보통', 1, onChanged, selectedCondition),
-                _buildConditionCheckbox('불량', 2, onChanged, selectedCondition),
+                _buildConditionCheckbox(
+                    '양호', 0, onChanged, selectedCondition, responsive),
+                _buildConditionCheckbox(
+                    '보통', 1, onChanged, selectedCondition, responsive),
+                _buildConditionCheckbox(
+                    '불량', 2, onChanged, selectedCondition, responsive),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildConditionCheckbox(String label, int index,
-      Function(int?) onChanged, int? selectedCondition) {
+  Widget _buildConditionCheckbox(
+    String label,
+    int index,
+    Function(int?) onChanged,
+    int? selectedCondition,
+    Responsive responsive,
+  ) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Checkbox(
           value: selectedCondition == index,
@@ -233,9 +246,9 @@ class _Check2BodyState extends State<_Check2Body> {
         ),
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: responsive.fontM,
             fontWeight: FontWeight.w500,
           ),
         ),

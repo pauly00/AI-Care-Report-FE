@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:safe_hi/view/signup/terms_agreement_page.dart';
-import 'package:safe_hi/widget/button/bottom_one_btn.dart'; // BottomOneButton import
+import 'package:provider/provider.dart';
+import 'package:safe_hi/util/responsive.dart';
+import 'package:safe_hi/view/signup/signup_form_page.dart';
+import 'package:safe_hi/view_model/signup_view_model.dart';
+import 'package:safe_hi/widget/button/bottom_one_btn.dart';
 
 class RoleSelectPage extends StatefulWidget {
   const RoleSelectPage({super.key});
@@ -14,41 +17,62 @@ class _RoleSelectPageState extends State<RoleSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text(
-                '역할을 선택해주세요',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: responsive.paddingHorizontal),
+        child: Column(
+          children: [
+            Expanded(
+              // ⬅ 역할 선택 영역을 가운데로
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '역할을 선택해주세요',
+                      style: TextStyle(
+                        fontSize: responsive.fontXL,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: responsive.itemSpacing),
+                    Text(
+                      '안심하이는 여러분의 역할에 맞춰 \n더 쉽고 정확한 관리를 도와드려요.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.grey, fontSize: responsive.fontSmall),
+                    ),
+                    SizedBox(height: responsive.sectionSpacing),
+                    _buildRoleOption('기관 / 지자체', '👨‍💼👩‍💼', responsive),
+                    SizedBox(height: responsive.itemSpacing),
+                    _buildRoleOption('동행매니저', '🙋‍♂️🙋‍♀️', responsive),
+                  ],
+                ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                '안심하이는 여러분의 역할에 맞춰 \n더 쉽고 정확한 관리를 도와드려요.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 32),
-              _buildRoleOption('기관 / 지자체', '👨‍💼👩‍💼'),
-              const SizedBox(height: 16),
-              _buildRoleOption('동행매니저', '🙋‍♂️🙋‍♀️'),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
+        ),
         child: BottomOneButton(
           buttonText: '다음',
-          isEnabled: _selectedRole != null, // ✅ 역할이 선택됐을 때만 버튼 활성화
+          isEnabled: _selectedRole != null,
           onButtonTap: () {
+            int roleValue = _selectedRole == '기관 / 지자체' ? 0 : 1;
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const TermsAgreementPage()),
+              MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider(
+                  create: (_) => SignupViewModel(),
+                  child: SignupFormPage(role: roleValue),
+                ),
+              ),
             );
           },
         ),
@@ -56,7 +80,7 @@ class _RoleSelectPageState extends State<RoleSelectPage> {
     );
   }
 
-  Widget _buildRoleOption(String role, String emoji) {
+  Widget _buildRoleOption(String role, String emoji, Responsive responsive) {
     final isSelected = _selectedRole == role;
 
     String subText;
@@ -71,7 +95,7 @@ class _RoleSelectPageState extends State<RoleSelectPage> {
         setState(() => _selectedRole = role);
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(responsive.itemSpacing),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFFFEDED) : Colors.white,
           border: Border.all(
@@ -89,14 +113,23 @@ class _RoleSelectPageState extends State<RoleSelectPage> {
                 color: isSelected ? const Color(0xFFEB5C5C) : Colors.grey,
               ),
             ),
-            Text(emoji, style: const TextStyle(fontSize: 40)),
-            const SizedBox(height: 6),
-            Text(role, style: const TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 6),
+            Text(emoji, style: TextStyle(fontSize: responsive.fontXL)),
+            SizedBox(height: responsive.itemSpacing / 2),
+            Text(
+              role,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: responsive.fontBase,
+              ),
+            ),
+            SizedBox(height: responsive.itemSpacing / 2),
             Text(
               subText,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
+              style: TextStyle(
+                fontSize: responsive.fontSmall,
+                color: Colors.grey,
+              ),
             ),
           ],
         ),

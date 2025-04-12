@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safe_hi/view/visit/visit_check2.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class Check1 extends StatefulWidget {
   const Check1({super.key});
@@ -23,6 +24,8 @@ class Check1State extends State<Check1> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -32,25 +35,28 @@ class Check1State extends State<Check1> {
             const SizedBox(height: 10),
             // 제목 추가
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(
+                  horizontal: responsive.paddingHorizontal),
               child: Text(
                 '주변 환경 관리',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.black,
-                  fontSize: 24,
+                  fontSize: responsive.fontXL,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: responsive.sectionSpacing),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: responsive.paddingHorizontal),
                 child: Column(
                   children: checklistItems.asMap().entries.map((entry) {
                     int index = entry.key;
                     String item = entry.value;
-                    return _buildChecklistItem(index, item);
+                    return _buildChecklistItem(
+                        context, index, item, responsive);
                   }).toList(),
                 ),
               ),
@@ -59,7 +65,9 @@ class Check1State extends State<Check1> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
+        ),
         child: BottomOneButton(
           buttonText: '다음',
           onButtonTap: () {
@@ -73,9 +81,10 @@ class Check1State extends State<Check1> {
     );
   }
 
-  Widget _buildChecklistItem(int index, String item) {
+  Widget _buildChecklistItem(
+      BuildContext context, int index, String item, Responsive responsive) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: EdgeInsets.symmetric(vertical: responsive.itemSpacing / 1.5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -100,9 +109,9 @@ class Check1State extends State<Check1> {
         ),
         title: Text(
           item,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: responsive.fontBase,
             fontWeight: FontWeight.w500,
           ),
         ),

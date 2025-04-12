@@ -1,4 +1,6 @@
+// lib/widget/appbar/default_back_appbar.dart
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class DefaultBackAppBar extends StatelessWidget {
   final String title;
@@ -7,13 +9,16 @@ class DefaultBackAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Container(
-      color: const Color(0xFFFFF6F6), // 배경색 설정
-      padding: const EdgeInsets.symmetric(vertical: 15.0), // 상하 패딩
+      color: const Color(0xFFFFF6F6),
+      padding: EdgeInsets.symmetric(horizontal: responsive.paddingHorizontal),
       child: Row(
         children: [
           IconButton(
             icon: const Icon(Icons.arrow_back),
+            iconSize: responsive.iconSize,
             color: const Color(0xFFFB5457),
             onPressed: () {
               Navigator.pop(context);
@@ -25,38 +30,36 @@ class DefaultBackAppBar extends StatelessWidget {
                   title == "안심하이" ? Alignment.centerLeft : Alignment.center,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment:
-                    title == "안심하이"
-                        ? MainAxisAlignment
-                            .start // Left align for "안심하이"
-                        : MainAxisAlignment.center, // Center for other titles
+                mainAxisAlignment: title == "안심하이"
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
                 children: [
                   Transform.translate(
-                    offset: const Offset(0, 3), // Y축으로 3픽셀 아래로 이동
+                    offset: const Offset(0, 3),
                     child: Image.asset(
-                      'assets/images/logoicon.png', // 이미지 경로
-                      width: 30, // 이미지 크기 설정
-                      height: 30,
+                      'assets/images/logoicon.png',
+                      width: responsive.iconSize,
+                      height: responsive.iconSize,
                       fit: BoxFit.contain,
                     ),
                   ),
-                  const SizedBox(width: 2), // 이미지와 텍스트 사이 간격
+                  SizedBox(width: responsive.itemSpacing / 2),
                   Text(
                     title,
                     style: TextStyle(
-                      color:
-                          title == "안심하이"
-                              ? const Color(0xFFFB5457)
-                              : Colors.black, // "안심하이"일 때는 빨간색, 아니면 검정색
+                      color: title == "안심하이"
+                          ? const Color(0xFFFB5457)
+                          : Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: responsive.fontLarge,
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          if (title != "안심하이") const SizedBox(width: 48),
+          if (title != "안심하이")
+            SizedBox(width: responsive.iconSize + responsive.itemSpacing),
         ],
       ),
     );

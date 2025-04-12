@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:safe_hi/util/responsive.dart';
 import 'package:safe_hi/view/visit/widget/drop_box.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
 import 'package:safe_hi/model/visit_model.dart';
@@ -60,7 +60,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ 공통 Scaffold + AppBar는 항상 표시
+    final responsive = Responsive(context);
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -72,29 +72,30 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                   children: [
                     // 공통 AppBar
                     const DefaultBackAppBar(title: '상세 보기'),
-                    const SizedBox(height: 16),
+                    SizedBox(height: responsive.sectionSpacing),
 
                     // ✅ visit가 없으면: 본문에 "상세 정보가 없습니다." 표시
                     if (_visit == null)
-                      const Padding(
-                        padding: EdgeInsets.only(top: 200),
-                        child: Center(child: Text('상세 정보가 없습니다.')),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: responsive.screenHeight * 0.2),
+                        child: const Center(child: Text('상세 정보가 없습니다.')),
                       )
                     else
                       // visit가 존재하면 원래의 상세 UI
-                      _buildDetailContent(),
+                      _buildDetailContent(responsive),
                   ],
                 ),
               ),
       ),
-      bottomNavigationBar: _visit == null ? null : _buildBottomNav(),
+      bottomNavigationBar: _visit == null ? null : _buildBottomNav(responsive),
     );
   }
 
-  Widget _buildDetailContent() {
+  Widget _buildDetailContent(Responsive responsive) {
     final visit = _visit!;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: responsive.paddingHorizontal),
       child: Column(
         children: [
           Row(
@@ -102,18 +103,18 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
             children: [
               Text(
                 visit.name,
-                style: const TextStyle(
-                  fontSize: 20,
+                style: TextStyle(
+                  fontSize: responsive.fontLarge,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(height: responsive.sectionSpacing),
             ],
           ),
-          const SizedBox(height: 20),
-          // 주소 정보
+          SizedBox(height: responsive.sectionSpacing),
+
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: EdgeInsets.all(responsive.sectionSpacing),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -129,28 +130,34 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   '주소',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: responsive.fontBase,
                     color: Color(0xFFB3A5A5),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(visit.address, style: const TextStyle(fontSize: 16)),
+                    Text(visit.address,
+                        style: TextStyle(
+                          fontSize: responsive.fontBase,
+                        )),
                     Text(visit.addressDetails,
-                        style: const TextStyle(fontSize: 16)),
+                        style: TextStyle(
+                          fontSize: responsive.fontBase,
+                        )),
                   ],
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: responsive.sectionSpacing),
+
           // 전화번호
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: EdgeInsets.all(responsive.sectionSpacing),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -166,25 +173,28 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   '전화번호',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: responsive.fontBase,
                     color: Color(0xFFB3A5A5),
                   ),
                 ),
-                Text(visit.phone, style: const TextStyle(fontSize: 16)),
+                Text(visit.phone,
+                    style: TextStyle(
+                      fontSize: responsive.fontBase,
+                    )),
                 InkWell(
                   onTap: () => _makePhoneCall(visit.phone),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Icon(Icons.phone, color: Colors.redAccent),
                       SizedBox(height: 4),
                       Text(
                         '전화걸기',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: responsive.fontSmall,
                           color: Colors.redAccent,
                         ),
                       ),
@@ -194,22 +204,28 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: responsive.sectionSpacing),
+
           Column(
             children: [
               DropdownCard(
                   title: '이전 방문',
                   content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         '2025년 4월 7일:',
                         style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                            fontSize: responsive.fontBase,
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 8),
                       Text(
-                          '할머니께서는 최근 날씨가 갑자기 쌀쌀해져 무릎이 시리다고 하셨습니다. 온찜질을 제안드렸고, 찜질팩을 다음 방문 때 가져오기로 했습니다. 최근에는 박 여사님과 공원과 시장에 다녀오셨고, 고구마를 사서 구워 드셨으나 혼자 하는 게 재미없다고 하셨습니다. 다음번 고구마 구울 때 같이 하기로 했습니다. 또한, 내 고향 친구라는 TV 프로그램을 즐겨보고 계시며, 옛날 이야기와 시골 풍경이 마음을 편안하게 해준다고 하셨습니다. 예전 고구마를 함께 구워 먹던 추억을 그리워하셨습니다.'),
+                        '할머니께서는 최근 날씨가 갑자기 쌀쌀해져 무릎이 시리다고 하셨습니다. 온찜질을 제안드렸고, 찜질팩을 다음 방문 때 가져오기로 했습니다. 최근에는 박 여사님과 공원과 시장에 다녀오셨고, 고구마를 사서 구워 드셨으나 혼자 하는 게 재미없다고 하셨습니다. 다음번 고구마 구울 때 같이 하기로 했습니다. 또한, 내 고향 친구라는 TV 프로그램을 즐겨보고 계시며, 옛날 이야기와 시골 풍경이 마음을 편안하게 해준다고 하셨습니다. 예전 고구마를 함께 구워 먹던 추억을 그리워하셨습니다.',
+                        style: TextStyle(
+                          fontSize: responsive.fontSmall,
+                        ),
+                      ),
                     ],
                   )),
             ],
@@ -219,9 +235,9 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
     );
   }
 
-  Widget _buildBottomNav() {
+  Widget _buildBottomNav(Responsive responsive) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32.0),
+      padding: EdgeInsets.symmetric(vertical: responsive.paddingHorizontal),
       child: BottomTwoButton(
         buttonText1: '방문일자수정',
         buttonText2: '상담시작',

@@ -4,7 +4,7 @@ class WelfareService {
   /// 복지 정책 데이터를 서버에서 가져오기
   Future<dynamic> fetchWelfarePoliciesData() async {
     // final response = await http.get(Uri.parse('$baseUrl/welfare-policies'));
-    // if (response.statusCode == 200) {
+    // if (response.statusCode == 200 || response.statusCode == 201) {
     //   return json.decode(response.body);
     // } else {
     //   throw Exception('Failed to load welfare policies');

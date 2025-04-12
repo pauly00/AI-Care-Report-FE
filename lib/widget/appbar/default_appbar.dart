@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class DefaultAppBar extends StatelessWidget {
   final String title;
@@ -7,9 +8,11 @@ class DefaultAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Container(
       color: const Color(0xFFFFF6F6),
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: EdgeInsets.symmetric(vertical: responsive.itemSpacing),
       child: Row(
         children: [
           Expanded(
@@ -21,10 +24,10 @@ class DefaultAppBar extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/images/logoicon.png',
-                    width: 30,
-                    height: 30,
+                    width: responsive.iconSize,
+                    height: responsive.iconSize,
                   ),
-                  const SizedBox(width: 2),
+                  SizedBox(width: responsive.itemSpacing / 2),
                   Text(
                     title,
                     style: TextStyle(
@@ -32,7 +35,7 @@ class DefaultAppBar extends StatelessWidget {
                           ? const Color(0xFFFB5457)
                           : Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: responsive.fontLarge,
                     ),
                   ),
                 ],

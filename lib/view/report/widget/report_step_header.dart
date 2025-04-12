@@ -33,7 +33,6 @@ class StepProgressBar extends StatelessWidget {
   Widget _buildStepCircle(int stepIndex) {
     final isCompleted = stepIndex < currentStep; // 완료된 단계
     final isCurrent = stepIndex == currentStep; // 현재 단계
-    final isInactive = stepIndex > currentStep; // 미완료 단계
 
     // 상태에 따라 색상/아이콘을 다르게 설정
     late Color fillColor;

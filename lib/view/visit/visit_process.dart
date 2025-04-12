@@ -3,6 +3,7 @@ import 'package:safe_hi/service/websocket_service.dart';
 import 'package:safe_hi/view/visit/visit_check1.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class VisitProcess extends StatefulWidget {
   const VisitProcess({super.key});
@@ -34,6 +35,8 @@ class VisitProcessState extends State<VisitProcess>
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -77,7 +80,9 @@ class VisitProcessState extends State<VisitProcess>
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
+        ),
         child: BottomTwoButton(
           buttonText1: '이전 대화',
           buttonText2: '상담 종료',

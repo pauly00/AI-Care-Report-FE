@@ -10,7 +10,7 @@ class VisitService {
   static Future<List<Visit>> fetchTodayVisits() async {
     // 실제 서버 요청 (주석 처리)
     // final response = await http.get(Uri.parse('$baseUrl/visits/today'));
-    // if (response.statusCode == 200) {
+    // if (response.statusCode == 200 || response.statusCode == 201) {
     //   final List<dynamic> data = jsonDecode(response.body);
     //   return data.map((e) => Visit.fromJson(e)).toList();
     // } else {
@@ -53,7 +53,7 @@ class VisitService {
   static Future<List<Visit>> fetchVisitsByDate(String date) async {
     // 실제 서버 요청 (주석 처리)
     // final response = await http.get(Uri.parse('$baseUrl/visits?date=$date'));
-    // if (response.statusCode == 200) {
+    // if (response.statusCode == 200 || response.statusCode == 201) {
     //   final List<dynamic> data = jsonDecode(response.body);
     //   return data.map((e) => Visit.fromJson(e)).toList();
     // } else {

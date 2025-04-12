@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart'; // Responsive 클래스 경로 맞게 수정해줘
 
 class BottomTwoButton extends StatelessWidget {
   final String buttonText1;
@@ -16,52 +17,60 @@ class BottomTwoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Container(
-      color: const Color(0xFFFFF6F6), // 배경색
-      padding: const EdgeInsets.all(16),
+      color: const Color(0xFFFFF6F6),
+      padding: EdgeInsets.symmetric(
+        horizontal: responsive.paddingHorizontal,
+        vertical: responsive.itemSpacing,
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: onButtonTap1, // 첫 번째 버튼 클릭 시 콜백 호출
+            onPressed: onButtonTap1,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white, // 배경색
-
+              backgroundColor: Colors.white,
               side: const BorderSide(
                 color: Color(0xFFFB5457),
                 width: 2,
-              ), // 테두리 색상
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 35, vertical: 20), // 패딩
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: responsive.isTablet ? 40 : 30,
+                vertical: responsive.isTablet ? 22 : 16,
+              ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), // 모서리 반경 설정
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Text(
               buttonText1,
-              style: const TextStyle(
-                color: Color(0xFFFB5457), // 텍스트 색상
-                fontSize: 17, // 폰트 크기 설정
+              style: TextStyle(
+                color: const Color(0xFFFB5457),
+                fontSize: responsive.fontBase,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const SizedBox(width: 18), // 버튼 간격 설정
+          SizedBox(width: responsive.itemSpacing * 2), // 버튼 간격
           ElevatedButton(
-            onPressed: onButtonTap2, // 두 번째 버튼 클릭 시 콜백 호출
+            onPressed: onButtonTap2,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFB5457), // 배경 색상
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 35, vertical: 20), // 패딩
+              backgroundColor: const Color(0xFFFB5457),
+              padding: EdgeInsets.symmetric(
+                horizontal: responsive.isTablet ? 40 : 30,
+                vertical: responsive.isTablet ? 22 : 16,
+              ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), // 모서리 반경 설정
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Text(
               buttonText2,
-              style: const TextStyle(
-                color: Colors.white, // 텍스트 색상
-                fontSize: 17, // 폰트 크기 설정
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: responsive.fontBase,
                 fontWeight: FontWeight.bold,
               ),
             ),
