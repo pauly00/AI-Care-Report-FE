@@ -40,7 +40,7 @@ class VisitCard extends StatelessWidget {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(responsive.itemSpacing),
+        padding: EdgeInsets.all(responsive.sectionSpacing),
         margin: EdgeInsets.only(bottom: responsive.sectionSpacing),
         decoration: BoxDecoration(
           color: Colors.white,

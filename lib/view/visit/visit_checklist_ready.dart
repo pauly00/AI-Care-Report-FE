@@ -29,7 +29,7 @@ class _CheckListReadyState extends State<CheckListReady> {
       body: SafeArea(
         child: Column(
           children: [
-            const DefaultBackAppBar(title: '대화 가이드라인'),
+            const DefaultBackAppBar(title: '실시간 대화'),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(
@@ -37,7 +37,7 @@ class _CheckListReadyState extends State<CheckListReady> {
                 ),
                 child: Center(
                   child: Column(
-                    mainAxisSize: MainAxisSize.min, // 가운데 정렬을 위해
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         '체크할 준비가 되었나요?',
