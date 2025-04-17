@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_hi/provider/nav/bottom_nav_provider.dart';
+import 'package:safe_hi/widget/loading/common_loading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:safe_hi/model/welfare_policy_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
@@ -43,26 +44,8 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: isLoading
-            ? Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xFFFB5457),
-                      ),
-                    ),
-                    SizedBox(height: responsive.itemSpacing),
-                    Text(
-                      '잠시만 기다려주세요.\n어르신께 필요한 정보를 찾고 있습니다!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: responsive.fontBase,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
+            ? const CommonLoading(
+                message: '어르신께 필요한 정보를 찾고 있습니다!',
               )
             : Column(
                 children: [
@@ -114,9 +97,7 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
       bottomNavigationBar: isLoading
           ? null
           : Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: responsive.paddingHorizontal,
-              ),
+              padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
               child: BottomOneButton(
                 buttonText: '완료',
                 onButtonTap: () {
@@ -210,7 +191,7 @@ class _WelfareRecommendState extends State<WelfareRecommend> {
               child: Container(
                 padding: EdgeInsets.symmetric(
                   vertical: responsive.isTablet ? 10 : 5,
-                  horizontal: responsive.isTablet ? 220 : 110,
+                  horizontal: responsive.isTablet ? 200 : 110,
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFB5457),
