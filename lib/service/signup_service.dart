@@ -12,7 +12,7 @@ class SignupService {
     debugPrint('요청 바디: ${jsonEncode(user.toJson())}');
 
     // ------ 실제 서버 요청 코드 (주석 처리됨) ------
-    /*
+
     final url = Uri.parse('$baseUrl/db/register');
 
     try {
@@ -41,23 +41,22 @@ class SignupService {
         'msg': '회원가입 요청 중 오류가 발생했습니다.\n${e.toString()}',
       };
     }
-    */
 
     // ------ 더미 응답 (서버 없이 테스트용) ------
-    await Future.delayed(const Duration(seconds: 1)); // 시뮬레이션 지연
+    // await Future.delayed(const Duration(seconds: 1)); // 시뮬레이션 지연
 
-    return {
-      "status": true,
-      "message": "User registered successfully",
-      "user": {
-        "user_id": 123,
-        "name": user.name,
-        "phone_number": user.phoneNumber,
-        "email": user.email,
-        "birthdate": user.birthdate,
-        "gender": user.gender,
-        "permission": user.permission,
-      }
-    };
+    // return {
+    //   "status": true,
+    //   "message": "User registered successfully",
+    //   "user": {
+    //     "user_id": 123,
+    //     "name": user.name,
+    //     "phone_number": user.phoneNumber,
+    //     "email": user.email,
+    //     "birthdate": user.birthdate,
+    //     "gender": user.gender,
+    //     "permission": user.permission,
+    //   }
+    // };
   }
 }
