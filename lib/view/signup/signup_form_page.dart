@@ -152,7 +152,7 @@ class _SignupFormPageState extends State<SignupFormPage> {
                   email: _emailController.text.trim(),
                   birthdate: _birthController.text.trim(),
                   gender: genderValue,
-                  permission: widget.role,
+                  role: widget.role,
                   password: _passwordController.text.trim(),
                 );
 
