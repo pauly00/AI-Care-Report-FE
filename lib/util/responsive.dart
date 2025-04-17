@@ -18,6 +18,7 @@ class Responsive {
 
   // Padding / Spacing
   double get paddingHorizontal => isTablet ? 64 : 32;
+  double get appbarHorizontal => isTablet ? 80 : 32;
   double get sectionSpacing => isTablet ? 24 : 16;
   double get itemSpacing => isTablet ? 20 : 10;
   double get cardSpacing => isTablet ? 24 : 12;
@@ -25,9 +26,10 @@ class Responsive {
 
   // Sizes
   double get imageSize => isTablet ? 70 : 50;
-  double get iconSize => isTablet ? 38 : 32;
+  double get iconSize => isTablet ? 45 : 32;
   double get cardWidth => isTablet ? 240 : screenWidth * 0.4;
   double get buttonHeight => isTablet ? 56 : 48;
+  double get modifyButton => isTablet ? 56 : 30;
 
   // Layout Decisions
   bool get isWide => screenWidth >= 800;
