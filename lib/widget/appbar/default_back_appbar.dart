@@ -13,7 +13,7 @@ class DefaultBackAppBar extends StatelessWidget {
 
     return Container(
       color: const Color(0xFFFFF6F6),
-      padding: EdgeInsets.symmetric(horizontal: responsive.paddingHorizontal),
+      padding: EdgeInsets.symmetric(horizontal: responsive.appbarHorizontal),
       child: Row(
         children: [
           IconButton(
