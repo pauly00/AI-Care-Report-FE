@@ -1,6 +1,8 @@
 // lib/widget/card/visit_list_card.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_hi/provider/id/report_id.dart';
+import 'package:safe_hi/util/format_time.dart';
 import 'package:safe_hi/util/responsive.dart';
 import 'package:safe_hi/view/visit/visit_detail_page.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
@@ -27,14 +29,15 @@ class VisitCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        final viewModel = context.read<VisitViewModel>();
+        context.read<ReportIdProvider>().setReportId(id);
 
+        // ✅ 상세 화면 이동
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => VisitDetailPage(
-              visitId: id,
-              viewModel: viewModel,
+            builder: (_) => VisitDetailPage(
+              reportId: id,
+              viewModel: context.read<VisitViewModel>(), // 그대로 전달
             ),
           ),
         );
@@ -69,7 +72,7 @@ class VisitCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  time,
+                  formatTime(time),
                   style: TextStyle(
                     fontSize: responsive.fontBase - 1,
                     fontWeight: FontWeight.bold,

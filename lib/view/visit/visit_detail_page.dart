@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/model/visit_detail_model.dart';
 import 'package:safe_hi/util/responsive.dart';
 import 'package:safe_hi/view/visit/widget/drop_box.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
-import 'package:safe_hi/model/visit_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:safe_hi/view/visit/visit_checklist_ready.dart';
 
 class VisitDetailPage extends StatefulWidget {
-  final int visitId;
+  final int reportId;
   final VisitViewModel viewModel;
 
   const VisitDetailPage({
     Key? key,
-    required this.visitId,
+    required this.reportId,
     required this.viewModel,
   }) : super(key: key);
 
@@ -23,13 +23,12 @@ class VisitDetailPage extends StatefulWidget {
 }
 
 class _VisitDetailPageState extends State<VisitDetailPage> {
-  Visit? _visit;
+  VisitDetail? _visit;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // 첫 빌드 완료 후 서버 호출
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchDetail();
     });
@@ -38,7 +37,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
   Future<void> _fetchDetail() async {
     setState(() => _isLoading = true);
     try {
-      final detail = await widget.viewModel.fetchVisitDetail(widget.visitId);
+      final detail = await widget.viewModel.fetchVisitDetail(widget.reportId);
       setState(() {
         _visit = detail;
       });
@@ -70,11 +69,8 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 공통 AppBar
                     const DefaultBackAppBar(title: '상세 보기'),
                     SizedBox(height: responsive.sectionSpacing),
-
-                    // ✅ visit가 없으면: 본문에 "상세 정보가 없습니다." 표시
                     if (_visit == null)
                       Padding(
                         padding:
@@ -82,7 +78,6 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                         child: const Center(child: Text('상세 정보가 없습니다.')),
                       )
                     else
-                      // visit가 존재하면 원래의 상세 UI
                       _buildDetailContent(responsive),
                   ],
                 ),
@@ -112,7 +107,6 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
             ],
           ),
           SizedBox(height: responsive.sectionSpacing),
-
           Container(
             padding: EdgeInsets.all(responsive.sectionSpacing),
             decoration: BoxDecoration(
@@ -120,7 +114,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
+                  color: const Color(0xFFFDD8DA).withOpacity(0.5),
                   spreadRadius: 2,
                   blurRadius: 4,
                   offset: const Offset(0, 0),
@@ -154,8 +148,6 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
             ),
           ),
           SizedBox(height: responsive.sectionSpacing),
-
-          // 전화번호
           Container(
             padding: EdgeInsets.all(responsive.sectionSpacing),
             decoration: BoxDecoration(
@@ -163,7 +155,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
+                  color: const Color(0xFFFDD8DA).withOpacity(0.5),
                   spreadRadius: 2,
                   blurRadius: 4,
                   offset: const Offset(0, 0),
@@ -180,12 +172,17 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                     color: Color(0xFFB3A5A5),
                   ),
                 ),
-                Text(visit.phone,
+                Text(
+                    visit.phone.isNotEmpty
+                        ? visit.phone
+                        : '정보 없음', // ✅ fallback 처리
                     style: TextStyle(
                       fontSize: responsive.fontBase,
                     )),
                 InkWell(
-                  onTap: () => _makePhoneCall(visit.phone),
+                  onTap: visit.phone.isNotEmpty
+                      ? () => _makePhoneCall(visit.phone)
+                      : null,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -205,29 +202,39 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
             ),
           ),
           SizedBox(height: responsive.sectionSpacing),
-
           Column(
             children: [
               DropdownCard(
-                  title: '이전 방문',
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '2025년 4월 7일:',
-                        style: TextStyle(
-                            fontSize: responsive.fontBase,
-                            fontWeight: FontWeight.bold),
+                title: '이전 방문',
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: visit.lastVisits.map((lv) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: responsive.itemSpacing),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            lv.date,
+                            style: TextStyle(
+                              fontSize: responsive.fontBase,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            lv.abstract,
+                            style: TextStyle(
+                              fontSize: responsive.fontSmall,
+                            ),
+                          ),
+                          Divider(height: responsive.sectionSpacing),
+                        ],
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        '할머니께서는 최근 날씨가 갑자기 쌀쌀해져 무릎이 시리다고 하셨습니다. 온찜질을 제안드렸고, 찜질팩을 다음 방문 때 가져오기로 했습니다. 최근에는 박 여사님과 공원과 시장에 다녀오셨고, 고구마를 사서 구워 드셨으나 혼자 하는 게 재미없다고 하셨습니다. 다음번 고구마 구울 때 같이 하기로 했습니다. 또한, 내 고향 친구라는 TV 프로그램을 즐겨보고 계시며, 옛날 이야기와 시골 풍경이 마음을 편안하게 해준다고 하셨습니다. 예전 고구마를 함께 구워 먹던 추억을 그리워하셨습니다.',
-                        style: TextStyle(
-                          fontSize: responsive.fontSmall,
-                        ),
-                      ),
-                    ],
-                  )),
+                    );
+                  }).toList(),
+                ),
+              ),
             ],
           ),
         ],
@@ -241,9 +248,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
       child: BottomTwoButton(
         buttonText1: '방문일자수정',
         buttonText2: '상담시작',
-        onButtonTap1: () {
-          // ...
-        },
+        onButtonTap1: () {},
         onButtonTap2: () {
           Navigator.push(
             context,

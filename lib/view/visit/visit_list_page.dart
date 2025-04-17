@@ -121,7 +121,7 @@ class _VisitListPageState extends State<VisitListPage> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 32.0),
                             child: VisitCard(
-                              id: v.id,
+                              id: v.reportId,
                               time: v.time,
                               name: v.name,
                               address: v.address,

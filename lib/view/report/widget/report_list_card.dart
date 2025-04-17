@@ -85,7 +85,7 @@ class ReportListCard extends StatelessWidget {
           // 오른쪽: 버튼
           ElevatedButton.icon(
             onPressed: () {
-              context.read<TargetIdProvider>().setReportId(target.reportId);
+              context.read<ReportIdProvider>().setReportId(target.reportId);
               final reportVM = context.read<ReportViewModel>();
               reportVM.setSelectedTarget(target);
 

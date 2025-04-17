@@ -113,8 +113,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const ReportListPage(),
-                            ),
+                                builder: (_) => const ReportListPage()),
                           );
                         },
                         child: const RecentCard2(
@@ -161,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                   const Center(child: CircularProgressIndicator())
                 else
                   ...visits.map((v) => VisitCard(
-                        id: v.id,
+                        id: v.reportId,
                         time: v.time,
                         name: v.name,
                         address: v.address,
