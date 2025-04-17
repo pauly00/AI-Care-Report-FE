@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:safe_hi/provider/nav/bottom_nav_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:safe_hi/repository/user_repository.dart';
+import 'package:safe_hi/repository/report_repository.dart';
 import 'package:safe_hi/repository/visit_repository.dart';
+import 'package:safe_hi/service/report_service.dart';
+import 'package:safe_hi/service/visit_service.dart';
+import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/view_model/signup_view_model.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
 import 'package:safe_hi/view_model/visit/visit_policy_view_model.dart';
-import 'package:safe_hi/view_model/user_view_model.dart';
-import 'package:safe_hi/view_model/visit/visit_summary_view_model.dart';
 import 'package:safe_hi/widget/bottom_menubar/bottom_menubar.dart';
 
 class MainScreen extends StatelessWidget {
@@ -19,11 +20,9 @@ class MainScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => BottomNavProvider()),
         ChangeNotifierProvider(
-            create: (_) => VisitViewModel(repository: VisitRepository())),
+            create: (_) => VisitViewModel(
+                repository: VisitRepository(service: VisitService()))),
         ChangeNotifierProvider(create: (_) => VisitPolicyViewModel()),
-        ChangeNotifierProvider(
-          create: (_) => SummaryViewModel(),
-        ),
         ChangeNotifierProvider(create: (_) => SignupViewModel()),
       ],
       child: const _MainScreenContent(),

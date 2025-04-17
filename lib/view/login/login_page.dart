@@ -28,13 +28,19 @@ class _LoginPageState extends State<LoginPage> {
       saveLogin: _isAutoLogin,
     );
 
+    if (!mounted) return;
     setState(() => _isLoading = false);
 
+    if (!mounted) return;
+
     if (result['success']) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainScreen()),
-      );
+      // ✅ Navigator는 마지막에만!
+      Future.microtask(() {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MainScreen()),
+        );
+      });
     } else {
       showDialog(
         context: context,
