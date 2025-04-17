@@ -1,58 +1,47 @@
 class UserModel {
-  final int userid;
+  final int userId;
   final String name;
   final String phoneNumber;
   final String email;
-  final String birthdate;
+  final String birthDate;
   final int gender;
-  final int permission;
+  final String etc;
+  final int role;
 
   UserModel({
-    required this.userid,
+    required this.userId,
     required this.name,
     required this.phoneNumber,
     required this.email,
-    required this.birthdate,
+    required this.birthDate,
     required this.gender,
-    required this.permission,
+    required this.etc,
+    required this.role,
   });
 
-  /// 회원가입 직후 or 전체 사용자 정보 조회 (서버에서 full json이 내려올 때 사용)
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      userid: json['user_id'] ?? json['userid'] ?? 0,
-      name: json['name'] ?? json['name'] ?? '',
-      phoneNumber: json['phone_number'] ?? '',
-      email: json['email'] ?? '',
-      birthdate: json['birthdate'] ?? '',
-      gender: json['gender'] ?? 0,
-      permission: json['permission'] ?? 0,
+      userId: json['user_id'],
+      name: json['name'],
+      phoneNumber: json['phone_number'],
+      email: json['email'],
+      birthDate: json['birthdate'],
+      gender: json['gender'],
+      etc: json['etc'] ?? '',
+      role: json['role'],
     );
   }
 
-  /// 로그인 시에만 내려오는 간단한 유저 응답 처리
-  factory UserModel.fromLoginResponse(Map<String, dynamic> json) {
-    return UserModel(
-      userid: json['userid'] ?? 0,
-      name: json['name'] ?? '',
-      phoneNumber: '', // 로그인 응답에 없음
-      email: json['email'] ?? '',
-      birthdate: '', // 없음
-      gender: 0, // 없음
-      permission: json['role'] == '동행매니저' ? 1 : 0,
-    );
-  }
-
-  /// 필요하면 toJson도 추가 가능
   Map<String, dynamic> toJson() {
     return {
-      "userid": userid,
-      "name": name,
-      "phoneNumber": phoneNumber,
-      "email": email,
-      "birthdate": birthdate,
-      "gender": gender,
-      "permission": permission,
+      'user_id': userId,
+      'name': name,
+      'phone_number': phoneNumber,
+      'email': email,
+      'birthdate': birthDate,
+      'gender': gender,
+      'etc': etc,
+      'role': role,
     };
   }
 }

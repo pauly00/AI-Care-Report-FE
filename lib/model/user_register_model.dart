@@ -4,7 +4,7 @@ class UserRegisterModel {
   final String email;
   final String birthdate; // birthday → birthdate
   final int gender;
-  final int permission; // role → permission
+  final int role; // role → role
   final String password;
 
   UserRegisterModel({
@@ -13,7 +13,7 @@ class UserRegisterModel {
     required this.email,
     required this.birthdate,
     required this.gender,
-    required this.permission,
+    required this.role,
     required this.password,
   });
 
@@ -24,7 +24,7 @@ class UserRegisterModel {
       "email": email,
       "birthdate": birthdate,
       "gender": gender,
-      "permission": permission,
+      "role": role,
       "password": password,
     };
   }
