@@ -1,34 +1,41 @@
 class Visit {
-  final int id;
+  final int reportId;
+  final int reportStatus;
   final String time;
+  final int targetId;
   final String name;
   final String address;
   final String addressDetails;
   final String phone;
-
-  // 나이, 성별, 기타 필드가 필요하면 여기에 추가
-  // final int age;
-  // final String gender;
+  final int gender;
+  final int age;
 
   Visit({
-    required this.id,
+    required this.reportId,
+    required this.reportStatus,
     required this.time,
+    required this.targetId,
     required this.name,
     required this.address,
     required this.addressDetails,
     required this.phone,
+    required this.gender,
+    required this.age,
   });
 
   factory Visit.fromJson(Map<String, dynamic> json) {
+    final target = json['targetInfo'] ?? {};
     return Visit(
-      id: json['id'] ?? 1,
-      time: json['time'] ?? '10:00 AM',
-      name: json['name'] ?? '이유진',
-      address: json['address'] ?? '대전 서구 대덕대로 150',
-      addressDetails: json['addressDetails'] ?? '경성큰마을아파트 102동 103호',
-      phone: json['phone'] ?? '010-0000-0000',
-      // age: json['age'],
-      // gender: json['gender'],
+      reportId: json['reportid'] is int ? json['reportid'] : 0,
+      reportStatus: json['reportstatus'] is int ? json['reportstatus'] : 0,
+      time: json['visittime'] ?? '',
+      targetId: target['targetid'] is int ? target['targetid'] : 0,
+      name: target['targetname'] ?? '',
+      address: target['address1'] ?? '',
+      addressDetails: target['address2'] ?? '',
+      phone: target['targetcallnum'] ?? target['callnum'] ?? '',
+      age: target['age'] is int ? target['age'] : 0,
+      gender: target['gender'] is int ? target['gender'] : 0,
     );
   }
 }
