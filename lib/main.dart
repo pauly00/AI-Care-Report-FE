@@ -10,6 +10,7 @@ import 'package:safe_hi/repository/report_repository.dart';
 import 'package:safe_hi/service/report_service.dart';
 import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/util/connectivity.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,9 +102,19 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      locale: const Locale('ko', 'KR'),
+      supportedLocales: const [
+        Locale('ko', 'KR'),
+        Locale('en', 'US'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: _hasInternet
           ? (isLoggedIn ? const MainScreen() : const LoginPage())
-          : const Scaffold(), // 연결 없을 땐 빈 화면 유지 (팝업으로 안내 중)
+          : const Scaffold(),
     );
   }
 }

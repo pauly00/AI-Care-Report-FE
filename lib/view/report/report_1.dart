@@ -75,27 +75,39 @@ class _Report1State extends State<Report1> {
                                           Border.all(color: Color(0xFFFB5457)),
                                     ),
                                     child: TextButton(
-                                      onPressed: () => setState(
-                                          () => _isEditing = !_isEditing),
+                                      onPressed: () {
+                                        setState(
+                                            () => _isEditing = !_isEditing);
+                                      },
                                       style: TextButton.styleFrom(
                                         padding: EdgeInsets.zero,
                                         minimumSize: Size.zero,
                                         tapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
                                       ),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.edit_note_rounded,
-                                              size: responsive.iconSize * 0.6,
-                                              color: Color(0xFFFB5457)),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            '수정',
-                                            style: TextStyle(
-                                                fontSize: responsive.fontSmall,
+                                      child: AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        transitionBuilder: (child, animation) =>
+                                            FadeTransition(
+                                                opacity: animation,
+                                                child: child),
+                                        child: Row(
+                                          key: ValueKey(_isEditing),
+                                          children: [
+                                            Icon(Icons.edit_note_rounded,
+                                                size: responsive.iconSize * 0.6,
                                                 color: Color(0xFFFB5457)),
-                                          ),
-                                        ],
+                                            SizedBox(width: 4),
+                                            Text(
+                                              '수정',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      responsive.fontSmall,
+                                                  color: Color(0xFFFB5457)),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -137,7 +149,7 @@ class _Report1State extends State<Report1> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                          width: 80,
+                                          width: 120,
                                           child: Text('주소',
                                               style: TextStyle(
                                                   fontSize:
@@ -155,7 +167,7 @@ class _Report1State extends State<Report1> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                          width: 80,
+                                          width: 120,
                                           child: Text('전화번호',
                                               style: TextStyle(
                                                   fontSize:
@@ -184,12 +196,6 @@ class _Report1State extends State<Report1> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                          width: 80,
-                                          child: Text('특이사항',
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      responsive.fontBase))),
                                       Expanded(
                                           child: Text('대전 지부 OOO동 담당',
                                               style: TextStyle(
@@ -295,6 +301,13 @@ class _Report1State extends State<Report1> {
                                             DropdownMenuItem(
                                               value: '전화 방문',
                                               child: Text('전화 방문',
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          responsive.fontBase)),
+                                            ),
+                                            DropdownMenuItem(
+                                              value: '기타',
+                                              child: Text('기타',
                                                   style: TextStyle(
                                                       fontSize:
                                                           responsive.fontBase)),
