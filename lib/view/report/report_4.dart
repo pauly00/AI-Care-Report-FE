@@ -3,6 +3,7 @@ import 'package:safe_hi/view/report/report_5.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class Report4 extends StatefulWidget {
   const Report4({super.key});
@@ -16,15 +17,18 @@ class _Report4State extends State<Report4> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: Column(
           children: [
-            DefaultBackAppBar(title: '돌봄 리포트'),
+            const DefaultBackAppBar(title: '돌봄 리포트'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: responsive.paddingHorizontal),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -34,12 +38,12 @@ class _Report4State extends State<Report4> {
                       stepTitle: 'step 4',
                       stepSubtitle: '특이사항 작성',
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: responsive.sectionSpacing * 1.5),
                     Container(
                       constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height * 0.5,
                       ),
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(responsive.cardSpacing),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -54,13 +58,15 @@ class _Report4State extends State<Report4> {
                       child: TextFormField(
                         controller: _controller,
                         maxLines: null,
-                        decoration: const InputDecoration(
+                        style: TextStyle(fontSize: responsive.fontBase),
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: '특이사항을 작성해주세요.',
+                          hintStyle: TextStyle(fontSize: responsive.fontSmall),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: responsive.sectionSpacing * 1.2),
                   ],
                 ),
               ),
@@ -69,7 +75,7 @@ class _Report4State extends State<Report4> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 32.0),
+        padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
           buttonText1: '이전',
           buttonText2: '다음'.padLeft(14).padRight(28),

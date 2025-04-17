@@ -3,6 +3,7 @@ import 'package:safe_hi/view/report/report_4.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class Report3 extends StatefulWidget {
   const Report3({super.key});
@@ -16,15 +17,18 @@ class _Report3State extends State<Report3> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: Column(
           children: [
-            DefaultBackAppBar(title: '돌봄 리포트'),
+            const DefaultBackAppBar(title: '돌봄 리포트'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: responsive.paddingHorizontal),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -34,12 +38,13 @@ class _Report3State extends State<Report3> {
                       stepTitle: 'step 3',
                       stepSubtitle: '정책 추천',
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: responsive.sectionSpacing),
                     Column(
                       children: List.generate(2, (index) {
                         return Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          padding: const EdgeInsets.all(16),
+                          margin:
+                              EdgeInsets.only(bottom: responsive.cardSpacing),
+                          padding: EdgeInsets.all(responsive.cardSpacing),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
@@ -56,16 +61,16 @@ class _Report3State extends State<Report3> {
                             children: [
                               Text(
                                 '추천 정책 ${index + 1}. 정책명',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red,
-                                  fontSize: 16,
+                                  fontSize: responsive.fontBase,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: responsive.itemSpacing),
                               Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.all(12),
+                                padding: EdgeInsets.all(responsive.itemSpacing),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: const Color(0xFFEBE7E7)),
@@ -73,21 +78,37 @@ class _Report3State extends State<Report3> {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text('정책 개요'),
-                                    Text('• 내용'),
-                                    Text('• 내용'),
-                                    SizedBox(height: 8),
-                                    Text('세부 설명'),
-                                    Text('• 조건'),
-                                    Text('• 기준'),
-                                    SizedBox(height: 8),
-                                    Text('추천 이유'),
-                                    Text('• AI 추천 이유'),
+                                  children: [
+                                    Text('정책 개요',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    Text('• 내용',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    Text('• 내용',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    SizedBox(height: responsive.itemSpacing),
+                                    Text('세부 설명',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    Text('• 조건',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    Text('• 기준',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    SizedBox(height: responsive.itemSpacing),
+                                    Text('추천 이유',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
+                                    Text('• AI 추천 이유',
+                                        style: TextStyle(
+                                            fontSize: responsive.fontSmall)),
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: responsive.itemSpacing),
                               Row(
                                 children: [
                                   Expanded(
@@ -96,19 +117,21 @@ class _Report3State extends State<Report3> {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             const Color(0xFFFB5457),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical:
+                                                responsive.itemSpacing * 0.8),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(6),
                                         ),
                                       ),
-                                      child: const Text('자세히 보기',
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                      child: Text('자세히 보기',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.fontSmall)),
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
+                                  SizedBox(width: responsive.itemSpacing),
                                   Checkbox(
                                     value: _isSelected[index],
                                     onChanged: (val) {
@@ -116,9 +139,9 @@ class _Report3State extends State<Report3> {
                                     },
                                     activeColor: const Color(0xFFFB5457),
                                   ),
-                                  const Text('선택',
+                                  Text('선택',
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: responsive.fontSmall,
                                           fontWeight: FontWeight.w500)),
                                 ],
                               )
@@ -135,7 +158,7 @@ class _Report3State extends State<Report3> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 32.0),
+        padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
           buttonText1: '이전',
           buttonText2: '다음'.padLeft(14).padRight(28),

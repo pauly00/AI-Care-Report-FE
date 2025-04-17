@@ -6,6 +6,7 @@ import 'package:safe_hi/view/report/report_6.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class Report5 extends StatefulWidget {
   const Report5({super.key});
@@ -39,15 +40,18 @@ class _Report5State extends State<Report5> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: Column(
           children: [
-            DefaultBackAppBar(title: '돌봄 리포트'),
+            const DefaultBackAppBar(title: '돌봄 리포트'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: responsive.paddingHorizontal),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -57,100 +61,102 @@ class _Report5State extends State<Report5> {
                       stepTitle: 'step 5',
                       stepSubtitle: '부록/첨부',
                     ),
-                    const SizedBox(height: 24),
-
-                    // 상담내용 전체 보기
+                    SizedBox(height: responsive.sectionSpacing * 1.5),
                     GestureDetector(
                       onTap: () {
                         // TODO: 이동할 페이지 연결 필요
                       },
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 40),
+                        padding: EdgeInsets.symmetric(
+                            vertical: responsive.buttonHeight * 1.3),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFEAEA),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('📋', style: TextStyle(fontSize: 40)),
-                            SizedBox(height: 8),
+                            Text('📋',
+                                style: TextStyle(fontSize: responsive.fontXL)),
+                            SizedBox(height: responsive.itemSpacing / 2),
                             Text('상담내용 전체 보기',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600)),
+                                    fontSize: responsive.fontBase,
+                                    fontWeight: FontWeight.w600)),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-
-                    // 사진 첨부하기
+                    SizedBox(height: responsive.itemSpacing),
                     GestureDetector(
                       onTap: _pickImages,
                       child: Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 40),
+                        padding: EdgeInsets.symmetric(
+                            vertical: responsive.buttonHeight * 1.3),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFEAEA),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('📎', style: TextStyle(fontSize: 40)),
-                            SizedBox(height: 8),
+                            Text('📎',
+                                style: TextStyle(fontSize: responsive.fontXL)),
+                            SizedBox(height: responsive.itemSpacing / 2),
                             Text('사진 첨부하기',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600)),
+                                    fontSize: responsive.fontBase,
+                                    fontWeight: FontWeight.w600)),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-
-                    // 로딩 중 표시
+                    SizedBox(height: responsive.itemSpacing),
                     if (_isLoading)
                       const Center(child: CircularProgressIndicator()),
-
-                    // 선택된 이미지 미리보기
                     if (_selectedImages.isNotEmpty)
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: List.generate(_selectedImages.length, (i) {
-                          return Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  File(_selectedImages[i].path),
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: GestureDetector(
-                                  onTap: () => _removeImage(i),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black54,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(Icons.close,
-                                        color: Colors.white, size: 16),
+                      Padding(
+                        padding: EdgeInsets.only(top: responsive.itemSpacing),
+                        child: Wrap(
+                          spacing: responsive.itemSpacing / 2,
+                          runSpacing: responsive.itemSpacing / 2,
+                          children: List.generate(_selectedImages.length, (i) {
+                            return Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    File(_selectedImages[i].path),
+                                    width: responsive.imageSize,
+                                    height: responsive.imageSize,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              ),
-                            ],
-                          );
-                        }),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () => _removeImage(i),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(Icons.close,
+                                          color: Colors.white,
+                                          size: responsive.fontSmall),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                        ),
                       ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: responsive.sectionSpacing * 1.2),
                   ],
                 ),
               ),
@@ -159,7 +165,7 @@ class _Report5State extends State<Report5> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 32.0),
+        padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
           buttonText1: '이전',
           buttonText2: '다음'.padLeft(14).padRight(28),

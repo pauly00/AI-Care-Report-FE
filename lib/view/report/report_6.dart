@@ -5,21 +5,25 @@ import 'package:safe_hi/view/report/widget/report_step_header.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
 import 'package:safe_hi/main_screen.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class Report6 extends StatelessWidget {
   const Report6({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
         child: Column(
           children: [
-            DefaultBackAppBar(title: '돌봄 리포트'),
+            const DefaultBackAppBar(title: '돌봄 리포트'),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: responsive.paddingHorizontal),
                 child: Column(
                   children: [
                     const ReportStepHeader(
@@ -28,80 +32,84 @@ class Report6 extends StatelessWidget {
                       stepTitle: '2025.03.26 (수)',
                       stepSubtitle: 'OOO 어르신 돌봄 리포트',
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: responsive.sectionSpacing * 1.5),
                     Expanded(
                       child: Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text(
+                            Text(
                               '돌봄 리포트가 완성되었습니다',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: responsive.fontBase,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 8),
-                            const Text(
+                            SizedBox(height: responsive.itemSpacing / 1.5),
+                            Text(
                               '완성된 파일을 다운받아 확인해보세요!',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: responsive.fontSmall,
                                 color: Colors.black54,
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 32),
+                            SizedBox(height: responsive.sectionSpacing * 2),
                             Row(
                               children: [
                                 Expanded(
                                   child: GestureDetector(
-                                    onTap: () {
-                                      // 공유 기능 연결 예정
-                                    },
+                                    onTap: () {},
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 24),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              responsive.buttonHeight * 1.2),
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFFFEAEA),
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                       child: Column(
-                                        children: const [
+                                        children: [
                                           Icon(Icons.share,
-                                              size: 32, color: Colors.black87),
-                                          SizedBox(height: 8),
+                                              size: responsive.iconSize,
+                                              color: Colors.black87),
+                                          SizedBox(
+                                              height:
+                                                  responsive.itemSpacing / 2),
                                           Text('공유하기',
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: responsive.fontBase,
                                                   fontWeight: FontWeight.w600)),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 16),
+                                SizedBox(width: responsive.itemSpacing),
                                 Expanded(
                                   child: GestureDetector(
-                                    onTap: () {
-                                      // 다운로드 기능 연결 예정
-                                    },
+                                    onTap: () {},
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 24),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              responsive.buttonHeight * 1.2),
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFFFEAEA),
                                         borderRadius: BorderRadius.circular(16),
                                       ),
                                       child: Column(
-                                        children: const [
+                                        children: [
                                           Icon(Icons.download_rounded,
-                                              size: 32, color: Colors.black87),
-                                          SizedBox(height: 8),
+                                              size: responsive.iconSize,
+                                              color: Colors.black87),
+                                          SizedBox(
+                                              height:
+                                                  responsive.itemSpacing / 2),
                                           Text('다운로드',
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  fontSize: responsive.fontBase,
                                                   fontWeight: FontWeight.w600)),
                                         ],
                                       ),
@@ -122,7 +130,9 @@ class Report6 extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.symmetric(
+          vertical: responsive.paddingHorizontal,
+        ),
         child: BottomOneButton(
           buttonText: '닫기',
           onButtonTap: () {
