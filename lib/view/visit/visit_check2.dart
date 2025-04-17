@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/provider/id/report_id.dart';
 import 'package:safe_hi/view/visit/visit_welfare_recommend.dart';
 import 'package:safe_hi/view_model/visit/visit_policy_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
@@ -11,13 +12,9 @@ class Check2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<VisitPolicyViewModel>(
-          create: (_) => VisitPolicyViewModel(),
-        ),
-      ],
-      child: const _Check2Body(),
+    return ChangeNotifierProvider<VisitPolicyViewModel>(
+      create: (_) => VisitPolicyViewModel(),
+      builder: (context, child) => const _Check2Body(),
     );
   }
 }
@@ -119,7 +116,18 @@ class _Check2BodyState extends State<_Check2Body> {
         child: BottomOneButton(
           buttonText: '다음',
           onButtonTap: () async {
-            final welfareList = await vmPolicy.fetchWelfarePolicies();
+            final reportId = context.read<ReportIdProvider>().reportId;
+            debugPrint('[타겟id!!!] : ${reportId}');
+
+            if (reportId == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('대상자를 먼저 선택해주세요.')),
+              );
+              return;
+            }
+
+            final welfareList =
+                await vmPolicy.fetchWelfarePolicies(reportId); // ✅ 이제 OK
             if (!mounted) return;
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) return;
