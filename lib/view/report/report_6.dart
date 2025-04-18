@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:safe_hi/provider/nav/bottom_nav_provider.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
+import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
 import 'package:safe_hi/main_screen.dart';
@@ -29,10 +31,9 @@ class Report6 extends StatelessWidget {
                     const ReportStepHeader(
                       currentStep: 6,
                       totalSteps: 6,
-                      stepTitle: '2025.03.26 (수)',
-                      stepSubtitle: 'OOO 어르신 돌봄 리포트',
+                      stepTitle: '',
+                      stepSubtitle: '',
                     ),
-                    SizedBox(height: responsive.sectionSpacing * 1.5),
                     Expanded(
                       child: Center(
                         child: Column(
@@ -90,7 +91,41 @@ class Report6 extends StatelessWidget {
                                 SizedBox(width: responsive.itemSpacing),
                                 Expanded(
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      final reportId = context
+                                          .read<ReportViewModel>()
+                                          .selectedTarget
+                                          ?.reportId;
+                                      if (reportId == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text('리포트 ID가 없습니다.')),
+                                        );
+                                        return;
+                                      }
+
+                                      try {
+                                        final file = await context
+                                            .read<ReportViewModel>()
+                                            .downloadReport(reportId);
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  '다운로드 완료: ${file.path}')),
+                                        );
+                                        await OpenFile.open(file.path);
+                                      } catch (e) {
+                                        debugPrint('❌ 다운로드 실패: $e');
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text('다운로드 실패: $e')),
+                                        );
+                                      }
+                                    },
                                     child: Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical:

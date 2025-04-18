@@ -6,6 +6,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:safe_hi/model/report_model.dart';
 import 'package:safe_hi/model/user_model.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 class ReportService {
   static const String baseUrl = 'http://211.188.55.88:3000';
@@ -178,6 +179,24 @@ class ReportService {
       return response.body; // 서버는 순수 텍스트 반환
     } else {
       throw Exception('상담 텍스트 불러오기 실패: ${response.statusCode}');
+    }
+  }
+
+  Future<File> downloadReport(int reportId) async {
+    final url = Uri.parse('$baseUrl/db/getReport/$reportId');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final bytes = response.bodyBytes;
+      final dir = await getApplicationDocumentsDirectory();
+
+      final file = File('${dir.path}/report_$reportId.doc');
+
+      await file.writeAsBytes(bytes);
+
+      return file;
+    } else {
+      throw Exception('리포트 다운로드 실패: ${response.statusCode}');
     }
   }
 }

@@ -42,4 +42,8 @@ class ReportRepository {
   Future<String> getConversationText(int reportId) {
     return service.getConversationText(reportId);
   }
+
+  Future<File> downloadReport(int reportId) {
+    return service.downloadReport(reportId);
+  }
 }

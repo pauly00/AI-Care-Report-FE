@@ -84,4 +84,8 @@ class ReportViewModel extends ChangeNotifier {
     _conversationText = await repository.getConversationText(reportId);
     notifyListeners();
   }
+
+  Future<File> downloadReport(int reportId) async {
+    return await repository.downloadReport(reportId);
+  }
 }
