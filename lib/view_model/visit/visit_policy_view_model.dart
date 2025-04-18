@@ -14,6 +14,10 @@ class VisitPolicyViewModel extends ChangeNotifier {
 
     try {
       final policyList = await repo.fetchWelfarePolicies(reportId);
+      for (var p in policyList) {
+        debugPrint(
+            '[정책 로드] id: ${p.id}, name: ${p.policyName}, checkStatus: ${p.checkStatus}');
+      }
       return policyList;
     } finally {
       isLoading = false;
@@ -28,7 +32,7 @@ class VisitPolicyViewModel extends ChangeNotifier {
     final policyList = policies
         .map((p) => {
               'id': p.id,
-              'checkStatus': p.checkStatus ? 1 : 0,
+              'checkStatus': p.checkStatus,
             })
         .toList();
 

@@ -156,10 +156,10 @@ class _Report3State extends State<Report3> {
                                   ),
                                   SizedBox(width: responsive.itemSpacing),
                                   Checkbox(
-                                    value: policy.checkStatus,
+                                    value: policy.checkStatus == 1,
                                     onChanged: (val) {
                                       setState(() {
-                                        policy.checkStatus = val!;
+                                        policy.checkStatus = val! ? 1 : 0;
                                       });
                                     },
                                     activeColor: const Color(0xFFFB5457),

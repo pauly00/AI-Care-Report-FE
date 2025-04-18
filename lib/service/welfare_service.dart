@@ -54,8 +54,20 @@ class WelfareService {
       body: jsonEncode(body),
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('정책 업로드 실패');
+    debugPrint('[정책 업로드 응답 코드] ${response.statusCode}');
+    debugPrint('[정책 업로드 응답 본문] ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+
+      if (data['status'] == true) {
+        debugPrint('✅ 정책 업로드 성공');
+        return;
+      } else {
+        throw Exception('❌ 서버 응답 실패: ${data['message'] ?? '상세 메시지 없음'}');
+      }
+    } else {
+      throw Exception('❌ HTTP 오류: ${response.statusCode}');
     }
   }
 }

@@ -4,7 +4,7 @@ class WelfarePolicy {
   final String shortDescription;
   final List<String> detailedConditions;
   final String link;
-  bool checkStatus;
+  int checkStatus;
 
   WelfarePolicy({
     required this.id,
@@ -12,7 +12,7 @@ class WelfarePolicy {
     required this.shortDescription,
     required this.detailedConditions,
     required this.link,
-    this.checkStatus = true,
+    required this.checkStatus,
   });
 
   factory WelfarePolicy.fromJson(Map<String, dynamic> json) {
@@ -22,7 +22,7 @@ class WelfarePolicy {
       shortDescription: json['short_description'] as String,
       detailedConditions: List<String>.from(json['detailed_conditions']),
       link: json['link'] as String,
-      checkStatus: (json['checkStatus'] ?? 1) == 1,
+      checkStatus: json['checkStatus'] ?? 1,
     );
   }
 
