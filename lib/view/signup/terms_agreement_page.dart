@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
-import 'package:safe_hi/view/signup/role_select_page.dart';
 import 'package:safe_hi/util/responsive.dart';
+import 'package:safe_hi/view/signup/signup_form_page.dart';
 
 class TermsAgreementPage extends StatefulWidget {
   const TermsAgreementPage({super.key});
@@ -127,7 +127,7 @@ class _TermsAgreementPageState extends State<TermsAgreementPage> {
             if (_allIndividualAgree) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const RoleSelectPage()),
+                MaterialPageRoute(builder: (_) => const SignupFormPage()),
               );
             }
           },

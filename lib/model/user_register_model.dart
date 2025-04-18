@@ -1,10 +1,9 @@
 class UserRegisterModel {
-  final String name; // username → name
-  final String phoneNumber; // callnum → phoneNumber
+  final String name;
+  final String phoneNumber;
   final String email;
-  final String birthdate; // birthday → birthdate
+  final String birthdate;
   final int gender;
-  final int role; // role → role
   final String password;
 
   UserRegisterModel({
@@ -13,7 +12,6 @@ class UserRegisterModel {
     required this.email,
     required this.birthdate,
     required this.gender,
-    required this.role,
     required this.password,
   });
 
@@ -24,7 +22,6 @@ class UserRegisterModel {
       "email": email,
       "birthdate": birthdate,
       "gender": gender,
-      "role": role,
       "password": password,
     };
   }

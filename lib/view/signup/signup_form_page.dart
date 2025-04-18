@@ -10,9 +10,7 @@ import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/view/login/login_page.dart';
 
 class SignupFormPage extends StatefulWidget {
-  final int role;
-
-  const SignupFormPage({super.key, required this.role});
+  const SignupFormPage({super.key});
 
   @override
   State<SignupFormPage> createState() => _SignupFormPageState();
@@ -152,7 +150,6 @@ class _SignupFormPageState extends State<SignupFormPage> {
                   email: _emailController.text.trim(),
                   birthdate: _birthController.text.trim(),
                   gender: genderValue,
-                  role: widget.role,
                   password: _passwordController.text.trim(),
                 );
 

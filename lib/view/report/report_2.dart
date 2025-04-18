@@ -267,7 +267,7 @@ class _Report2State extends State<Report2> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: responsive.sectionSpacing * 2),
+        padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
           buttonText1: '이전',
           buttonText2: _isEditing

@@ -70,7 +70,7 @@ class _RoleSelectPageState extends State<RoleSelectPage> {
               MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider(
                   create: (_) => SignupViewModel(),
-                  child: SignupFormPage(role: roleValue),
+                  //child: SignupFormPage(role: roleValue),
                 ),
               ),
             );
