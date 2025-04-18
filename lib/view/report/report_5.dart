@@ -181,20 +181,22 @@ class _Report5State extends State<Report5> {
               final reportId =
                   context.read<ReportViewModel>().selectedTarget?.reportId;
 
-              if (reportId == null || _selectedImages.isEmpty) {
+              if (reportId == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('이미지 또는 리포트 ID가 없습니다.')),
+                  const SnackBar(content: Text('리포트 ID가 없습니다.')),
                 );
                 return;
               }
 
               try {
-                final imageFiles =
-                    _selectedImages.map((xfile) => File(xfile.path)).toList();
+                if (_selectedImages.isNotEmpty) {
+                  final imageFiles =
+                      _selectedImages.map((xfile) => File(xfile.path)).toList();
 
-                await context
-                    .read<ReportViewModel>()
-                    .uploadImages(reportId, imageFiles);
+                  await context
+                      .read<ReportViewModel>()
+                      .uploadImages(reportId, imageFiles);
+                }
 
                 Navigator.push(
                   context,
