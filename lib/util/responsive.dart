@@ -34,4 +34,7 @@ class Responsive {
   // Layout Decisions
   bool get isWide => screenWidth >= 800;
   bool get isNarrow => screenWidth < 350;
+
+  double get imageReportSize =>
+      (screenWidth - (paddingHorizontal * 2) - (itemSpacing * 2)) / 3;
 }

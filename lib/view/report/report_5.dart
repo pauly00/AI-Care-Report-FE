@@ -131,8 +131,8 @@ class _Report5State extends State<Report5> {
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.file(
                                     File(_selectedImages[i].path),
-                                    width: responsive.imageSize,
-                                    height: responsive.imageSize,
+                                    width: responsive.imageReportSize,
+                                    height: responsive.imageReportSize,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
