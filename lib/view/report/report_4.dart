@@ -81,19 +81,21 @@ class _Report4State extends State<Report4> {
         child: BottomTwoButton(
             buttonText1: '이전',
             buttonText2: '다음'.padLeft(14).padRight(28),
-            onButtonTap1: () {
-              Navigator.pop(context);
-            },
             onButtonTap2: () async {
               final reportId =
                   context.read<ReportViewModel>().selectedTarget?.reportId;
-              final detailText = _controller.text.trim();
+              String detailText = _controller.text.trim();
 
-              if (reportId == null || detailText.isEmpty) {
+              if (reportId == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('리포트 ID 또는 특이사항이 비어 있습니다.')),
+                  const SnackBar(content: Text('리포트 ID가 없습니다.')),
                 );
                 return;
+              }
+
+              // ✅ 빈 값이면 '-'으로 설정
+              if (detailText.isEmpty) {
+                detailText = '-';
               }
 
               try {
