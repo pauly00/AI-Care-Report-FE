@@ -38,4 +38,8 @@ class ReportRepository {
   }) {
     return service.uploadImages(reportId: reportId, imageFiles: imageFiles);
   }
+
+  Future<String> getConversationText(int reportId) {
+    return service.getConversationText(reportId);
+  }
 }

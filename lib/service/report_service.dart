@@ -168,4 +168,16 @@ class ReportService {
       throw Exception('이미지 업로드 실패: ${response.statusCode}');
     }
   }
+
+  Future<String> getConversationText(int reportId) async {
+    final url = Uri.parse('$baseUrl/db/getConverstationSTTtxt/$reportId');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return response.body; // 서버는 순수 텍스트 반환
+    } else {
+      throw Exception('상담 텍스트 불러오기 실패: ${response.statusCode}');
+    }
+  }
 }

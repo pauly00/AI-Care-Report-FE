@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:safe_hi/view/report/report_5_conversation.dart';
 import 'package:safe_hi/view/report/report_6.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
 import 'package:safe_hi/view_model/report_view_model.dart';
@@ -66,7 +67,11 @@ class _Report5State extends State<Report5> {
                     SizedBox(height: responsive.sectionSpacing * 1.5),
                     GestureDetector(
                       onTap: () {
-                        // TODO: 이동할 페이지 연결 필요
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const Report5Conversation()),
+                        );
                       },
                       child: Container(
                         width: double.infinity,

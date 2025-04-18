@@ -130,9 +130,7 @@ class Report6 extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: responsive.paddingHorizontal,
-        ),
+        padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomOneButton(
           buttonText: '닫기',
           onButtonTap: () {

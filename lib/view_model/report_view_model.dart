@@ -76,4 +76,12 @@ class ReportViewModel extends ChangeNotifier {
       debugPrint('[전송할 이미지] ${file.path}');
     }
   }
+
+  String? _conversationText;
+  String? get conversationText => _conversationText;
+
+  Future<void> fetchConversationText(int reportId) async {
+    _conversationText = await repository.getConversationText(reportId);
+    notifyListeners();
+  }
 }
