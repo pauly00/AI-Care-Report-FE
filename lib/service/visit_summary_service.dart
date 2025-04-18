@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:safe_hi/model/visit_summary_model.dart';
 
@@ -42,5 +43,35 @@ class VisitSummaryService {
     //     }
     //   ]
     // });
+  }
+
+  Future<void> uploadVisitSummaryEdit({
+    required int reportId,
+    required List<VisitSummary> summaries,
+  }) async {
+    final url = Uri.parse('$baseUrl/db/uploadEditAbstract');
+
+    final body = {
+      'reportid': reportId,
+      'items': summaries
+          .map((summary) => {
+                'subject': summary.subject,
+                'abstract': summary.abstract,
+                'detail': summary.detail,
+              })
+          .toList(),
+    };
+
+    debugPrint('[요약 업로드 요청] ${jsonEncode(body)}');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('요약 수정 업로드 실패: ${response.statusCode}');
+    }
   }
 }

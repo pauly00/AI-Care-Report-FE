@@ -29,4 +29,17 @@ class VisitSummaryViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> uploadAllSummaries(int reportId) async {
+    try {
+      await repository.uploadEditedSummary(
+        reportId: reportId,
+        summaries: _summaries,
+      );
+      debugPrint('[요약 업로드 완료]');
+    } catch (e) {
+      debugPrint('[요약 업로드 실패] $e');
+      rethrow;
+    }
+  }
 }

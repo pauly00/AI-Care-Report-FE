@@ -9,4 +9,14 @@ class VisitSummaryRepository {
   Future<VisitSummaryResponse> getSummary(int reportId) {
     return service.fetchVisitSummary(reportId);
   }
+
+  Future<void> uploadEditedSummary({
+    required int reportId,
+    required List<VisitSummary> summaries,
+  }) {
+    return service.uploadVisitSummaryEdit(
+      reportId: reportId,
+      summaries: summaries,
+    );
+  }
 }

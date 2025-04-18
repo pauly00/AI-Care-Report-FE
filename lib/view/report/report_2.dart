@@ -276,15 +276,29 @@ class _Report2State extends State<Report2> {
           onButtonTap1: () {
             Navigator.pop(context);
           },
-          onButtonTap2: () {
+          onButtonTap2: () async {
             if (_isEditing) {
               setState(() => _isEditing = false);
               return;
             }
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Report3()),
-            );
+
+            final reportId =
+                context.read<ReportViewModel>().selectedTarget?.reportId;
+            if (reportId == null) return;
+
+            try {
+              await context
+                  .read<VisitSummaryViewModel>()
+                  .uploadAllSummaries(reportId);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Report3()),
+              );
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('업로드 실패: $e')),
+              );
+            }
           },
         ),
       ),
