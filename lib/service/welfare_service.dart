@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 const String baseUrl = 'http://211.188.55.88:3000';
@@ -36,4 +37,25 @@ class WelfareService {
   //     },
   //   ],
   // };
+
+  Future<void> uploadPolicyCheckStatus({
+    required int reportId,
+    required List<Map<String, dynamic>> policyList,
+  }) async {
+    final url = Uri.parse('$baseUrl/db/uploadCheckPolicy');
+    final body = {
+      'reportid': reportId,
+      'policy': policyList,
+    };
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('정책 업로드 실패');
+    }
+  }
 }

@@ -13,4 +13,14 @@ class WelfareRepository {
 
     return policyList.map((item) => WelfarePolicy.fromJson(item)).toList();
   }
+
+  Future<void> uploadPolicyCheckStatus({
+    required int reportId,
+    required List<Map<String, dynamic>> policyList,
+  }) {
+    return _service.uploadPolicyCheckStatus(
+      reportId: reportId,
+      policyList: policyList,
+    );
+  }
 }

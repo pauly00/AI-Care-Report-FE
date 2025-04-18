@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/model/welfare_policy_model.dart';
 import 'package:safe_hi/view/report/report_4.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
+import 'package:safe_hi/view_model/report_view_model.dart';
+import 'package:safe_hi/view_model/visit/visit_policy_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
 import 'package:safe_hi/util/responsive.dart';
@@ -14,6 +18,27 @@ class Report3 extends StatefulWidget {
 
 class _Report3State extends State<Report3> {
   List<bool> _isSelected = [true, true];
+
+  List<WelfarePolicy> _policies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final reportId = context.read<ReportViewModel>().selectedTarget?.reportId;
+
+      if (reportId == null) {
+        debugPrint('❌ reportId가 null입니다.');
+        return;
+      }
+
+      // ✅ Provider에서 ViewModel 가져오기
+      final policyVM = context.read<VisitPolicyViewModel>();
+      final fetched = await policyVM.fetchWelfarePolicies(reportId);
+
+      setState(() => _policies = fetched);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +65,8 @@ class _Report3State extends State<Report3> {
                     ),
                     SizedBox(height: responsive.sectionSpacing),
                     Column(
-                      children: List.generate(2, (index) {
+                      children: List.generate(_policies.length, (index) {
+                        final policy = _policies[index];
                         return Container(
                           margin:
                               EdgeInsets.only(bottom: responsive.cardSpacing),
@@ -60,7 +86,7 @@ class _Report3State extends State<Report3> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '추천 정책 ${index + 1}. 정책명',
+                                '추천 정책 ${index + 1}. ${policy.policyName}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red,
@@ -81,30 +107,27 @@ class _Report3State extends State<Report3> {
                                   children: [
                                     Text('정책 개요',
                                         style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
-                                    Text('• 내용',
-                                        style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
-                                    Text('• 내용',
+                                          fontSize: responsive.fontBase,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    Text('• ${policy.shortDescription}',
                                         style: TextStyle(
                                             fontSize: responsive.fontSmall)),
                                     SizedBox(height: responsive.itemSpacing),
                                     Text('세부 설명',
                                         style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
-                                    Text('• 조건',
-                                        style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
-                                    Text('• 기준',
-                                        style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
+                                          fontSize: responsive.fontBase,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    ...policy.detailedConditions
+                                        .map((condition) => Text(
+                                              '• $condition',
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      responsive.fontSmall),
+                                            ))
+                                        .toList(),
                                     SizedBox(height: responsive.itemSpacing),
-                                    Text('추천 이유',
-                                        style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
-                                    Text('• AI 추천 이유',
-                                        style: TextStyle(
-                                            fontSize: responsive.fontSmall)),
                                   ],
                                 ),
                               ),
@@ -133,9 +156,11 @@ class _Report3State extends State<Report3> {
                                   ),
                                   SizedBox(width: responsive.itemSpacing),
                                   Checkbox(
-                                    value: _isSelected[index],
+                                    value: policy.checkStatus,
                                     onChanged: (val) {
-                                      setState(() => _isSelected[index] = val!);
+                                      setState(() {
+                                        policy.checkStatus = val!;
+                                      });
                                     },
                                     activeColor: const Color(0xFFFB5457),
                                   ),
@@ -160,18 +185,39 @@ class _Report3State extends State<Report3> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
-          buttonText1: '이전',
-          buttonText2: '다음'.padLeft(14).padRight(28),
-          onButtonTap1: () {
-            Navigator.pop(context);
-          },
-          onButtonTap2: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Report4()),
-            );
-          },
-        ),
+            buttonText1: '이전',
+            buttonText2: '다음'.padLeft(14).padRight(28),
+            onButtonTap1: () {
+              Navigator.pop(context);
+            },
+            onButtonTap2: () async {
+              final reportId =
+                  context.read<ReportViewModel>().selectedTarget?.reportId;
+              if (reportId == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('리포트 ID를 찾을 수 없습니다.')),
+                );
+                return;
+              }
+
+              try {
+                final policyVM = context.read<VisitPolicyViewModel>();
+                await policyVM.uploadPolicyCheckStatus(
+                  reportId: reportId,
+                  policies: _policies,
+                );
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Report4()),
+                );
+              } catch (e) {
+                debugPrint('❌ 정책 전송 실패: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('정책 전송 실패: $e')),
+                );
+              }
+            }),
       ),
     );
   }

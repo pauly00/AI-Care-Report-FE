@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:safe_hi/view/report/report_3.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
 import 'package:safe_hi/view_model/report_view_model.dart';
+import 'package:safe_hi/view_model/visit/visit_policy_view_model.dart';
 import 'package:safe_hi/view_model/visit_summary_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
@@ -292,7 +293,12 @@ class _Report2State extends State<Report2> {
                   .uploadAllSummaries(reportId);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Report3()),
+                MaterialPageRoute(
+                  builder: (_) => ChangeNotifierProvider(
+                    create: (_) => VisitPolicyViewModel(),
+                    child: const Report3(),
+                  ),
+                ),
               );
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(
