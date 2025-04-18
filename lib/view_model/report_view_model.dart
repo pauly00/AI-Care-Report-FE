@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:safe_hi/model/report_model.dart';
 import 'package:safe_hi/model/user_model.dart';
@@ -66,5 +68,12 @@ class ReportViewModel extends ChangeNotifier {
 
   Future<void> uploadVisitDetail(int reportId, String detail) async {
     await repository.uploadVisitDetail(reportId: reportId, detail: detail);
+  }
+
+  Future<void> uploadImages(int reportId, List<File> imageFiles) async {
+    await repository.uploadImages(reportId: reportId, imageFiles: imageFiles);
+    for (var file in imageFiles) {
+      debugPrint('[전송할 이미지] ${file.path}');
+    }
   }
 }

@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_hi/view/report/report_6.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
+import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
 import 'package:safe_hi/util/responsive.dart';
@@ -167,14 +169,39 @@ class _Report5State extends State<Report5> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
-          buttonText1: '이전',
-          buttonText2: '다음'.padLeft(14).padRight(28),
-          onButtonTap1: () => Navigator.pop(context),
-          onButtonTap2: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const Report6()),
-          ),
-        ),
+            buttonText1: '이전',
+            buttonText2: '다음'.padLeft(14).padRight(28),
+            onButtonTap1: () => Navigator.pop(context),
+            onButtonTap2: () async {
+              final reportId =
+                  context.read<ReportViewModel>().selectedTarget?.reportId;
+
+              if (reportId == null || _selectedImages.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('이미지 또는 리포트 ID가 없습니다.')),
+                );
+                return;
+              }
+
+              try {
+                final imageFiles =
+                    _selectedImages.map((xfile) => File(xfile.path)).toList();
+
+                await context
+                    .read<ReportViewModel>()
+                    .uploadImages(reportId, imageFiles);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const Report6()),
+                );
+              } catch (e) {
+                debugPrint('❌ 이미지 업로드 실패: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('이미지 전송 실패: $e')),
+                );
+              }
+            }),
       ),
     );
   }

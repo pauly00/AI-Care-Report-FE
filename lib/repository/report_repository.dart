@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:safe_hi/model/report_model.dart';
 import 'package:safe_hi/model/user_model.dart';
 import 'package:safe_hi/service/report_service.dart';
@@ -28,5 +30,12 @@ class ReportRepository {
     required String detail,
   }) {
     return service.uploadVisitDetail(reportId: reportId, detail: detail);
+  }
+
+  Future<void> uploadImages({
+    required int reportId,
+    required List<File> imageFiles,
+  }) {
+    return service.uploadImages(reportId: reportId, imageFiles: imageFiles);
   }
 }

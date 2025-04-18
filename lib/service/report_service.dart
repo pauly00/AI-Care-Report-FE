@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:safe_hi/model/report_model.dart';
 import 'package:safe_hi/model/user_model.dart';
+import 'package:path/path.dart' as path;
 
 class ReportService {
   static const String baseUrl = 'http://211.188.55.88:3000';
@@ -132,6 +135,37 @@ class ReportService {
 
     if (response.statusCode != 200) {
       throw Exception('특이사항 업로드 실패: ${response.statusCode}');
+    }
+  }
+
+  Future<void> uploadImages({
+    required int reportId,
+    required List<File> imageFiles,
+  }) async {
+    final uri = Uri.parse('$baseUrl/db/uploadImages');
+    final request = http.MultipartRequest('POST', uri);
+
+    request.fields['reportid'] = reportId.toString();
+
+    for (var file in imageFiles) {
+      final ext = path.extension(file.path).toLowerCase();
+      final mimeType = ext == '.png' ? 'png' : 'jpeg';
+
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'images',
+          file.path,
+          contentType: MediaType('image', mimeType),
+        ),
+      );
+    }
+
+    final response = await http.Response.fromStream(await request.send());
+
+    debugPrint('[이미지 업로드 응답] ${response.statusCode} - ${response.body}');
+
+    if (response.statusCode != 200) {
+      throw Exception('이미지 업로드 실패: ${response.statusCode}');
     }
   }
 }
