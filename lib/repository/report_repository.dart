@@ -22,4 +22,11 @@ class ReportRepository {
       endTime: endTime,
     );
   }
+
+  Future<void> uploadVisitDetail({
+    required int reportId,
+    required String detail,
+  }) {
+    return service.uploadVisitDetail(reportId: reportId, detail: detail);
+  }
 }

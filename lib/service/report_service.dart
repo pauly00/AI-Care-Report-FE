@@ -72,8 +72,7 @@ class ReportService {
     required String visitType,
     required String endTime,
   }) async {
-    final uri =
-        Uri.parse('http://211.188.55.88:3000/db/uploadReportDefaultInfo');
+    final uri = Uri.parse('$baseUrl/db/uploadReportDefaultInfo');
 
     final body = {
       "reportid": target.reportId,
@@ -110,5 +109,29 @@ class ReportService {
     );
 
     return jsonDecode(response.body);
+  }
+
+  Future<void> uploadVisitDetail({
+    required int reportId,
+    required String detail,
+  }) async {
+    final url = Uri.parse('$baseUrl/db/uploadVisitDetail');
+
+    final body = {
+      'reportid': reportId,
+      'detail': detail,
+    };
+
+    debugPrint('[특이사항 업로드 요청] ${jsonEncode(body)}');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('특이사항 업로드 실패: ${response.statusCode}');
+    }
   }
 }

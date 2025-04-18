@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safe_hi/view/report/report_5.dart';
 import 'package:safe_hi/view/report/widget/report_step_header.dart';
+import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_two_btn.dart';
 import 'package:safe_hi/util/responsive.dart';
@@ -77,18 +79,40 @@ class _Report4State extends State<Report4> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomTwoButton(
-          buttonText1: '이전',
-          buttonText2: '다음'.padLeft(14).padRight(28),
-          onButtonTap1: () {
-            Navigator.pop(context);
-          },
-          onButtonTap2: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Report5()),
-            );
-          },
-        ),
+            buttonText1: '이전',
+            buttonText2: '다음'.padLeft(14).padRight(28),
+            onButtonTap1: () {
+              Navigator.pop(context);
+            },
+            onButtonTap2: () async {
+              final reportId =
+                  context.read<ReportViewModel>().selectedTarget?.reportId;
+              final detailText = _controller.text.trim();
+
+              if (reportId == null || detailText.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('리포트 ID 또는 특이사항이 비어 있습니다.')),
+                );
+                return;
+              }
+
+              try {
+                await context.read<ReportViewModel>().uploadVisitDetail(
+                      reportId,
+                      detailText,
+                    );
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Report5()),
+                );
+              } catch (e) {
+                debugPrint('❌ 특이사항 전송 실패: $e');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('전송 실패: $e')),
+                );
+              }
+            }),
       ),
     );
   }

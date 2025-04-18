@@ -63,4 +63,8 @@ class ReportViewModel extends ChangeNotifier {
       debugPrint('[visitTime 변경됨] $formatted');
     }
   }
+
+  Future<void> uploadVisitDetail(int reportId, String detail) async {
+    await repository.uploadVisitDetail(reportId: reportId, detail: detail);
+  }
 }
