@@ -40,6 +40,7 @@ class ReportViewModel extends ChangeNotifier {
   Future<Map<String, dynamic>> submitReportStep1({
     required String visitType,
     required UserModel user,
+    required String endTime,
   }) async {
     if (_selectedTarget == null) {
       throw Exception("선택된 리포트가 없습니다.");
@@ -49,6 +50,7 @@ class ReportViewModel extends ChangeNotifier {
       target: _selectedTarget!,
       user: user,
       visitType: visitType,
+      endTime: endTime,
     );
   }
 

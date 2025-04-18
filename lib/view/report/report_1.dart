@@ -21,7 +21,63 @@ class Report1 extends StatefulWidget {
 class _Report1State extends State<Report1> {
   bool _isEditing = false;
   DateTime? _visitDateTime;
+  DateTime? _endDateTime;
   String _careType = '정기 방문';
+
+  @override
+  void initState() {
+    super.initState();
+    _endDateTime = DateTime.now(); // 초기 endTime 값 설정
+  }
+
+  Widget _buildDateTimePicker({
+    required String label,
+    required DateTime dateTime,
+    required void Function(DateTime) onPicked,
+    required Responsive responsive,
+  }) {
+    return GestureDetector(
+      onTap: () async {
+        final pickedDate = await showDatePicker(
+          context: context,
+          initialDate: dateTime,
+          firstDate: DateTime(2023),
+          lastDate: DateTime(2100),
+        );
+        if (pickedDate != null) {
+          final pickedTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(dateTime),
+          );
+          if (pickedTime != null) {
+            final result = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
+              pickedTime.hour,
+              pickedTime.minute,
+            );
+            onPicked(result);
+          }
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF9F6F6),
+          border: Border.all(color: const Color(0xFFEBE7E7)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          dateTime.toString().substring(0, 16).replaceAll("T", " "),
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: responsive.fontBase,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,65 +267,45 @@ class _Report1State extends State<Report1> {
                                           fontSize: responsive.fontLarge)),
                                   SizedBox(height: responsive.itemSpacing / 2),
                                   _isEditing
-                                      ? GestureDetector(
-                                          onTap: () async {
-                                            final picked = await showDatePicker(
-                                              context: context,
-                                              initialDate: _visitDateTime ??
+                                      ? Row(
+                                          children: [
+                                            Expanded(
+                                                child: _buildDateTimePicker(
+                                              label: "시작시간",
+                                              dateTime: _visitDateTime ??
                                                   DateTime.tryParse(report
                                                       .visitTime
                                                       .replaceAll(" ", "T")) ??
                                                   DateTime.now(),
-                                              firstDate: DateTime(2023),
-                                              lastDate: DateTime(2100),
-                                            );
-                                            if (picked != null) {
-                                              final time = await showTimePicker(
-                                                context: context,
-                                                initialTime: TimeOfDay.now(),
-                                              );
-                                              if (time != null) {
-                                                setState(() {
-                                                  _visitDateTime = DateTime(
-                                                    picked.year,
-                                                    picked.month,
-                                                    picked.day,
-                                                    time.hour,
-                                                    time.minute,
-                                                  );
-                                                });
+                                              onPicked: (picked) {
+                                                setState(() =>
+                                                    _visitDateTime = picked);
                                                 context
                                                     .read<ReportViewModel>()
-                                                    .updateVisitTime(
-                                                        _visitDateTime!);
-                                              }
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(
-                                                responsive.itemSpacing),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFF9F6F6),
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xFFEBE7E7)),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Text(
-                                              _visitDateTime != null
-                                                  ? '${_visitDateTime!.toIso8601String().substring(0, 16).replaceAll("T", " ")}'
-                                                  : report.visitTime,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      responsive.fontBase),
-                                            ),
-                                          ),
+                                                    .updateVisitTime(picked);
+                                              },
+                                              responsive: responsive,
+                                            )),
+                                            SizedBox(width: 8),
+                                            Text("~",
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        responsive.fontBase)),
+                                            SizedBox(width: 8),
+                                            Expanded(
+                                                child: _buildDateTimePicker(
+                                              label: "종료시간",
+                                              dateTime: _endDateTime!,
+                                              onPicked: (picked) {
+                                                setState(() =>
+                                                    _endDateTime = picked);
+                                              },
+                                              responsive: responsive,
+                                            )),
+                                          ],
                                         )
                                       : Text(
-                                          _visitDateTime != null
-                                              ? '${_visitDateTime!.toIso8601String().substring(0, 16).replaceAll("T", " ")}'
-                                              : report.visitTime,
+                                          '${_visitDateTime?.toString().substring(0, 16).replaceAll("T", " ") ?? report.visitTime} ~ ${_endDateTime?.toString().substring(0, 16).replaceAll("T", " ")}',
                                           style: TextStyle(
                                               fontSize: responsive.fontBase),
                                         ),
@@ -357,6 +393,7 @@ class _Report1State extends State<Report1> {
                   '[STEP1 업로드 요청] target: ${target.targetName}, user: ${user.name}, visitType: $_careType');
 
               final result = await reportVM.submitReportStep1(
+                endTime: _endDateTime!.toString().substring(0, 16),
                 visitType: _careType,
                 user: user,
               );

@@ -13,11 +13,13 @@ class ReportRepository {
     required ReportTarget target,
     required UserModel user,
     required String visitType,
+    required String endTime,
   }) {
     return service.uploadDefaultReport(
       target: target,
       user: user,
       visitType: visitType,
+      endTime: endTime,
     );
   }
 }

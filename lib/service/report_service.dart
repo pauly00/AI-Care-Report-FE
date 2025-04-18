@@ -70,6 +70,7 @@ class ReportService {
     required ReportTarget target,
     required UserModel user,
     required String visitType,
+    required String endTime,
   }) async {
     final uri =
         Uri.parse('http://211.188.55.88:3000/db/uploadReportDefaultInfo');
@@ -97,6 +98,7 @@ class ReportService {
         "gender": user.gender,
       },
       "visitType": visitType,
+      'endTime': endTime,
     };
 
     debugPrint('[📤 업로드 요청 body] ${jsonEncode(body)}');
