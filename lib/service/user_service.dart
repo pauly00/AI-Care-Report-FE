@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:safe_hi/util/http_helper.dart';
 import 'package:safe_hi/util/login_storage_helper.dart';
 
 class UserService {
@@ -81,11 +82,17 @@ class UserService {
     // };
   }
 
-  /// 자동 로그인 시 사용자 정보 요청 (더미 응답)
-  Future<Map<String, dynamic>> fetchUserInfo(int userid) async {
+  /// 자동 로그인 시 사용자 정보 요청
+  Future<Map<String, dynamic>> fetchUserInfo() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/db/users/$userid'));
-      debugPrint('[fetchUserInfo] 요청한 userid: $userid');
+      final headers = await buildAuthHeaders(); // ✅ 토큰 포함 헤더
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/db/users'),
+        headers: headers,
+      );
+
+      debugPrint('[fetchUserInfo] 응답 코드: ${response.statusCode}');
       debugPrint('[fetchUserInfo] 응답 body: ${response.body}');
 
       if (response.statusCode == 200) {

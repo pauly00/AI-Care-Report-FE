@@ -17,7 +17,7 @@ class UserViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      final userInfo = await _service.fetchUserInfo(userId);
+      final userInfo = await _service.fetchUserInfo();
       _user = UserModel.fromJson(userInfo);
     } catch (e) {
       debugPrint('User fetch error: $e');
@@ -30,12 +30,16 @@ class UserViewModel extends ChangeNotifier {
   Future<void> tryAutoLogin() async {
     final stored = await LoginStorageHelper.readLogin();
     final loginStatus = stored['loginStatus'];
-    final userIdString = stored['userid'];
-    final id = int.tryParse(userIdString ?? '') ?? 0;
 
-    if (loginStatus == 'true' && id > 0) {
+    final token = await LoginStorageHelper.readToken();
+    if (token == null) {
+      debugPrint('[자동 로그인 실패] 저장된 토큰 없음');
+      return;
+    }
+
+    if (loginStatus == 'true') {
       try {
-        final userInfo = await _service.fetchUserInfo(id);
+        final userInfo = await _service.fetchUserInfo();
         _user = UserModel.fromJson(userInfo);
         notifyListeners();
       } catch (e) {
@@ -43,7 +47,7 @@ class UserViewModel extends ChangeNotifier {
         await LoginStorageHelper.clear();
       }
     } else {
-      debugPrint('[자동 로그인 조건 미달] loginStatus=$loginStatus / id=$id');
+      debugPrint('[자동 로그인 조건 미달] loginStatus=$loginStatus');
     }
   }
 

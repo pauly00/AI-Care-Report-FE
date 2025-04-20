@@ -10,6 +10,6 @@ class UserRepository {
   }
 
   Future<Map<String, dynamic>> fetchUserInfo(int userid) {
-    return _service.fetchUserInfo(userid);
+    return _service.fetchUserInfo();
   }
 }
