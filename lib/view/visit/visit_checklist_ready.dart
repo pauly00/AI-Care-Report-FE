@@ -169,12 +169,7 @@ class _CheckListReadyState extends State<CheckListReady> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(
-          top: 0,
-          bottom: responsive.paddingHorizontal,
-          left: responsive.paddingHorizontal,
-          right: responsive.paddingHorizontal,
-        ),
+        padding: EdgeInsets.only(bottom: responsive.paddingHorizontal),
         child: BottomOneButton(
           buttonText: '시작하기',
           onButtonTap: () async {

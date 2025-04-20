@@ -7,67 +7,25 @@ import 'package:safe_hi/model/report_model.dart';
 import 'package:safe_hi/model/user_model.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:safe_hi/util/http_helper.dart'; // ✅ 추가
 
 class ReportService {
   static const String baseUrl = 'http://211.188.55.88:3000';
 
   Future<List<ReportTarget>> fetchReportTargets() async {
-    final response =
-        await http.get(Uri.parse('$baseUrl/db/getDefaultReportList'));
+    final headers = await buildAuthHeaders();
+    final response = await http.get(
+      Uri.parse('$baseUrl/db/getDefaultReportList'),
+      headers: headers,
+    );
+
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
+
       return data.map((e) => ReportTarget.fromJson(e)).toList();
     } else {
       throw Exception('Failed to load report target list');
     }
-
-    // --- Dummy ---
-    // final List<Map<String, dynamic>> dummyData = [
-//   {
-//     "reportid": 1,
-//     "reportstatus": 1,
-//     "visittime": "2025-04-03 10:00",
-//     "targetInfo": {
-//       "targetid": 1,
-//       "targetname": "이유진",
-//       "address1": "대전 서구 대덕대로 150",
-//       "address2": "경성 큰마을아파트 102동 103호",
-//       "targetcallnum": "010-3889-3501",
-//       "gender": 1,
-//       "age": 77
-//     }
-//   },
-//   {
-//     "reportid": 6,
-//     "reportstatus": 1,
-//     "visittime": "2025-04-03 16:00",
-//     "targetInfo": {
-//       "targetid": 2,
-//       "targetname": "김연우",
-//       "address1": "대전 서구 대덕대로 150",
-//       "address2": "경성 큰마을아파트 102동 103호",
-//       "targetcallnum": "010-4567-8901",
-//       "gender": 1,
-//       "age": 80
-//     }
-//   },
-//   {
-//     "reportid": 7,
-//     "reportstatus": 1,
-//     "visittime": "2025-04-03 17:00",
-//     "targetInfo": {
-//       "targetid": 3,
-//       "targetname": "이유진",
-//       "address1": "대전 서구 대덕대로 150",
-//       "address2": "경성 큰마을아파트 102동 103호",
-//       "targetcallnum": "010-3889-3501",
-//       "gender": 1,
-//       "age": 77
-//     }
-//   }
-// ];
-
-    //return dummyData.map((e) => ReportTarget.fromJson(e)).toList();
   }
 
   Future<Map<String, dynamic>> uploadDefaultReport({
@@ -77,6 +35,7 @@ class ReportService {
     required String endTime,
   }) async {
     final uri = Uri.parse('$baseUrl/db/uploadReportDefaultInfo');
+    final headers = await buildAuthHeaders();
 
     final body = {
       "reportid": target.reportId,
@@ -108,7 +67,7 @@ class ReportService {
 
     final response = await http.post(
       uri,
-      headers: {"Content-Type": "application/json"},
+      headers: headers,
       body: jsonEncode(body),
     );
 
@@ -120,6 +79,7 @@ class ReportService {
     required String detail,
   }) async {
     final url = Uri.parse('$baseUrl/db/uploadVisitDetail');
+    final headers = await buildAuthHeaders();
 
     final body = {
       'reportid': reportId,
@@ -130,7 +90,7 @@ class ReportService {
 
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: headers,
       body: jsonEncode(body),
     );
 
@@ -145,7 +105,9 @@ class ReportService {
   }) async {
     final uri = Uri.parse('$baseUrl/db/uploadImages');
     final request = http.MultipartRequest('POST', uri);
+    final headers = await buildAuthHeaders();
 
+    request.headers.addAll(headers);
     request.fields['reportid'] = reportId.toString();
 
     for (var file in imageFiles) {
@@ -172,11 +134,12 @@ class ReportService {
 
   Future<String> getConversationText(int reportId) async {
     final url = Uri.parse('$baseUrl/db/getConverstationSTTtxt/$reportId');
+    final headers = await buildAuthHeaders();
 
-    final response = await http.get(url);
+    final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      return response.body; // 서버는 순수 텍스트 반환
+      return response.body;
     } else {
       throw Exception('상담 텍스트 불러오기 실패: ${response.statusCode}');
     }
@@ -184,14 +147,15 @@ class ReportService {
 
   Future<File> downloadReport(int reportId) async {
     final url = Uri.parse('$baseUrl/db/getReport/$reportId');
-    final response = await http.get(url);
+    final headers = await buildAuthHeaders();
+
+    final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
       final bytes = response.bodyBytes;
       final dir = await getApplicationDocumentsDirectory();
 
       final file = File('${dir.path}/report_$reportId.doc');
-
       await file.writeAsBytes(bytes);
 
       return file;

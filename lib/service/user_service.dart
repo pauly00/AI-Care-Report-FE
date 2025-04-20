@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:safe_hi/util/login_storage_helper.dart';
 
 class UserService {
   static const String baseUrl = 'http://211.188.55.88:3000';
@@ -10,8 +11,6 @@ class UserService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     debugPrint('[로그인 요청 시작]');
     debugPrint('보낸 데이터: {email: $email, password: $password}');
-
-    // 실제 서버 요청 (주석 처리)
 
     try {
       final response = await http.post(
@@ -24,7 +23,20 @@ class UserService {
       debugPrint('응답 바디: ${utf8.decode(response.bodyBytes)}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('서버 응답: ${response.body}');
+
         final json = jsonDecode(response.body);
+        final token = json['token']; // 서버에서 내려주는 JWT 토큰
+
+        if (json['user'] != null && token != null) {
+          // 토큰 저장
+          await LoginStorageHelper.saveToken(token);
+          return {
+            "status": true,
+            "msg": json['message'] ?? "로그인 성공",
+            "user": json['user'],
+          };
+        }
         if (json['user'] != null) {
           return {
             "status": true,

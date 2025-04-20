@@ -2,13 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:safe_hi/model/visit_summary_model.dart';
+import 'package:safe_hi/util/http_helper.dart'; // ✅ 추가
 
 class VisitSummaryService {
   static const String baseUrl = 'http://211.188.55.88:3000';
 
   Future<VisitSummaryResponse> fetchVisitSummary(int reportId) async {
+    final headers = await buildAuthHeaders(); // ✅ 토큰 헤더
+
     final response = await http.get(
       Uri.parse('$baseUrl/db/getVisitDetails/$reportId'),
+      headers: headers,
     );
 
     if (response.statusCode == 200) {
@@ -18,6 +22,7 @@ class VisitSummaryService {
       throw Exception('방문 요약 정보를 불러오는 데 실패했습니다.');
     }
 
+    // ✅ 더미는 그대로 유지
     // return VisitSummaryResponse.fromJson({
     //   "reportid": 1,
     //   "items": [
@@ -50,6 +55,7 @@ class VisitSummaryService {
     required List<VisitSummary> summaries,
   }) async {
     final url = Uri.parse('$baseUrl/db/uploadEditAbstract');
+    final headers = await buildAuthHeaders(); // ✅ 토큰 헤더
 
     final body = {
       'reportid': reportId,
@@ -66,7 +72,7 @@ class VisitSummaryService {
 
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: headers,
       body: jsonEncode(body),
     );
 

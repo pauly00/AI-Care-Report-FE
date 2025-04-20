@@ -79,7 +79,8 @@ class UserViewModel extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    await LoginStorageHelper.clear();
+    await LoginStorageHelper.clear(); // 기존 로그인 정보
+    await LoginStorageHelper.clearToken(); // 🔐 토큰 삭제
     _user = null;
     notifyListeners();
   }
