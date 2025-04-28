@@ -71,103 +71,103 @@ class MyPage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    width: 330,
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '방문',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('1년 기준', style: TextStyle(fontSize: 9)),
-                            SizedBox(height: 5),
-                            Text(
-                              '289',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFFB5457),
-                              ),
-                            ),
-                          ],
-                        ),
-                        VerticalDivider(
-                          color: Colors.grey,
-                          thickness: 1,
-                          width: 30, // Increased space between the columns
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '방문',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('한 달 기준', style: TextStyle(fontSize: 9)),
-                            SizedBox(height: 5),
-                            Text(
-                              '32',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFFB5457),
-                              ),
-                            ),
-                          ],
-                        ),
-                        VerticalDivider(
-                          color: Colors.grey,
-                          thickness: 1,
-                          width: 30, // Increased space between the columns
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '담당 가구',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text('', style: TextStyle(fontSize: 9)),
-                            SizedBox(height: 5),
-                            Text(
-                              '11',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFFB5457),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   width: 330,
+                  //   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
+                  //         spreadRadius: 2,
+                  //         blurRadius: 4,
+                  //         offset: const Offset(0, 0),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text(
+                  //             '방문',
+                  //             style: TextStyle(
+                  //               fontSize: 15,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //           Text('1년 기준', style: TextStyle(fontSize: 9)),
+                  //           SizedBox(height: 5),
+                  //           Text(
+                  //             '289',
+                  //             style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.bold,
+                  //               color: Color(0xFFFB5457),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       VerticalDivider(
+                  //         color: Colors.grey,
+                  //         thickness: 1,
+                  //         width: 30, // Increased space between the columns
+                  //       ),
+                  //       Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text(
+                  //             '방문',
+                  //             style: TextStyle(
+                  //               fontSize: 15,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //           Text('한 달 기준', style: TextStyle(fontSize: 9)),
+                  //           SizedBox(height: 5),
+                  //           Text(
+                  //             '32',
+                  //             style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.bold,
+                  //               color: Color(0xFFFB5457),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       VerticalDivider(
+                  //         color: Colors.grey,
+                  //         thickness: 1,
+                  //         width: 30, // Increased space between the columns
+                  //       ),
+                  //       Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text(
+                  //             '담당 가구',
+                  //             style: TextStyle(
+                  //               fontSize: 15,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //           Text('', style: TextStyle(fontSize: 9)),
+                  //           SizedBox(height: 5),
+                  //           Text(
+                  //             '11',
+                  //             style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.bold,
+                  //               color: Color(0xFFFB5457),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),

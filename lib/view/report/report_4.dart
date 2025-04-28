@@ -81,6 +81,9 @@ class _Report4State extends State<Report4> {
         child: BottomTwoButton(
             buttonText1: '이전',
             buttonText2: '다음'.padLeft(14).padRight(28),
+            onButtonTap1: () {
+              Navigator.pop(context); // 이전 화면으로 돌아가기
+            },
             onButtonTap2: () async {
               final reportId =
                   context.read<ReportViewModel>().selectedTarget?.reportId;

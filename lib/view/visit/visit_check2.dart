@@ -211,7 +211,7 @@ class _Check2BodyState extends State<_Check2Body> {
         children: [
           Center(
             child: Wrap(
-              spacing: responsive.itemSpacing,
+              spacing: responsive.checkSpacing,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Text(
