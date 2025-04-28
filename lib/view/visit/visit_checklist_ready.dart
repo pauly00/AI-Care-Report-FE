@@ -202,6 +202,25 @@ class _CheckListReadyState extends State<CheckListReady> {
               );
             } catch (e) {
               debugPrint('[Audio Error] $e');
+              if (e.toString().contains('마이크 권한이 없습니다')) {
+                // 📢 마이크 권한 거부 팝업 띄우기
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text('마이크 권한 필요'),
+                    content:
+                        const Text('마이크 권한이 허용되지 않았습니다.\n설정에서 마이크 접근을 허용해주세요.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('확인'),
+                      ),
+                    ],
+                  ),
+                );
+              }
             }
           },
         ),
