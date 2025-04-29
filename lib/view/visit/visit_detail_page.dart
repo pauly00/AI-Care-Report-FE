@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safe_hi/model/visit_detail_model.dart';
 import 'package:safe_hi/util/responsive.dart';
+import 'package:safe_hi/view/visit/visit_call_ready.dart';
 import 'package:safe_hi/view/visit/widget/drop_box.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
@@ -60,6 +61,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive(context);
+    debugPrint('reportId: ${widget.reportId}');
     return Scaffold(
       backgroundColor: const Color(0xFFFFF6F6),
       body: SafeArea(
@@ -246,9 +248,25 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: responsive.paddingHorizontal),
       child: BottomTwoButton(
-        buttonText1: '방문일자수정',
-        buttonText2: '상담시작',
-        onButtonTap1: () {},
+        buttonText1: '전화 상담시작',
+        buttonText2: '방문 상담시작',
+        onButtonTap1: () {
+          if (_visit != null && _visit!.phone.isNotEmpty) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VisitCallReady(
+                  phoneNumber: _visit!.phone,
+                  reportId: widget.reportId,
+                ),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('전화번호 정보가 없습니다.')),
+            );
+          }
+        },
         onButtonTap2: () {
           Navigator.push(
             context,

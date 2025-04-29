@@ -1,8 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:safe_hi/model/visit_detail_model.dart';
 import 'package:safe_hi/model/visit_model.dart';
-import 'package:safe_hi/util/http_helper.dart'; // ✅ 추가
+import 'package:safe_hi/util/http_helper.dart';
+import 'package:path/path.dart' as path;
+import 'package:mime/mime.dart';
 
 class VisitService {
   static const String baseUrl = 'http://211.188.55.88:3000';
@@ -72,6 +77,54 @@ class VisitService {
       return VisitDetail.fromJson(jsonData);
     } else {
       throw Exception('상세 정보 요청 실패: ${response.statusCode}');
+    }
+  }
+
+  static Future<void> uploadCallRecord({
+    required int reportId,
+    required File audioFile,
+  }) async {
+    final uri = Uri.parse('$baseUrl/db/uploadCallRecord');
+    final request = http.MultipartRequest('POST', uri);
+    final headers = await buildAuthHeaders();
+
+    request.headers.addAll(headers);
+    request.fields['reportid'] = reportId.toString();
+
+    // 🔥 여기 수정: 파일 확장자 직접 확인
+    final ext = path.extension(audioFile.path).toLowerCase();
+    String? mimeSubtype;
+
+    if (ext == '.wav') {
+      mimeSubtype = 'wav';
+    } else if (ext == '.mp3') {
+      mimeSubtype = 'mpeg';
+    } else if (ext == '.m4a') {
+      mimeSubtype = 'x-m4a';
+    } else if (ext == '.webm') {
+      mimeSubtype = 'webm';
+    } else {
+      // ❗ 확장자가 없으면 기본으로 mp3로 가정
+      mimeSubtype = 'mp3';
+      debugPrint('확장자 없음 → 기본으로 audio/mpeg으로 설정');
+    }
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'audiofile',
+        audioFile.path,
+        filename:
+            '${path.basename(audioFile.path)}${ext.isEmpty ? '.mp3' : ''}', // 확장자 보장
+        contentType: MediaType('audio', mimeSubtype),
+      ),
+    );
+
+    final response = await http.Response.fromStream(await request.send());
+
+    debugPrint('[녹음 파일 업로드 응답] ${response.statusCode} - ${response.body}');
+
+    if (response.statusCode != 200) {
+      throw Exception('녹음 파일 업로드 실패: ${response.statusCode}');
     }
   }
 }

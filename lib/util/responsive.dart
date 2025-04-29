@@ -10,7 +10,7 @@ class Responsive {
 
   // Font Sizes
   double get fontSmall => isTablet ? 20 : 12;
-  double get fontM => isTablet ? 25 : 14;
+  double get fontM => isTablet ? 20 : 14;
 
   double get fontBase => isTablet ? 25 : 16;
   double get fontLarge => isTablet ? 28 : 20;
