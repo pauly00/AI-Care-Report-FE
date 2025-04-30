@@ -1,56 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart';
 
 class VisitRecordCard extends StatelessWidget {
-  final int id; // 시나리오 id
-  final String name; // 이름
-  final String address; // 주소
+  final int id;
+  final String name;
+  final String address;
+  final bool isTablet;
 
   const VisitRecordCard({
     super.key,
     required this.id,
     required this.name,
     required this.address,
+    this.isTablet = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+    final cardPadding =
+        isTablet ? responsive.cardSpacing * 1.2 : responsive.cardSpacing;
+    final fontSizeTitle =
+        isTablet ? responsive.fontBase + 2 : responsive.fontBase;
+    final fontSizeSub =
+        isTablet ? responsive.fontSmall + 1 : responsive.fontSmall;
+
     return Container(
-      padding: const EdgeInsets.all(15),
-      margin: const EdgeInsets.only(bottom: 14),
+      width: double.infinity,
+      padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFDD8DA).withValues(alpha: 0.5),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(0, 0),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                name, // 이름 표시
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 20,
-                color: Colors.black,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: fontSizeTitle,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: responsive.itemSpacing * 0.5),
+                Text(
+                  address,
+                  style: TextStyle(
+                    fontSize: fontSizeSub,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 5),
-          Text(
-            address, // 주소 표시
-            style: const TextStyle(fontSize: 14, color: Color(0xFFB3A5A5)),
+          Icon(
+            Icons.chevron_right,
+            size: isTablet ? 50 : 28,
+            color: Colors.red.shade300,
           ),
         ],
       ),

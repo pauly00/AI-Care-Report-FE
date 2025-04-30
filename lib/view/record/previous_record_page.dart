@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safe_hi/util/responsive.dart';
 import 'package:safe_hi/widget/appbar/default_appbar.dart';
 import 'package:safe_hi/widget/card/visit_record_card.dart';
 import 'package:safe_hi/widget/search/search_bar.dart';
@@ -8,6 +9,8 @@ class PreviousRecordsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsive(context);
+
     final visits = [
       {
         'id': 1,
@@ -53,30 +56,41 @@ class PreviousRecordsPage extends StatelessWidget {
         'addressDetails': '푸른숲아파트 102동 1202호',
       },
       {
-        'id': 6,
+        'id': 7,
         'time': '3:00 PM',
         'name': '이준학',
         'address': '대전 서구 둔산로 123',
         'addressDetails': '푸른숲아파트 102동 1202호',
       },
     ];
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xFFFFF6F6),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            padding:
+                EdgeInsets.symmetric(horizontal: responsive.paddingHorizontal),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DefaultAppBar(title: '이전 기록'),
-                const SizedBox(height: 20),
-                VisitSearchBar(),
-                for (var visit in visits)
-                  VisitRecordCard(
-                    id: visit['id']! as int,
-                    name: visit['name']! as String,
-                    address: visit['address']! as String,
-                  ),
+                const DefaultAppBar(title: '이전 기록'),
+                SizedBox(height: responsive.sectionSpacing),
+                const VisitSearchBar(),
+                SizedBox(height: responsive.sectionSpacing),
+                Column(
+                  children: visits.map((visit) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: responsive.cardSpacing),
+                      child: VisitRecordCard(
+                        id: visit['id']! as int,
+                        name: visit['name']! as String,
+                        address: visit['address']! as String,
+                        isTablet: responsive.isTablet,
+                      ),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),
