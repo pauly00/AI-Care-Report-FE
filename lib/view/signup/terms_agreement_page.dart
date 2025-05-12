@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safe_hi/view_model/signup_view_model.dart';
 import 'package:safe_hi/widget/appbar/default_back_appbar.dart';
 import 'package:safe_hi/widget/button/bottom_one_btn.dart';
 import 'package:safe_hi/util/responsive.dart';
@@ -127,7 +129,12 @@ class _TermsAgreementPageState extends State<TermsAgreementPage> {
             if (_allIndividualAgree) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const SignupFormPage()),
+                MaterialPageRoute(
+                  builder: (_) => ChangeNotifierProvider(
+                    create: (_) => SignupViewModel(),
+                    child: const SignupFormPage(),
+                  ),
+                ),
               );
             }
           },
