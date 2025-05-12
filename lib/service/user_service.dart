@@ -23,44 +23,45 @@ class UserService {
       debugPrint('응답 코드: ${response.statusCode}');
       debugPrint('응답 바디: ${utf8.decode(response.bodyBytes)}');
 
+      final json = jsonDecode(response.body);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('서버 응답: ${response.body}');
+        final token = json['token'];
+        final user = json['user'];
 
-        final json = jsonDecode(response.body);
-        final token = json['token']; // 서버에서 내려주는 JWT 토큰
-
-        if (json['user'] != null && token != null) {
-          // 토큰 저장
+        if (token != null && user != null) {
           await LoginStorageHelper.saveToken(token);
           return {
             "status": true,
             "msg": json['message'] ?? "로그인 성공",
-            "user": json['user'],
-          };
-        }
-        if (json['user'] != null) {
-          return {
-            "status": true,
-            "msg": json['message'] ?? "로그인 성공",
-            "user": json['user'],
+            "user": user,
           };
         } else {
           return {
             "status": false,
-            "msg": "유저 정보가 포함되어 있지 않습니다.",
+            "msg": "서버 응답에 사용자 정보가 포함되어 있지 않습니다.",
           };
         }
-      } else {
-        final errorBody = jsonDecode(utf8.decode(response.bodyBytes));
+      } else if (response.statusCode == 401) {
         return {
           "status": false,
-          "msg": errorBody['msg'] ?? '로그인 실패',
+          "msg": "아이디 또는 비밀번호가 올바르지 않습니다.",
+        };
+      } else if (response.statusCode >= 500) {
+        return {
+          "status": false,
+          "msg": "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        };
+      } else {
+        return {
+          "status": false,
+          "msg": json['message'] ?? '로그인 실패',
         };
       }
     } catch (e) {
       return {
         "status": false,
-        "msg": "로그인 요청 중 오류가 발생했습니다.\n${e.toString()}",
+        "msg": "서버에 연결할 수 없습니다. 인터넷 상태를 확인해주세요.",
       };
     }
 
