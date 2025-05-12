@@ -11,6 +11,7 @@ import 'package:safe_hi/service/report_service.dart';
 import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/util/connectivity.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:safe_hi/view_model/visit/visit_call_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ void main() async {
               repository: ReportRepository(service: ReportService()),
             )..fetchTargets(),
           ),
+          ChangeNotifierProvider(create: (_) => VisitCallViewModel()),
         ],
         child: const MyApp(),
       ),

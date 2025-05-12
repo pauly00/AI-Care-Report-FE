@@ -7,6 +7,7 @@ import 'package:safe_hi/service/report_service.dart';
 import 'package:safe_hi/service/visit_service.dart';
 import 'package:safe_hi/view_model/report_view_model.dart';
 import 'package:safe_hi/view_model/signup_view_model.dart';
+import 'package:safe_hi/view_model/visit/visit_call_view_model.dart';
 import 'package:safe_hi/view_model/visit/visit_list_view_model.dart';
 import 'package:safe_hi/view_model/visit/visit_policy_view_model.dart';
 import 'package:safe_hi/widget/bottom_menubar/bottom_menubar.dart';

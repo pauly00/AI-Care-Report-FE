@@ -36,46 +36,60 @@ class _Report1State extends State<Report1> {
     required void Function(DateTime) onPicked,
     required Responsive responsive,
   }) {
-    return GestureDetector(
-      onTap: () async {
-        final pickedDate = await showDatePicker(
-          context: context,
-          initialDate: dateTime,
-          firstDate: DateTime(2023),
-          lastDate: DateTime(2100),
-        );
-        if (pickedDate != null) {
-          final pickedTime = await showTimePicker(
-            context: context,
-            initialTime: TimeOfDay.fromDateTime(dateTime),
-          );
-          if (pickedTime != null) {
-            final result = DateTime(
-              pickedDate.year,
-              pickedDate.month,
-              pickedDate.day,
-              pickedTime.hour,
-              pickedTime.minute,
-            );
-            onPicked(result);
-          }
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF9F6F6),
-          border: Border.all(color: const Color(0xFFEBE7E7)),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          dateTime.toString().substring(0, 16).replaceAll("T", " "),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label, // ✅ "시작시간" 또는 "종료시간" 라벨 표시
           style: TextStyle(
+            fontSize: responsive.fontBase, // 라벨 폰트 크기
+            fontWeight: FontWeight.bold,
             color: Colors.black,
-            fontSize: responsive.fontBase,
           ),
         ),
-      ),
+        SizedBox(height: 6), // 라벨과 박스 사이 간격
+        GestureDetector(
+          onTap: () async {
+            final pickedDate = await showDatePicker(
+              context: context,
+              initialDate: dateTime,
+              firstDate: DateTime(2023),
+              lastDate: DateTime(2100),
+            );
+            if (pickedDate != null) {
+              final pickedTime = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.fromDateTime(dateTime),
+              );
+              if (pickedTime != null) {
+                final result = DateTime(
+                  pickedDate.year,
+                  pickedDate.month,
+                  pickedDate.day,
+                  pickedTime.hour,
+                  pickedTime.minute,
+                );
+                onPicked(result);
+              }
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF9F6F6),
+              border: Border.all(color: const Color(0xFFEBE7E7)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              dateTime.toString().substring(0, 16).replaceAll("T", " "),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: responsive.fontBase, // ✅ 날짜/시간 폰트 크기 여기서 크게!
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
