@@ -6,7 +6,7 @@ class UserModel {
   final String birthDate;
   final int gender;
   final String etc;
-  final int role;
+  final int? role;
 
   UserModel({
     required this.userId,
