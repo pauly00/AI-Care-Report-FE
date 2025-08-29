@@ -84,9 +84,10 @@ lib/
 
 실제 개발 화면
 
-| 홈 화면 | 로그인 | 회원가입 | 마이페이지 | 방문 진행 | 기록 관리 | 리포트 관리 |
-|---------|--------|----------|------------|-----------|-----------|-------------|
-| ![home](AI-Care-Report-FE/lib/docs/images/home.png) | ![login](AI-Care-Report-FE/lib/docs/images/login.png) | ![signup](AI-Care-Report-FE/lib/docs/images/signup.png) | ![mypage](AI-Care-Report-FE/lib/docs/images/mypage.png) | ![visit](AI-Care-Report-FE/lib/docs/images/visit.png) | ![record](AI-Care-Report-FE/lib/docs/images/record.png) | ![report](AI-Care-Report-FE/lib/docs/images/report.png) |
+| 회원가입 | 로그인 | 홈 화면 | 방문 진행 | 기록 관리 | 리포트 관리 | 마이페이지 |
+|----------|--------|---------|-----------|-----------|-------------|------------|
+| [![signup](AI-Care-Report-FE/lib/docs/images/signup.png)](AI-Care-Report-FE/lib/docs/images/signup.png) | [![login](AI-Care-Report-FE/lib/docs/images/login.png)](AI-Care-Report-FE/lib/docs/images/login.png) | [![home](AI-Care-Report-FE/lib/docs/images/home.png)](AI-Care-Report-FE/lib/docs/images/home.png) | [![visit](AI-Care-Report-FE/lib/docs/images/visit.png)](AI-Care-Report-FE/lib/docs/images/visit.png) | [![record](AI-Care-Report-FE/lib/docs/images/record.png)](AI-Care-Report-FE/lib/docs/images/record.png) | [![report](AI-Care-Report-FE/lib/docs/images/report.png)](AI-Care-Report-FE/lib/docs/images/report.png) | [![mypage](AI-Care-Report-FE/lib/docs/images/mypage.png)](AI-Care-Report-FE/lib/docs/images/mypage.png) |
+
 
 
 ---
