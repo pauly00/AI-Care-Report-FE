@@ -29,6 +29,18 @@ AI 기반 상담 데이터 요약 및 리포트 자동화 시스템의 **프론�
 - **API**: RESTful API 연동
 - **Tools**: VS Code, Android Emulator, Git/GitHub
 
+---
+
+## 🚀 실행 방법
+
+```bash
+# 패키지 설치
+flutter pub get
+
+# 디버그 실행
+flutter run
+```
+
 ## 💡 개인 기여도
 - Provider를 활용한 상태관리 및 자동 로그인 구현
 - 로그인/회원가입 API 연동 성공 (JWT 기반 인증 처리)
@@ -96,15 +108,3 @@ lib/
 
 [📺 Demo Video](https://www.youtube.com/watch?v=rGAkDS2AEVM)
 
-
----
-
-## 🚀 실행 방법
-
-```bash
-# 패키지 설치
-flutter pub get
-
-# 디버그 실행
-flutter run
-```
