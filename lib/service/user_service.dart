@@ -7,10 +7,30 @@ import 'package:safe_hi/util/login_storage_helper.dart';
 
 /// 사용자 인증 및 정보 관련 API 통신을 담당하는 서비스 클래스
 class UserService {
-  static const String baseUrl = 'https://www.safe-hi.xyz';
+  // static const String baseUrl = 'https://www.safe-hi.xyz';
+  static const String baseUrl = 'http://localhost:8080';
 
   /// 로그인 요청
   Future<Map<String, dynamic>> login(String email, String password) async {
+
+    /**
+     * 더미 로그인 코드(추후 삭제 필요
+     */
+    debugPrint('[임시 로그인 시작]');
+    return {
+      "status": true,
+      "msg": "테스트용 로그인 성공", // 더미 메시지
+      "user": {
+        "user_id": 4, // 더미값 - 백엔드 연동 필요
+        "name": "테스트", // 더미값
+        "phone_number": "01012345678", // 더미값
+        "email": "test@test.com", // 더미값
+        "birthdate": "2002-02-02T15:00:00.000Z", // 더미값
+        "gender": 0, // 더미값
+        "permission": 1, // 더미값
+      }
+    };
+
     debugPrint('[로그인 요청 시작]');
     debugPrint('보낸 데이터: {email: $email, password: $password}');
 
