@@ -97,10 +97,8 @@ lib/
 실제 개발 화면
 
 | 회원가입 | 로그인 | 홈 화면 | 방문 진행 | 기록 관리 | 리포트 관리 | 마이페이지 |
-|----------|--------|---------|-----------|-----------|-------------|------------|
-| [![signup](AI-Care-Report-FE/lib/docs/images/signup.png)](AI-Care-Report-FE/lib/docs/images/signup.png) | [![login](AI-Care-Report-FE/lib/docs/images/login.png)](AI-Care-Report-FE/lib/docs/images/login.png) | [![home](AI-Care-Report-FE/lib/docs/images/home.png)](AI-Care-Report-FE/lib/docs/images/home.png) | [![visit](AI-Care-Report-FE/lib/docs/images/visit.png)](AI-Care-Report-FE/lib/docs/images/visit.png) | [![record](AI-Care-Report-FE/lib/docs/images/record.png)](AI-Care-Report-FE/lib/docs/images/record.png) | [![report](AI-Care-Report-FE/lib/docs/images/report.png)](AI-Care-Report-FE/lib/docs/images/report.png) | [![mypage](AI-Care-Report-FE/lib/docs/images/mypage.png)](AI-Care-Report-FE/lib/docs/images/mypage.png) |
-
-
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [![signup](lib/docs/images/signup.png)](lib/docs/images/signup.png) | [![login](lib/docs/images/login.png)](lib/docs/images/login.png) | [![home](lib/docs/images/home.png)](lib/docs/images/home.png) | [![visit](lib/docs/images/visit.png)](lib/docs/images/visit.png) | [![record](lib/docs/images/record.png)](lib/docs/images/record.png) | [![report](lib/docs/images/report.png)](lib/docs/images/report.png) | [![mypage](lib/docs/images/mypage.png)](lib/docs/images/mypage.png) |
 
 ---
 
